@@ -59,27 +59,27 @@ export default class LoginScreen extends Component {
             <SafeAreaView style={{ flex: 1, marginTop: 30 }}>
                 <LoginImageHeaderOne />
                 <LoginImageHeaderTwo />
-                <ScrollView style={{ marginTop: 50 }} >
+                <ScrollView style={{ marginTop: 50,flex:1 }} >
                     <Text style={styles.Header}>{this.state.header}</Text>
                     <Text style={styles.Sub}>{this.state.subtitle}</Text>
                     <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                         <View>
-                            <TextInput placeholder='Enter Server' placeholderTextColor={'#747272'} style={styles.InputStyle} />
-                            <Feather name="server" size={15} color="#000" style={{ position: 'absolute', left: 37, top: 18 }} />
+                            <TextInput placeholder='Enter Server' placeholderTextColor={'#fff'} style={styles.InputStyle} />
+                            <Feather name="server" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
                         </View>
                         <View>
-                            <TextInput placeholder='Enter Username' placeholderTextColor={'#747272'} style={styles.InputStyle} />
-                            <Feather name="user" size={15} color="#000" style={{ position: 'absolute', left: 37, top: 18 }} />
+                            <TextInput placeholder='Enter Username' placeholderTextColor={'#fff'} style={styles.InputStyle} />
+                            <Feather name="user" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
                         </View>
                         <View>
-                            <TextInput placeholder='Enter Password' placeholderTextColor={'#747272'} style={styles.InputStyle} secureTextEntry={!this.state.EyeO} />
-                            <Feather name="key" size={15} color="#000" style={{ position: 'absolute', left: 37, top: 18 }} />
+                            <TextInput placeholder='Enter Password' placeholderTextColor={'#fff'} style={styles.InputStyle} secureTextEntry={!this.state.EyeO} />
+                            <Feather name="key" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
                             <TouchableOpacity style={{ position: 'absolute', right: 37, top: 18 }} onPress={() => this.EyeOpen()}>
                                 {!this.state.EyeO ? <Feather name="eye-off" size={15} color="#000" /> : <Feather name="eye" size={15} color="#747272" />}
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity style={styles.buttonLogin} onPress={() => this.props.navigation.push('Home')}>
+                            <TouchableOpacity style={styles.buttonLogin} onPress={() => this.props.navigation.push('BottomTabsNavigator')}>
                                 <Text style={styles.buttonLoginText}>
                                     Log In
                                 </Text>
@@ -87,7 +87,7 @@ export default class LoginScreen extends Component {
                         </View>
                     </KeyboardAvoidingView>
                 </ScrollView>
-                <View style={{ flex: 1, height: 54, bottom: 0, marginTop: 20 }}>
+                <View style={{height: 54}}>
                     <LoginImageHeaderThree />
                 </View>
             </SafeAreaView>
