@@ -8,12 +8,10 @@ import ListLog from '../../Molecule/ListLog';
 export default class AttendanceScreen extends Component {
     render() {
         return (
-            <View style={{ flex: 1 }} style={{ marginTop: 20 }}>
+            <View style={{ flex: 1 }} style={{ marginTop: 0 }}>
                 <StatusBar hidden={true} style="light" />
-                <View style={{borderBottomEndRadius:60,borderBottomStartRadius:60}}>
-                    <AttendanceImageHeaderOne />
-                </View>
                 <ScrollView>
+                    <AttendanceImageHeaderOne />
                 <View style={styles.AttendanceMain}>
                     <Text style={styles.HeaderCard}>Attendance</Text>
                     <View style={styles.rowCard}>

@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Feather, Octicons, AntDesign } from '@expo/vector-icons';
 import HomeImageHeaderOne from '../../ImagesSource/HomeImageHeaderOne';
 import HeaderMenu from '../../Molecule/HeaderMenu';
+import Notificationss from '../../lib/Notification';
 
 export default class HomeScreen extends Component {
     render() {
@@ -23,7 +24,7 @@ export default class HomeScreen extends Component {
                     </View>
                     <View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.buttonInv}>
+                            <TouchableOpacity style={styles.buttonInv} onPress={()=>Notificationss()}>
                                 <Image source={require('../../../assets/attendance.png')} style={{width:60,height:60}} />
                                 <Text style={{fontFamily:'Oxygen_400Regular', color:'#fff',marginTop:10}}>Attendance</Text>
                             </TouchableOpacity>
