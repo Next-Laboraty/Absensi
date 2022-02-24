@@ -28,13 +28,11 @@ const BottomTabsNavigator = () => {
                     headerShown:false,
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Foundation name="home" size={24} style={{ color: focused ? '#516BEB' : '#545454' }} />
+                            <AntDesign name="home" size={18} style={{ color: focused ? '#FF7648' : '#9F9FB0' }} />
                         </View>
                     ),
                     tabBarLabel: ({ focused }) => (
-                        <Text style={{ color: focused ? '#516BEB' : '#545454', fontSize: 10, fontFamily: focused ? 'Oxygen_700Bold' : 'Oxygen_400Regular', marginTop: 4 }}>
-                            Home
-                        </Text>
+                        <View style={{width:4,height:4, backgroundColor: focused ? '#FF7648' : '#fff',marginBottom:focused ? 10 : 0,borderRadius: 120/2}}></View>
                     ),
                 }}
             />
@@ -43,13 +41,11 @@ const BottomTabsNavigator = () => {
                     headerShown:false,
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Octicons name="checklist" size={24} style={{ color: focused ? '#516BEB' : '#545454' }} />
+                            <AntDesign name="checkcircleo" size={18} style={{ color: focused ? '#FF7648' : '#9F9FB0' }} />
                         </View>
                     ),
                     tabBarLabel: ({ focused }) => (
-                        <Text style={{ color: focused ? '#516BEB' : '#545454', fontSize: 10, fontFamily: focused ? 'Oxygen_700Bold' : 'Oxygen_400Regular', marginTop: 4 }}>
-                            Attendance
-                        </Text>
+                        <View style={{width:4,height:4, backgroundColor: focused ? '#FF7648' : '#fff',marginBottom:focused ? 10 : 0,borderRadius: 120/2}}></View>
                     ),
                 }}
             />
@@ -58,13 +54,11 @@ const BottomTabsNavigator = () => {
                     headerShown:false,
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Octicons name="briefcase" size={24} style={{ color: focused ? '#516BEB' : '#545454' }} />
+                            <Octicons name="briefcase" size={18} style={{ color: focused ? '#FF7648' : '#9F9FB0' }} />
                         </View>
                     ),
                     tabBarLabel: ({ focused }) => (
-                        <Text style={{ color: focused ? '#516BEB' : '#545454', fontSize: 10, fontFamily: focused ? 'Oxygen_700Bold' : 'Oxygen_400Regular', marginTop: 4 }}>
-                            Desk
-                        </Text>
+                        <View style={{width:4,height:4, backgroundColor: focused ? '#FF7648' : '#fff',marginBottom:focused ? 10 : 0,borderRadius: 120/2}}></View>
                     ),
                 }}
             />
@@ -73,13 +67,11 @@ const BottomTabsNavigator = () => {
                     headerShown:false,
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <AntDesign name="creditcard" size={24} style={{ color: focused ? '#516BEB' : '#545454' }}/>
+                            <AntDesign name="creditcard" size={18} style={{ color: focused ? '#FF7648' : '#9F9FB0' }}/>
                         </View>
                     ),
                     tabBarLabel: ({ focused }) => (
-                        <Text style={{ color: focused ? '#516BEB' : '#545454', fontSize: 10, fontFamily: focused ? 'Oxygen_700Bold' : 'Oxygen_400Regular', marginTop: 4 }}>
-                            Salary
-                        </Text>
+                        <View style={{width:4,height:4, backgroundColor: focused ? '#FF7648' : '#fff',marginBottom:focused ? 10 : 0,borderRadius: 120/2}}></View>
                     ),
                 }}
             />
@@ -88,13 +80,11 @@ const BottomTabsNavigator = () => {
                     headerShown:false,
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <AntDesign name="idcard" size={24} style={{ color: focused ? '#516BEB' : '#545454' }}/>
+                            <AntDesign name="user" size={18} style={{ color: focused ? '#FF7648' : '#9F9FB0' }}/>
                         </View>
                     ),
                     tabBarLabel: ({ focused }) => (
-                        <Text style={{ color: focused ? '#516BEB' : '#545454', fontSize: 10, fontFamily: focused ? 'Oxygen_700Bold' : 'Oxygen_400Regular', marginTop: 4 }}>
-                            User
-                        </Text>
+                        <View style={{width:4,height:4, backgroundColor: focused ? '#FF7648' : '#fff',marginBottom:focused ? 10 : 0,borderRadius: 120/2}}></View>
                     ),
                 }}
             />

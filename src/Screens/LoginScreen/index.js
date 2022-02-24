@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ScrollView, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Image } from 'react-native'
 import LoginImageHeaderOne from '../../ImagesSource/LoginImageHeaderOne'
 import LoginImageHeaderTwo from '../../ImagesSource/LoginImageHeaderTwo'
 import LoginImageHeaderThree from '../../ImagesSource/LoginImageHeaderThree'
@@ -11,8 +11,12 @@ export default class LoginScreen extends Component {
     constructor() {
         super();
         this.state = {
-            header: 'Welcome !',
-            subtitle: 'Nice to see you again !\nExperience new VEF app',
+            header: 'Masuk.',
+            subtitle: 'Selamat datang kembali ! Masuk \nuntuk melanjutkan ke HRIS',
+            placeholderServer: 'Masukan Server',
+            placeholderUsername: 'Masukan Username',
+            placeholderPassword: 'Masukan Password',
+            buttonIn: 'Masuk',
             EyeO: false,
             loginData: {
                 server: '',
@@ -57,6 +61,10 @@ export default class LoginScreen extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, marginTop: 30 }}>
+                <TouchableOpacity style={{width: 65,height: 30,borderColor:'#516BEB',borderWidth:1,borderRadius:15,top:12,left:280}}>
+                    <Text style={styles.textLang}>ID</Text>
+                    <Image source={require('../../../assets/Flag.png')} style={{width:25,height:25,position:'absolute',right:6,top:1}} />
+                </TouchableOpacity>
                 <LoginImageHeaderOne />
                 <LoginImageHeaderTwo />
                 <ScrollView style={{ marginTop: 50,flex:1 }} >
@@ -64,43 +72,47 @@ export default class LoginScreen extends Component {
                     <Text style={styles.Sub}>{this.state.subtitle}</Text>
                     <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                         <View>
-                            <TextInput placeholder='Enter Server' placeholderTextColor={'#fff'} style={styles.InputStyle} />
+                            <TextInput placeholder={this.state.placeholderServer} placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
                             <Feather name="server" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
                         </View>
                         <View>
-                            <TextInput placeholder='Enter Username' placeholderTextColor={'#fff'} style={styles.InputStyle} />
+                            <TextInput placeholder={this.state.placeholderUsername}  placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
                             <Feather name="user" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
                         </View>
                         <View>
-                            <TextInput placeholder='Enter Password' placeholderTextColor={'#fff'} style={styles.InputStyle} secureTextEntry={!this.state.EyeO} />
+                            <TextInput placeholder={this.state.placeholderPassword}  placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} secureTextEntry={!this.state.EyeO} />
                             <Feather name="key" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
                             <TouchableOpacity style={{ position: 'absolute', right: 37, top: 18 }} onPress={() => this.EyeOpen()}>
-                                {!this.state.EyeO ? <Feather name="eye-off" size={15} color="#000" /> : <Feather name="eye" size={15} color="#747272" />}
+                                {!this.state.EyeO ? <Feather name="eye-off" size={15} color="#D0D7FC" /> : <Feather name="eye" size={15} color="#D0D7FC" />}
                             </TouchableOpacity>
                         </View>
                         <View>
                             <TouchableOpacity style={styles.buttonLogin} onPress={() => this.props.navigation.push('BottomTabsNavigator')}>
                                 <Text style={styles.buttonLoginText}>
-                                    Log In
+                                    {this.state.buttonIn}
                                 </Text>
                             </TouchableOpacity>
                         </View>
                     </KeyboardAvoidingView>
                 </ScrollView>
-                <View style={{height: 54}}>
-                    <LoginImageHeaderThree />
-                </View>
             </SafeAreaView>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    textLang:{
+        fontFamily:'Bold',
+        color:'#516BEB',
+        fontSize:15,
+        right:-10,
+        top:3
+    },  
     buttonLoginText: {
         color: '#fff',
         textAlign: 'center',
         paddingVertical: 10,
-        fontFamily: 'Oxygen_700Bold',
+        fontFamily: 'Bold',
         fontSize: 18
     },
     buttonLogin: {
@@ -113,23 +125,27 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     Header: {
-        fontFamily: 'Oxygen_700Bold',
-        fontSize: 32,
+        fontFamily: 'Bold',
+        fontSize: 39,
+        color:'#516BEB',
         textAlign: 'center'
     },
     Sub: {
-        fontFamily: 'Oxygen_400Regular',
+        fontFamily: 'Regular',
         color: '#5F5F5F',
+        marginTop: -10,
         textAlign: 'center'
     },
     InputStyle: {
-        backgroundColor: '#D0D7FC',
+        backgroundColor: '#fff',
+        borderColor:'#D0D7FC',
+        borderWidth:1,
         marginVertical: 12,
         marginHorizontal: 30,
         borderRadius: 30,
         paddingLeft: 30,
         paddingRight: 20,
         color: '#000',
-        fontFamily: 'Oxygen_400Regular',
+        fontFamily: 'Regular',
     }
 })

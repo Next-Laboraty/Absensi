@@ -1069,10 +1069,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@expo-google-fonts/oxygen@^0.2.2":
+"@expo-google-fonts/poppins@^0.2.2":
   version "0.2.2"
-  resolved "https://registry.npmjs.org/@expo-google-fonts/oxygen/-/oxygen-0.2.2.tgz"
-  integrity sha512-EEyRlEl3PjgD9PT/FujkwxwNXCRiXv9cAxVPyk1k6mibN4iQGCPxtSBN+UiqQHx/QNIQx5zeR5fnuAX7U+wHeg==
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/poppins/-/poppins-0.2.2.tgz#d2a343fa69400ffbaf61ae97162791a59e215678"
+  integrity sha512-x0SzC8nWTC2pInIcBDiAuMJxhoglwqCGJYMM8ylI8HKDqBxMrfRTripB3xMGo6UtzROTcL+OX1w9nEcM5FK0PQ==
 
 "@expo/config-plugins@4.0.18", "@expo/config-plugins@^4.0.2":
   version "4.0.18"
