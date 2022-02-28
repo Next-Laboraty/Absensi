@@ -1,7 +1,7 @@
 import HomeScreen from "../../Screens/HomeScreen";
 import AttendanceScreen from "../../Screens/AttendanceScreen";
 import SalarySlipScreen from "../../Screens/SalarySlipScreen"
-import TodoScreen from "../../Screens/TodoScreen"
+import TodoScreen from "../../Screens/DoScreen"
 import UserScreen from "../../Screens/UserScreen"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text } from "react-native";

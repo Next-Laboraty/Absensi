@@ -8,27 +8,6 @@ import ListLog from '../../Molecule/ListLog';
 export default class AttendanceScreen extends Component {
     render() {
         return (
-<<<<<<< HEAD
-            <View style={{ flex: 1 }} style={{ marginTop: 0 }}>
-                <StatusBar hidden={true} style="light" />
-                <ScrollView>
-                    <AttendanceImageHeaderOne />
-                <View style={styles.AttendanceMain}>
-                    <Text style={styles.HeaderCard}>Attendance</Text>
-                    <View style={styles.rowCard}>
-                        <View style={styles.bodyCard}>
-                            <View>
-                                <Image source={require('../../../assets/log-in-2.png')} style={{ width: 50, height: 50 }} />
-                                <Text style={styles.bodyText3}>IN</Text>
-                            </View>
-                        </View>
-                        <View style={styles.bodyCard2}>
-                            <View>
-                                <Image source={require('../../../assets/logout.png')} style={{ width: 50, height: 50 }} />
-                                <Text style={styles.bodyText}>OUT</Text>
-                            </View>
-                        </View>
-=======
             <View>
                 <View style={styles.containers}>
                     <Image source={require('../../../assets/photo.png')} style={{ width: 62, height: 62, alignSelf: 'center', marginTop: -60 }} />
@@ -58,7 +37,6 @@ export default class AttendanceScreen extends Component {
                                 Pulang
                             </Text>
                         </TouchableOpacity>
->>>>>>> 2573e2e312e5d92807461fab176163ca5fc07091
                     </View>
                 </View>
                 <TouchableOpacity style={{borderColor:'#9AD0EC',borderWidth:1,backgroundColor:'transparent',marginHorizontal:20,bottom:-120,borderRadius:15}}>

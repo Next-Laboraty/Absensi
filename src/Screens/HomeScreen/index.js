@@ -4,11 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import HomeImageHeaderOne from '../../ImagesSource/HomeImageHeaderOne';
 import HeaderMenu from '../../Molecule/HeaderMenu';
-<<<<<<< HEAD
-import Notificationss from '../../lib/Notification';
-=======
 import AttendanceImageHeaderOne from '../../ImagesSource/AttendanceImageHeaderOne';
->>>>>>> 2573e2e312e5d92807461fab176163ca5fc07091
 
 export default class HomeScreen extends Component {
     render() {
@@ -21,13 +17,6 @@ export default class HomeScreen extends Component {
                         <Text style={styles.textHeader1}>Halo, </Text>
                         <Text style={styles.textHeader2}>Kevin Krisma</Text>
                     </View>
-<<<<<<< HEAD
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.buttonInv} onPress={()=>Notificationss()}>
-                                <Image source={require('../../../assets/attendance.png')} style={{width:60,height:60}} />
-                                <Text style={{fontFamily:'Oxygen_400Regular', color:'#fff',marginTop:10}}>Attendance</Text>
-=======
                     <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 20 }}>
                         <TouchableOpacity>
                             <Ionicons name="notifications-outline" size={24} color="#2C3333" />
@@ -39,7 +28,7 @@ export default class HomeScreen extends Component {
                     <View style={styles.row1}>
                         <Text style={styles.bannerText}>{`Jadikan Mudah\nHarimu`}</Text>
                         <TouchableOpacity style={styles.buttonBanner}>
-                            <Text style={styles.textButtonBanner}>HRIS</Text>
+                            <Text style={styles.textButtonBanner}>Kehadiran</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1 }}>
@@ -67,7 +56,6 @@ export default class HomeScreen extends Component {
                                     <Text style={{ fontFamily: 'Medium', color: '#fff' }}>TO DO</Text>
                                     <Text style={{ fontFamily: 'Regular', fontSize: 10, color: '#7A7979' }}>23 To Do</Text>
                                 </View>
->>>>>>> 2573e2e312e5d92807461fab176163ca5fc07091
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.rowKantor2_2}>
                                 <View style={{ width: 40, height: 40, backgroundColor: '#D9FEEA', borderRadius: 120 / 2, }}>
@@ -237,7 +225,7 @@ const styles = StyleSheet.create({
     buttonBanner: {
         marginTop: 30,
         backgroundColor: '#2C3333',
-        width: 67,
+        width: 90,
         paddingVertical: 3,
         borderRadius: 15
     },
