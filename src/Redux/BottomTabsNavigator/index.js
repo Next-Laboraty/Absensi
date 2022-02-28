@@ -62,19 +62,6 @@ const BottomTabsNavigator = () => {
                     ),
                 }}
             />
-            <Tab.Screen name="Salary" component={SalarySlipScreen}
-                options={{
-                    headerShown:false,
-                    tabBarIcon: ({ focused }) => (
-                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <AntDesign name="creditcard" size={18} style={{ color: focused ? '#FF7648' : '#9F9FB0' }}/>
-                        </View>
-                    ),
-                    tabBarLabel: ({ focused }) => (
-                        <View style={{width:4,height:4, backgroundColor: focused ? '#FF7648' : '#fff',marginBottom:focused ? 10 : 0,borderRadius: 120/2}}></View>
-                    ),
-                }}
-            />
             <Tab.Screen name="User" component={UserScreen}
                 options={{
                     headerShown:false,

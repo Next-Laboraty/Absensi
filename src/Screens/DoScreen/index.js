@@ -1,39 +1,26 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
-import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import TodoScreenImage from '../../ImagesSource/TodoScreenImage'
+import { Fontisto } from '@expo/vector-icons';
+import HeaderNameAndNotif from '../../Molecule/HeaderNameAndNotif';
+import BannerHeader from '../../Molecule/BannerHeader';
+import HeaderOption from '../../Atomic/HeaderOptions';
 
 export default class TodoScreen extends Component {
     render() {
         return (
             <View>
-                <View style={styles.header}>
-                    <View style={{ flex: 1, marginLeft: 20 }}>
-                        <Text style={styles.textHeader1}>Halo, </Text>
-                        <Text style={styles.textHeader2}>Kevin Krisma</Text>
-                    </View>
-                    <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 20 }}>
-                        <TouchableOpacity>
-                            <Ionicons name="notifications-outline" size={24} color="#2C3333" />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                {/* Banner */}
-                <TouchableOpacity style={styles.bannerS} onPress={() => this.props.navigation.navigate('Attendance')}>
-                    <View style={styles.row1}>
-                        <Text style={styles.bannerText}>{`Sistem Human\nResource`}</Text>
-                        <TouchableOpacity style={styles.buttonBanner}>
-                            <Text style={styles.textButtonBanner}>HRIS</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <TodoScreenImage />
-                    </View>
-                </TouchableOpacity>
+                <HeaderNameAndNotif/>
+                <BannerHeader color="#9DF3C4" nav="Do" textlink="HRIS"/>
+                {/* End Banner */}
+                <HeaderOption Textrt="Sistem Informasi" />
                 <View style={styles.newRow}>
-                    <Text style={styles.textBanners}>
-                        Menu HR
-                    </Text>
+                    <View style={styles.rows}>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                    </View>
                     <View style={styles.rows}>
                         <View style={styles.rowMenu}></View>
                         <View style={styles.rowMenu}></View>
@@ -42,29 +29,59 @@ export default class TodoScreen extends Component {
                         <View style={styles.rowMenu}></View>
                     </View>
                 </View>
+                <HeaderOption Textrt="Payroll" />
                 <View style={styles.newRow}>
-                    <Text style={styles.textBanners}>
-                        Informasi Gaji
-                    </Text>
+                    <View style={styles.rows}>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                        <View style={styles.rowMenu}></View>
+                    </View>
                 </View>
+                <TouchableOpacity style={styles.chatScreen}>
+                <Fontisto name="hipchat" size={18} color="#516BEB" />
+                <Text style={styles.textChat}>
+                    Chat Management
+                </Text>
+                </TouchableOpacity>
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    textChat:{
+        color:'#516BEB',
+        fontFamily: 'Medium',
+        marginLeft: 10
+    },
+    chatScreen:{
+        borderWidth: 2,
+        borderColor: '#516BEB',
+        flexDirection: 'row',
+        borderRadius: 15,
+        marginHorizontal: 20,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        alignItems:'center',
+        justifyContent:'center',
+        marginTop: 20
+    },
     rowMenu:{
-        width:60, height: 60, backgroundColor:'red',
+        width:60, 
+        height: 60, 
+        backgroundColor:'#516BEB',
         borderRadius: 15
     },
     rows:{
         flexDirection: 'row',
         flexWrap:'wrap',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginVertical: 10
     },  
     newRow:{
         marginHorizontal: 20,
-        marginTop: 20
     },  
     textBanners: {
         marginBottom: 12,
