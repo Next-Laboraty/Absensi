@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import AttendanceImageHeaderOne from '../../ImagesSource/AttendanceImageHeaderOne'
 import ListLog from '../../Molecule/ListLog';
 import AttendanceHeader from '../../Molecule/AttendanceHeader';
+import ButtonBottom from '../../Atomic/ButtonBottom';
 
 export default class AttendanceScreen extends Component {
     render() {
@@ -20,7 +21,7 @@ export default class AttendanceScreen extends Component {
                     <View style={{ height: 1, width: 164, backgroundColor: '#2C3333', alignSelf: 'center' }}>
 
                     </View>
-                    <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20 }}>
+                    <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20,marginBottom:80 }}>
                         <TouchableOpacity style={styles.buttonAttendance1}>
                             <Text style={styles.textAttendances}>
                                 Bekerja
@@ -33,11 +34,9 @@ export default class AttendanceScreen extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <TouchableOpacity style={{borderColor:'#9AD0EC',borderWidth:1,backgroundColor:'transparent',marginHorizontal:20,bottom:-120,borderRadius:15}}>
-                    <Text style={{textAlign:'center',fontFamily:'Medium',color:'#9AD0EC'}}>
-                        History
-                    </Text>
-                </TouchableOpacity>
+                <View>
+                    <ButtonBottom icon="clock" text="Riwayat" />
+                </View>
             </View>
         )
     }

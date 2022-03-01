@@ -4,85 +4,58 @@ import { Fontisto } from '@expo/vector-icons';
 import HeaderNameAndNotif from '../../Molecule/HeaderNameAndNotif';
 import BannerHeader from '../../Molecule/BannerHeader';
 import HeaderOption from '../../Atomic/HeaderOptions';
+import ButtonBottom from '../../Atomic/ButtonBottom';
+import ButtonRows from '../../Atomic/ButtonRows';
 
 export default class TodoScreen extends Component {
     render() {
         return (
             <View>
-                <HeaderNameAndNotif/>
-                <BannerHeader color="#9DF3C4" nav="Do" textlink="HRIS"/>
+                <HeaderNameAndNotif />
+                <BannerHeader color="#9DF3C4" nav="Do" textlink="HRIS" navigation={this.props.navigation}/>
                 {/* End Banner */}
                 <HeaderOption Textrt="Sistem Informasi" />
                 <View style={styles.newRow}>
                     <View style={styles.rows}>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
+                        <ButtonRows text={`Permintaan\nKehadiran`}/>
+                        <ButtonRows text={`Aplikasi\nCuti`}/>
+                        <ButtonRows text={`Aplikasi\nLembur`}/>
+                        <ButtonRows text={`Program\nPelatihan`}/>
+                        <ButtonRows text={`Hasil\nPelatihan`}/>
                     </View>
                     <View style={styles.rows}>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
+                    <ButtonRows text={`Kritik Saran\nPelatihan`}/>
+                        <ButtonRows text={`Permohonan\nCuti`}/>
+                        <ButtonRows text={`Kendaraan`}/>
+                        <ButtonRows text={`Penilaian\nKPI`}/>
+                        <ButtonRows text={`Skill\nKaryawan`}/>
                     </View>
                 </View>
                 <HeaderOption Textrt="Payroll" />
                 <View style={styles.newRow}>
                     <View style={styles.rows}>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
-                        <View style={styles.rowMenu}></View>
+                    <ButtonRows text={`Slip Gaji`}/>
+                    <ButtonRows text={`Permohonan\nPinjaman`}/>
+                    <ButtonRows text={`Reimbursement`}/>
+                    <ButtonRows text={`Asuransi`}/>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.chatScreen}>
-                <Fontisto name="hipchat" size={18} color="#516BEB" />
-                <Text style={styles.textChat}>
-                    Chat Management
-                </Text>
-                </TouchableOpacity>
+                <ButtonBottom text="Chat Management" icon="hipchat" />
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    textChat:{
-        color:'#516BEB',
-        fontFamily: 'Medium',
-        marginLeft: 10
-    },
-    chatScreen:{
-        borderWidth: 2,
-        borderColor: '#516BEB',
+    rows: {
         flexDirection: 'row',
-        borderRadius: 15,
-        marginHorizontal: 20,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        alignItems:'center',
-        justifyContent:'center',
-        marginTop: 20
-    },
-    rowMenu:{
-        width:60, 
-        height: 60, 
-        backgroundColor:'#516BEB',
-        borderRadius: 15
-    },
-    rows:{
-        flexDirection: 'row',
-        flexWrap:'wrap',
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginVertical: 10
-    },  
-    newRow:{
+    },
+    newRow: {
+        marginBottom:2,
         marginHorizontal: 20,
-    },  
+    },
     textBanners: {
         marginBottom: 12,
         fontSize: 15,

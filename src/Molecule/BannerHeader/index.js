@@ -7,7 +7,7 @@ export default function BannerHeader(props) {
     const color = props.color
     const screen = props.nav
     return (
-        <TouchableOpacity style={Banners(color)} onPress={() => this.props.navigation.navigate('Attendance')}>
+        <TouchableOpacity style={Banners(color)} onPress={() => props.navigation.navigate('Attendance')}>
             <View style={styles.row1}>
                 <Text style={styles.bannerText}>{`Jadikan Mudah\nHarimu`}</Text>
                 <TouchableOpacity style={styles.buttonBanner}>
