@@ -14,11 +14,11 @@ export default class HomeScreen extends Component {
                 <StatusBar hidden={true} style="light" />
                 {/* Header Name */}
                 <HeaderNameAndNotif />
-                <BannerHeader color="#FFE6AB" nav="Home" textlink="Kehadiran"/>
+                <BannerHeader color="#FFE6AB" nav="Home" textlink="Kehadiran" navigation={this.props.navigation}/>
                 {/* Banner */}
                 <HeaderOption Textrt="Alat Kantor" />
                 {/* Alat Kantor */}
-                <ButtonFeatures Menu1={'TUGAS'} Menu2={'TODO'} Menu3={'CATATAN'} Sub1="23 Sedang Dikerjakan" Dub1="40 Selesai" Sub2="23 To Do" Sub3="2 Catatan"/>
+                <ButtonFeatures Menu1={'TUGAS'} Menu2={'TO DO'} Menu3={'CATATAN'} Sub1="23 Sedang Dikerjakan" Dub1="40 Selesai" Sub2="23 To Do" Sub3="2 Catatan"/>
                 {/* Kehadiran */}
                 <View style={{marginTop: 30}}>
 

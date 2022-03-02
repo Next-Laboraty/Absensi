@@ -10,37 +10,41 @@ import ButtonRows from '../../Atomic/ButtonRows';
 export default class TodoScreen extends Component {
     render() {
         return (
-            <View>
-                <HeaderNameAndNotif />
-                <BannerHeader color="#9DF3C4" nav="Do" textlink="HRIS" navigation={this.props.navigation}/>
-                {/* End Banner */}
-                <HeaderOption Textrt="Sistem Informasi" />
-                <View style={styles.newRow}>
-                    <View style={styles.rows}>
-                        <ButtonRows text={`Permintaan\nKehadiran`}/>
-                        <ButtonRows text={`Aplikasi\nCuti`}/>
-                        <ButtonRows text={`Aplikasi\nLembur`}/>
-                        <ButtonRows text={`Program\nPelatihan`}/>
-                        <ButtonRows text={`Hasil\nPelatihan`}/>
+            <View style={{ flex: 1 }}>
+                <View style={{ flex: 1 }}>
+
+                    <HeaderNameAndNotif />
+                    <BannerHeader color="#9DF3C4" nav="Do" textlink="HRIS" navigation={this.props.navigation} />
+                    {/* End Banner */}
+                    <HeaderOption Textrt="Sistem Informasi" />
+                    <View style={styles.newRow}>
+                        <View style={styles.rows}>
+                            <ButtonRows text={`Permintaan\nKehadiran`} nav={`AttendanceRequest`} navigation={this.props.navigation} image={require('../../../assets/time.png')} />
+                            <ButtonRows text={`Aplikasi\nCuti`} nav={`AplikasiCuti`} navigation={this.props.navigation} image={require('../../../assets/manual.png')}/>
+                            <ButtonRows text={`Aplikasi\nLembur`} nav={`AplikasiLembur`} navigation={this.props.navigation} image={require('../../../assets/clock-out.png')}/>
+                            <ButtonRows text={`Program\nPelatihan`} nav={`ProgramPelatihan`} navigation={this.props.navigation}/>
+                        </View>
+                        <View style={styles.rows}>
+                            <ButtonRows text={`Hasil\nPelatihan`} nav={`HasilPelatihan`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Kritik Saran\nPelatihan`} nav={`KritikSaranPelatihan`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Penilaian\nKPI`} nav={`PenilaianKPI`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Skill\nKaryawan`} nav={`SkillKaryawan`} navigation={this.props.navigation} />
+                        </View>
                     </View>
-                    <View style={styles.rows}>
-                    <ButtonRows text={`Kritik Saran\nPelatihan`}/>
-                        <ButtonRows text={`Permohonan\nCuti`}/>
-                        <ButtonRows text={`Kendaraan`}/>
-                        <ButtonRows text={`Penilaian\nKPI`}/>
-                        <ButtonRows text={`Skill\nKaryawan`}/>
+                    <HeaderOption Textrt="Keuangan" />
+                    <View style={styles.newRow}>
+                        <View style={styles.rows}>
+                            <ButtonRows text={`Slip Gaji`} nav={`SalarySlip`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Permohonan\nPinjaman`} nav={`SalarySlip`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Reimbursement`} nav={`Reimusement`} navigation={this.props.navigation}/>
+                            <ButtonRows text={`Asuransi`} nav={`Asuransi`} navigation={this.props.navigation}/>
+                        </View>
                     </View>
                 </View>
-                <HeaderOption Textrt="Payroll" />
-                <View style={styles.newRow}>
-                    <View style={styles.rows}>
-                    <ButtonRows text={`Slip Gaji`}/>
-                    <ButtonRows text={`Permohonan\nPinjaman`}/>
-                    <ButtonRows text={`Reimbursement`}/>
-                    <ButtonRows text={`Asuransi`}/>
-                    </View>
+                <View style={{ height: '13%' }}>
+                    <ButtonBottom text="Chat Management" icon="hipchat" />
+
                 </View>
-                <ButtonBottom text="Chat Management" icon="hipchat" />
             </View>
         )
     }
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     newRow: {
-        marginBottom:2,
+        marginBottom: 2,
         marginHorizontal: 20,
     },
     textBanners: {

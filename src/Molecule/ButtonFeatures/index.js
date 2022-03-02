@@ -25,7 +25,7 @@ export default function ButtonFeatures(props) {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.rowKantor2_2}>
-                        <View style={{ width: 40, height: 40, backgroundColor: '#D9FEEA', borderRadius: 120 / 2, }}>
+                        <View style={{ width: 40, height: 40, backgroundColor: '#caf0f8', borderRadius: 120 / 2, }}>
                             <MaterialIcons name="event-note" size={28} color="#6B8E7B" style={{ textAlign: 'center', marginTop: 7 }} />
                         </View>
                         <View style={{ marginLeft: 10 }}>
@@ -40,7 +40,7 @@ export default function ButtonFeatures(props) {
 }
 const styles = StyleSheet.create({
     rowKantor2_2: {
-        backgroundColor: '#9DF3C4',
+        backgroundColor: '#90e0ef',
         borderRadius: 10,
         height: 60,
         marginTop: 12,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
     },
     rowKantor2_1: {
-        backgroundColor: '#C3BEF0',
+        backgroundColor: '#94b3fd',
         paddingLeft: 10,
         alignItems: 'center',
         flexDirection: 'row',

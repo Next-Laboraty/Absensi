@@ -13,7 +13,6 @@ export default function MyInfoMenu(props) {
                 {props.NameMenu}
             </Text>
             <View style={styles.ButtonRight}>
-
                 <AntDesign name="right" size={24} color="black" />
             </View>
         </View>
@@ -27,6 +26,7 @@ const styles = StyleSheet.create({
         flexWrap:'wrap',
         justifyContent:'space-between',
         borderBottomWidth: 1,
+        borderBottomColor:'#828282',
         paddingBottom:15,
         marginTop:15
     },
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
         height: 25,
     },
     TextInfo: {
-        fontFamily: 'Medium',
+        color:'#4d4c4c',
+        fontFamily: 'Regular',
         flex: 1,
         textAlign:'left',
         marginLeft: 20

@@ -5,36 +5,36 @@ import AttendanceImageHeaderOne from '../../ImagesSource/AttendanceImageHeaderOn
 import ListLog from '../../Molecule/ListLog';
 import AttendanceHeader from '../../Molecule/AttendanceHeader';
 import ButtonBottom from '../../Atomic/ButtonBottom';
+import JamComponent from '../../Atomic/JamComponent';
 
 export default class AttendanceScreen extends Component {
     render() {
         return (
-            <View>
-                <AttendanceHeader />
-                <View style={styles.clockContainer}>
-                    <Text style={styles.textClock}>
-                        15.32
-                    </Text>
-                </View>
-                <View style={{ marginTop: 40 }}>
-                    <Text style={styles.textClock}>Absensi</Text>
-                    <View style={{ height: 1, width: 164, backgroundColor: '#2C3333', alignSelf: 'center' }}>
+            <View style={{ flex: 1 }}>
+                <View style={{flex: 1 }}>
+                    <AttendanceHeader />
+                    <JamComponent />
+                    <View style={{ marginTop: '20%' }}>
+                        <Text style={styles.headerComp}>Absensi</Text>
+                        <View style={{ height: 1, width: 164, backgroundColor: '#2C3333', alignSelf: 'center' }}>
 
+                        </View>
+                        <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20, marginBottom: 80 }}>
+                            <TouchableOpacity style={styles.buttonAttendance1}>
+                                <Text style={styles.textAttendances}>
+                                    Bekerja
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttonAttendance2}>
+                                <Text style={styles.textAttendances}>
+                                    Pulang
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20,marginBottom:80 }}>
-                        <TouchableOpacity style={styles.buttonAttendance1}>
-                            <Text style={styles.textAttendances}>
-                                Bekerja
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonAttendance2}>
-                            <Text style={styles.textAttendances}>
-                                Pulang
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+
                 </View>
-                <View>
+                <View style={{height: '15%' }}>
                     <ButtonBottom icon="clock" text="Riwayat" />
                 </View>
             </View>
@@ -64,16 +64,9 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         borderRadius: 15
     },
-    textClock: {
+    headerComp: {
         fontFamily: 'Medium',
         textAlign: 'center',
-        fontSize: 15
-    },
-    clockContainer: {
-        alignSelf: 'center',
-        marginTop: 42,
-        borderRadius: 15,
-        backgroundColor: '#fff',
-        width: 120
+        fontSize: 15,
     },
 })
