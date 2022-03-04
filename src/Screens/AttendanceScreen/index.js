@@ -35,7 +35,7 @@ export default class AttendanceScreen extends Component {
 
                 </View>
                 <View style={{height: '15%' }}>
-                    <ButtonBottom icon="clock" text="Riwayat" />
+                    <ButtonBottom icon="clock" text="Riwayat" nav={`History`} navigation={this.props.navigation}/>
                 </View>
             </View>
         )

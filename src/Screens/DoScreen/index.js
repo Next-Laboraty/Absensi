@@ -7,7 +7,7 @@ import HeaderOption from '../../Atomic/HeaderOptions';
 import ButtonBottom from '../../Atomic/ButtonBottom';
 import ButtonRows from '../../Atomic/ButtonRows';
 
-export default class TodoScreen extends Component {
+export default class DoScreen extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -25,10 +25,10 @@ export default class TodoScreen extends Component {
                             <ButtonRows text={`Program\nPelatihan`} nav={`ProgramPelatihan`} navigation={this.props.navigation}/>
                         </View>
                         <View style={styles.rows}>
-                            <ButtonRows text={`Hasil\nPelatihan`} nav={`HasilPelatihan`} navigation={this.props.navigation} />
-                            <ButtonRows text={`Kritik Saran\nPelatihan`} nav={`KritikSaranPelatihan`} navigation={this.props.navigation} />
                             <ButtonRows text={`Penilaian\nKPI`} nav={`PenilaianKPI`} navigation={this.props.navigation} />
-                            <ButtonRows text={`Skill\nKaryawan`} nav={`SkillKaryawan`} navigation={this.props.navigation} />
+                            <ButtonRows text={`TO DO`} nav={`todo`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Project`} nav={`Project`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Daily Report`} nav={`DailyReport`} navigation={this.props.navigation} />
                         </View>
                     </View>
                     <HeaderOption Textrt="Keuangan" />
@@ -42,7 +42,7 @@ export default class TodoScreen extends Component {
                     </View>
                 </View>
                 <View style={{ height: '13%' }}>
-                    <ButtonBottom text="Chat Management" icon="hipchat" />
+                    <ButtonBottom text="Chat Management" icon="hipchat" nav={`Chat`} navigation={this.props.navigation}/>
 
                 </View>
             </View>

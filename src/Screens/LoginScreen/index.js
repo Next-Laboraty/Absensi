@@ -87,7 +87,7 @@ export default class LoginScreen extends Component {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity style={styles.buttonLogin} onPress={() => this.props.navigation.push('BottomTabsNavigator')}>
+                            <TouchableOpacity style={styles.buttonLogin} onPress={() => this.props.navigation.navigate('SplashScreen')}>
                                 <Text style={styles.buttonLoginText}>
                                     {this.state.buttonIn}
                                 </Text>

@@ -4,7 +4,7 @@ import { Fontisto } from '@expo/vector-icons';
 
 export default function ButtonBottom(props) {
     return (
-        <TouchableOpacity style={styles.chatScreen}>
+        <TouchableOpacity style={styles.chatScreen} onPress={()=>props.navigation.navigate(props.nav)}>
             <Fontisto name={props.icon} size={18} color="#516BEB" />
             <Text style={styles.textChat}>
                 {props.text}

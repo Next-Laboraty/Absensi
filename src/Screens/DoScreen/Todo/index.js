@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 
-export default class SkillKaryawan extends Component{
+export default class Todo extends Component{
     render(){
         return(
             <View>
