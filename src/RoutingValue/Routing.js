@@ -8,7 +8,7 @@ import Todo from "../Screens/DoScreen/Todo/index.js";
 import DailyReport from "../Screens/DoScreen/DailyReport/index.js";
 import PenilaianKPI from "../Screens/DoScreen/PenilaianKPI/index.js";
 import PermohonanPinjaman from "../Screens/DoScreen/PermohonanPinjaman/index.js";
-import Reimusement from "../Screens/DoScreen/Reimusement";
+import Reimbursement from "../Screens/DoScreen/Reimbursement";
 import Asuransi from "../Screens/DoScreen/Asuransi/index.js";
 import AplikasiLembur from "../Screens/DoScreen/AplikasiLembur/index.js";
 import ChatManagement from "../Screens/DoScreen/ChatManagement/index.js";
@@ -25,7 +25,7 @@ export {
     DailyReport,
     PenilaianKPI,
     PermohonanPinjaman,
-    Reimusement,
+    Reimbursement,
     Asuransi,
     AplikasiLembur,
     ChatManagement,

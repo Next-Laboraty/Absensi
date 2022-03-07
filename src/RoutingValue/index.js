@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
     LoginScreen,
@@ -12,7 +12,7 @@ import {
     DailyReport,
     PenilaianKPI,
     PermohonanPinjaman,
-    Reimusement,
+    Reimbursement,
     Asuransi,
     AplikasiLembur,
     ChatManagement,
@@ -39,13 +39,16 @@ const Auth = () => {
 const RoutingValue = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Login" component={LoginScreen} options={{
-                    headerShown: false
-                }} />
+            <Stack.Navigator initialRouteName="SplashScreen">
                 <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
                     headerShown: false
                 }} />
+                <Stack.Screen
+                    name="Auth"
+                    component={Auth}
+                    options={{ headerShown: false }}
+                />
+
                 <Stack.Screen name="BottomTabsNavigator" component={BottomTabsNavigator} options={{
                     headerShown: false
                 }} />
@@ -76,7 +79,7 @@ const RoutingValue = () => {
                 <Stack.Screen name="PermohonanPinjaman" component={PermohonanPinjaman} options={{
                     title: 'Permohonan Pinjaman'
                 }} />
-                <Stack.Screen name="Reimusement" component={Reimusement} options={{
+                <Stack.Screen name="Reimusement" component={Reimbursement} options={{
                     title: 'Reimbursement'
                 }} />
                 <Stack.Screen name="Asuransi" component={Asuransi} options={{
