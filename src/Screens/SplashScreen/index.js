@@ -2,16 +2,22 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import BackgroundSplashScreen from "../../ImagesSource/BackgroundSplashScreen";
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginBase from "../../lib/LoginBase";
 
 export default function SplashScreen({navigation}) {
     const [userAuth, setUserAuth] = useState()
-    const AuthStore = async () =>{
-        let result = await SecureStore.getItemAsync('userAuth');
-        navigation.replace(result === null ? 'Auth' : 'RoutingValue')
+    const datass = () => {
+        setTimeout(() => {
+          //Check if user_id is set or not
+          //If not then send for Authentication
+          //else send to Home Screen
+          AsyncStorage.getItem('@AccountEmail', (error, result) => {
+            navigation.replace(result === null ? 'Auth' : 'BottomTabsNavigator')
+          });
+        }, 3000);
     }
-    AuthStore()
+    datass()
     return (
         <LinearGradient style={{ flex: 1, }} colors={['#000', '#5463FF']}>
             <View style={{ flex: 1, justifyContent: 'center' }}>

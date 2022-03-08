@@ -4,9 +4,18 @@ import InformationWithPhoto from "../../Molecule/InformationWithPhoto";
 import UserHeader from "../../Molecule/UserHeader";
 import HeaderOptions from '../../Atomic/HeaderOptions'
 import MyInfoMenu from "../../Molecule/MyInfoMenu";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class UserScreen extends Component {
+    async dataRemove() {
+        AsyncStorage.clear();
+        this.logout()
+    }
+    logout() {
+        setTimeout(() => {
+            this.props.navigation.replace('Auth')
+        }, 2000)
+    }
     render() {
         return (
             <View>
@@ -32,8 +41,8 @@ export default class UserScreen extends Component {
                 <TouchableOpacity>
                     <MyInfoMenu NameMenu="Ganti Kata Sandi" Imag={require('../../../assets/password.png')} />
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <MyInfoMenu NameMenu="Keluar" Imag={require('../../../assets/power.png')} />
+                <TouchableOpacity onPress={() => this.dataRemove()}>
+                    <MyInfoMenu NameMenu="Keluar" Imag={require('../../../assets/power.png')} navigation={this.props.navigation} />
                 </TouchableOpacity>
             </View>
         )

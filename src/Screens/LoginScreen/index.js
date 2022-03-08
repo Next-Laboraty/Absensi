@@ -7,7 +7,8 @@ import LoginImageHeaderThree from '../../ImagesSource/LoginImageHeaderThree'
 import { Feather } from '@expo/vector-icons';
 import UserAuthLogin from '../../Redux/UserAuth'
 import axios from 'axios';
-// import langLib from '../../lib/langLib';
+import loginFirebase from '../../lib/loginFirebase';
+import langLib from '../../lib/langLib';
 
 
 export default class LoginScreen extends Component {
@@ -96,7 +97,10 @@ export default class LoginScreen extends Component {
             })
         }
     }
-    onLogin() {
+    async onLogin() {
+        this.setState({
+            isLoading: true
+        })
         const { usr, pwd, server } = this.state;
         const payload = { usr, pwd };
         if (usr == '' || pwd == '' || server == '') {
@@ -108,7 +112,6 @@ export default class LoginScreen extends Component {
             }
         }
         else {
-
             const url = 'https://' + server
             axios({
                 url: url + `/api/method/login`,
@@ -120,25 +123,33 @@ export default class LoginScreen extends Component {
                 data: payload,
                 timeout: 1000
             })
-
-
-            //     const CancelToken = axios.CancelToken
-            //     const source = CancelToken.source();
-            //     axios.post(url , payload,{
-            //         cancelToken: source.token
-            //     }, {
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'Accept-Language': 'application/json'
-            //         }
-            //     })
-            //         .then((res) => {
-            //             console.log(res.data)
-            //         })
-            //         .catch(function (err) {
-            //             console.log(err)
-            //         }.bind(this))
-            // }
+                .then((response) => {
+                    // handle success
+                    if(response.data.message == "Logged In"){
+                        this.setState({
+                            isLoading: false
+                        })
+                        const data = {
+                            navigation: this.props.navigation,
+                            server: server
+                        }
+                        loginFirebase(data)
+                        // this.props.navigation.replace('SplashScreen');
+                    }
+                    else{
+                        ToastAndroid.show('Username/Password salah atau server tidak dikenali, coba lagi :', ToastAndroid.SHORT)
+                        this.setState({
+                            isLoading: false
+                        })
+                    }
+                })
+                .catch((error) => {
+                    // handle error
+                    ToastAndroid.show('Username/Password salah atau server tidak dikenali, coba lagi :', ToastAndroid.SHORT)
+                    this.setState({
+                        isLoading: false
+                    })
+                })
         }
     }
     EyeOpen() {
@@ -156,8 +167,6 @@ export default class LoginScreen extends Component {
     onUsernameChange = usr => {
         this.setState({ usr });
     };
-
-    // 999
     onPasswordChange = pwd => {
         this.setState({ pwd });
     }
@@ -186,9 +195,11 @@ export default class LoginScreen extends Component {
                             <Text style={styles.Header}>{this.state.header}</Text>
                             <Text style={styles.Sub}>{this.state.subtitle}</Text>
                             <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                                   
                                 <View>
                                     <TextInput value={this.state.server} onChangeText={this.onServerChange} placeholder={this.state.placeholderServer} placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
                                     <Feather name="server" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
+                                <Text style={{fontFamily:'Regular',fontSize:8,color:'gray',position:'absolute',top:42,left:40}}>Contoh <Text style={{fontFamily:'Bold',color:'red'}}>onglai.id</Text> (tanpa http dan www)</Text>
                                 </View>
                                 <View>
                                     <TextInput value={this.state.usr} onChangeText={this.onUsernameChange} placeholder={this.state.placeholderUsername} placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />

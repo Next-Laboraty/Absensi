@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
-import * as SecureStore from 'expo-secure-store';
+import * as Crypto from 'expo-crypto';
+import { base64 } from "@firebase/util";
 
-export default function langLib(){
-    const [languagess, setLanguagess] = React.useState()
-    useEffect(()=>{
-        return
-
-    })
-    const datX = async () => {
-        await SecureStore.getItemAsync('LoginSys')
-    }
-    const langS = 'id'
-    return langS
+export default async function langLib(data) {
+    var dige = base64.encodeString(data)
+    var fff = base64.decodeString(dige)
+    console.log(dige + `\n` + fff)
 }
