@@ -2,7 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
-export default function HeaderNameAndNotif(props) {
+export default function HeaderNameAndNotif({navigation}) {
+    console.log(navigation)
     return (
         <View style={styles.header}>
             <View style={{ flex: 1, marginLeft: 20 }}>
@@ -10,7 +11,7 @@ export default function HeaderNameAndNotif(props) {
                 <Text style={styles.textHeader2}>Kevin Krisma</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 20 }}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate('Notifikasi')}>
                     <Ionicons name="notifications-outline" size={24} color="#2C3333" />
                 </TouchableOpacity>
             </View>

@@ -6,14 +6,16 @@ import HeaderNameAndNotif from '../../Molecule/HeaderNameAndNotif';
 import BannerHeader from '../../Molecule/BannerHeader';
 import HeaderOption from '../../Atomic/HeaderOptions';
 import ButtonFeatures from '../../Molecule/ButtonFeatures';
+import Notificationss from '../../lib/Notification'
 
 export default class HomeScreen extends Component {
+    
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <StatusBar hidden={true} style="light" />
                 {/* Header Name */}
-                <HeaderNameAndNotif />
+                <HeaderNameAndNotif navigation={this.props.navigation}/>
                 <BannerHeader color="#FFE6AB" nav="Home" textlink="Kehadiran" navigation={this.props.navigation}/>
                 {/* Banner */}
                 <HeaderOption Textrt="Alat Kantor" />

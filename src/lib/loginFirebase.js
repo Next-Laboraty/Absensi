@@ -1,5 +1,7 @@
 import React from 'react';
-import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { getDatabase, ref, onValue, set, get, child } from 'firebase/database';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
 import db from './firebaseinit'
 import axios from 'axios';
 import { base64 } from "@firebase/util";
@@ -51,13 +53,13 @@ const _storeUserServer = async (xdata) => {
     } catch (error) {
         // Error saving data
     }
-    const value = await AsyncStorage.getItem('@AccountServer');
-    console.log(value)
 }
 
 const __storeProfile = async (xdata) => {
     // xdata.navigation.replace('BottomTabsNavigator')
     const value = await AsyncStorage.getItem('@AccountServer');
+    let token
+    token = (await Notifications.getExpoPushTokenAsync()).data;
     const user = await AsyncStorage.getItem('@AccountEmail');
     console.log(value)
     const url = 'https://' + value
@@ -71,22 +73,24 @@ const __storeProfile = async (xdata) => {
         timeout: 1000
     })
         .then((response) => {
+            const dbRef = ref(getDatabase());
             const dataKaryawan = response.data.data[0]
-            // const reference = ref(db, 'Employee/' + dataKaryawan.user_id);
-            // set(reference, {
-            //     dataKaryawan ,
-            // });
             const data = { ...dataKaryawan }
-            const reference = ref(db, 'Employee/' + user);
-            set(reference, {
-                data,
+            get(child(dbRef, `Employee/${user}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    xdata.navigation.replace('BottomTabsNavigator')
+                } else {
+                    const Employee = ref(db, 'Employee/' + user);
+                    set(Employee, data);
+                    const Notification = ref(db, 'NotificationUser/' + user);
+                    set(Notification, token);
+                    xdata.navigation.replace('BottomTabsNavigator')
+                }
+            }).catch((error) => {
+                console.error(error);
             });
         })
         .catch((error) => {
             console.log(error)
         })
-    // const reference = ref(db, 'Employee/' + data.usr);
-    // set(reference, {
-    //     data,
-    // });
 }
