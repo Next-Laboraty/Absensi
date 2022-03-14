@@ -1,6 +1,8 @@
 import React from 'react';
 import AppLoading from 'expo-app-loading';
 import { Text, View, StyleSheet } from 'react-native';
+import { Provider } from 'react-redux'
+import store from './src/configureStore/index'
 import {
   useFonts,
   Poppins_100Thin,
@@ -22,6 +24,7 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic 
 } from '@expo-google-fonts/poppins'
+
 import RoutingValue from './src/RoutingValue';
 
 export default function HeaderTitle() {
@@ -50,6 +53,8 @@ export default function HeaderTitle() {
     return <AppLoading />;
   }
   return (
-    <RoutingValue />
+    <Provider store={store}>
+      <RoutingValue />
+    </Provider>
   );
 }

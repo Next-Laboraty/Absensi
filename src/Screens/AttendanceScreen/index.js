@@ -25,7 +25,7 @@ export default class AttendanceScreen extends Component {
                                     Bekerja
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonAttendance2}>
+                            <TouchableOpacity style={styles.buttonAttendance2} disabled={true}>
                                 <Text style={styles.textAttendances}>
                                     Pulang
                                 </Text>

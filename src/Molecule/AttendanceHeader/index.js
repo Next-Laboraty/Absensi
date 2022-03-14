@@ -1,14 +1,17 @@
-import React from "react";
 import { StyleSheet, Image, View, Text } from "react-native";
+import { useSelector } from "react-redux";
+import { base64 } from "@firebase/util";
 
 export default function AttendanceHeader() {
+    const {employee,server} = useSelector((state) => state.employee)
+    const url = base64.decodeString(server)
     return (
         <View style={styles.containers}>
-            <Image source={require('../../../assets/photo.png')} style={{ width: 62, height: 62, alignSelf: 'center', marginTop: -60 }} />
-            <Text style={styles.Text1}>Kevin Krisma</Text>
-            <Text style={styles.Text2}>Kevin@onglai.id</Text>
-            <Text style={styles.Text3}>Research & Developer</Text>
-            <Text style={styles.Text4}>IT Full-stack Developer</Text>
+            <Image source={{uri:'https://'+url+employee.image}} style={{ width: 62, height: 62, alignSelf: 'center', marginTop: -60,borderRadius:120/2 }} />
+            <Text style={styles.Text1}>{employee.employee_name}</Text>
+            <Text style={styles.Text2}>{employee.user_id}</Text>
+            <Text style={styles.Text3}>{employee.department}</Text>
+            <Text style={styles.Text4}>{employee.designation}</Text>
         </View>
     )
 }
@@ -37,12 +40,12 @@ const styles = StyleSheet.create({
         fontFamily: 'Medium',
         textAlign: 'center',
         color: '#2C3333',
-        fontSize: 20,
+        fontSize: 13,
     },
     Text4: {
         fontFamily: 'ExtraLight',
         textAlign: 'center',
         color: '#2C3333',
-        fontSize: 15,
+        fontSize: 11,
     }
 })

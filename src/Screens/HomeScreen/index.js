@@ -59,7 +59,7 @@ export default class HomeScreen extends Component {
                                 <Text style={styles.TextDub}>24 Februari 2022</Text>
                             </View>
                             <View style={{ flex: 1, right: -55 }}>
-                                <TouchableOpacity style={{ width: 60, height: 35, backgroundColor: '#516BEB', borderRadius: 15 }}>
+                                <TouchableOpacity style={{ width: 60, height: 35, backgroundColor: '#516BEB', borderRadius: 15 }} onPress={()=>this.props.navigation.navigate('Client')}>
                                     <AntDesign name="arrowright" size={24} color="white" style={{ textAlign: 'center', marginTop: 5 }} />
                                 </TouchableOpacity>
                             </View>

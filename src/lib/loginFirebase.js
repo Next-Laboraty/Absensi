@@ -5,6 +5,7 @@ import * as Notifications from 'expo-notifications';
 import db from './firebaseinit'
 import axios from 'axios';
 import { base64 } from "@firebase/util";
+import {Text} from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -61,7 +62,6 @@ const __storeProfile = async (xdata) => {
     let token
     token = (await Notifications.getExpoPushTokenAsync()).data;
     const user = await AsyncStorage.getItem('@AccountEmail');
-    console.log(value)
     const url = 'https://' + value
     axios({
         url: url + `/api/resource/Employee?fields=["*"]&filters=[["user_id","=","kevin@onglai.id"]]`,

@@ -1,15 +1,19 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
+import { useSelector } from "react-redux";
+import { base64 } from "@firebase/util";
 
 export default function InformationWithPhoto() {
+    const {employee,server} = useSelector((state) => state.employee)
+    const url = base64.decodeString(server)
     return (
         <View style={styles.Container}>
             <View style={styles.row1}>
-                <Text style={styles.TextName}>Kevin Krisma</Text>
-                <Text style={styles.TextJabatan}>IT Programmer</Text>
+                <Text style={styles.TextName}>{employee.employee_name}</Text>
+                <Text style={styles.TextJabatan}>{employee.designation}</Text>
             </View>
             <View style={styles.row2}>
-                <Image source={require('../../../assets/photo.png')} style={styles.Foto} />
+                <Image source={{uri:'https://'+url+employee.image}} style={styles.Foto} />
             </View>
         </View>
     )
@@ -31,12 +35,14 @@ const styles = StyleSheet.create({
         color: '#2C3333'
     },
     TextJabatan: {
+        fontSize:12,
         fontFamily: 'Medium',
         color: '#ADACAC'
     },
     Foto: {
         width: 80,
         height: 80,
+        borderRadius:120/2,
         alignSelf: 'flex-end'
     }
 })

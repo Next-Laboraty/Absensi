@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -22,6 +22,7 @@ import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
 import SplashScreen from "../Screens/SplashScreen/index.js";
 import * as Notifications from 'expo-notifications';
+import ClientVisit from "../Screens/AttendanceScreen/ClienVisit/index.js";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -29,7 +30,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-
 
 const Stack = createNativeStackNavigator()
 const Auth = () => {
@@ -86,6 +86,9 @@ const RoutingValue = () => {
                 />
                 <Stack.Screen name="AplikasiCuti" component={AplikasiCuti} options={{
                     title: 'Aplikasi Cuti'
+                }} />
+                <Stack.Screen name="Client" component={ClientVisit} options={{
+                    title: 'Visiting Client'
                 }} />
                 <Stack.Screen name="ProgramPelatihan" component={ProgramPelatihan} options={{
                     title: 'Program Pelatihan'

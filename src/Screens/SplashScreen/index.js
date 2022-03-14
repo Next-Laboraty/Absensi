@@ -4,19 +4,35 @@ import { LinearGradient } from 'expo-linear-gradient';
 import BackgroundSplashScreen from "../../ImagesSource/BackgroundSplashScreen";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginBase from "../../lib/LoginBase";
+import { useDispatch } from "react-redux";
+import { employee_data, employee_mail, employee_server, employee_token } from "../../features/employee/employeeSlice";
+// import loginFirebase from '../../lib/loginFirebase';
 
-export default function SplashScreen({navigation}) {
-    const [userAuth, setUserAuth] = useState()
+export default function SplashScreen({ navigation, data }) {
+    const dispatch = useDispatch()
     const datass = () => {
         setTimeout(() => {
-          //Check if user_id is set or not
-          //If not then send for Authentication
-          //else send to Home Screen
-          AsyncStorage.getItem('@AccountEmail', (error, result) => {
-            navigation.replace(result === null ? 'Auth' : 'BottomTabsNavigator')
-          });
+            //Check if user_id is set or not
+            //If not then send for Authentication
+            //else send to Home Screen
+            AsyncStorage.getItem('@AccountEmail',async (error, result) => {
+                if(result === null ){
+                    navigation.replace('Auth')
+                }
+                else{
+                    const server = await AsyncStorage.getItem('@AccountServer')
+                    const dataEmployee = await AsyncStorage.getItem('@AccountEmployee')
+                    const token = await AsyncStorage.getItem('@AccountToken')
+                    dispatch(employee_data(JSON.parse(dataEmployee)))
+                    dispatch(employee_server(server))
+                    dispatch(employee_token(token))
+                    navigation.replace('BottomTabsNavigator')
+                }
+                
+            });
         }, 3000);
     }
+    // loginFirebase(data)
     datass()
     return (
         <LinearGradient style={{ flex: 1, }} colors={['#000', '#5463FF']}>
