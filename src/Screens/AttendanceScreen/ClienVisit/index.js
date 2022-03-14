@@ -21,7 +21,11 @@ LogBox.ignoreLogs(['Setting a timer']);
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
 
+
 export default function App() {
+  const dimensionss = useRef(Dimensions.get("window"));
+  const screenWidth = dimensionss.current.width;
+  const [ratio, setRatio] = useState('4:3');
   const {employee,server,token} = useSelector((state) => state.employee)
   const [gambar, setGambar] = useState()
   const [latitude, setLatitude] = useState(null)
@@ -108,7 +112,10 @@ export default function App() {
     <View style={styles.container}>
       <Camera
         ref={cameraRef}
-        style={styles.container}
+        ratio="16:9"
+        height={Math.round((screenWidth * 16) / 9)}
+        width={'100%'}
+        style={{flex:1}}
         type={cameraType}
         onCameraReady={onCameraReady}
         useCamera2Api={true}
@@ -128,7 +135,7 @@ export default function App() {
         )}
         {!isPreview && (
           <View style={styles.bottomButtonsContainer}>
-            <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
+            <TouchableOpacity disabled={!isCameraReady} onPress={(switchCamera)}>
               <MaterialIcons name='flip-camera-ios' size={28} color='white' />
             </TouchableOpacity>
             {longitude ?

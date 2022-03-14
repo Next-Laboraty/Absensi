@@ -1,10 +1,7 @@
-import React from "react";
-import * as SecureStore from 'expo-secure-store';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
+import db from './firebaseinit'
+export default function LoginBase(DatabaseFireInit,dataBody) {
+    const reference = ref(db, `${DatabaseFireInit}`);
+    set(reference, dataBody);
 
-export default function LoginBase() {
-    return alert('Hello');
-
-}
-async function save(key, value) {
-    await SecureStore.setItemAsync(key, value);
 }

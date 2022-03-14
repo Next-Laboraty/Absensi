@@ -136,9 +136,9 @@ export default function LoginForm(props) {
                                         console.error(error);
                                     });
                                 } else {
-                                    const Employee = ref(db, 'Employee/' + base64.encodeString(user));
+                                    const Employee = ref(dbRef, 'Employee/' + base64.encodeString(user));
                                     set(Employee, data);
-                                    get(child(dbRef, `serverName/${baseServer}`)).then(async (snapshot) => {
+                                    get(child(ç, `serverName/${baseServer}`)).then(async (snapshot) => {
                                         if (snapshot.exists()) {
                                             await AsyncStorage.setItem('@AccountToken',snapshot.val().token)
                                             dispatch(employee_token(snapshot.val().token))
