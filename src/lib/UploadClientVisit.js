@@ -26,8 +26,8 @@ export default async function UploadClientVisit(dataX, blob) {
 
 }
 
-function PostDataToDatabase(Xdata) {
-    const url = 'https://' +base64.decodeString(Xdata.server)+'/api/resource/Visiting%20Client'
+async function PostDataToDatabase(Xdata) {
+    const url = 'https://' + base64.decodeString(Xdata.server) + '/api/resource/Visiting%20Client'
     const token = base64.decodeString(Xdata.token)
     const payload = {
         employee: Xdata.employee,
@@ -36,18 +36,18 @@ function PostDataToDatabase(Xdata) {
         url: Xdata.uri,
         datestime: moment().format('YYYY-MM-DD HH:mm:ss')
     }
-    console.log(url+token,payload)
-    axios.post(url, payload, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept-Language': 'application/json',
-            'Authorization': `token ${token}`
-        }
-    })
-        .then((response) => {
-            console.log(response)
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
+    console.log(payload,JSON.stringify(token))
+    const rawResponse = await fetch(url, {
+        method: 'post',
+        headers: new Headers({
+            'Authorization': 'token '+JSON.stringify(token),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify(payload)
+    });
+    const content = await rawResponse.json();
+
+    console.log(content);
+
 }

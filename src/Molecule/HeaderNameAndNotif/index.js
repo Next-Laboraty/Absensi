@@ -23,6 +23,7 @@ export default function HeaderNameAndNotif({ navigation }) {
             console.log(response);
         });
 
+        cekEmployee()
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);
             Notifications.removeNotificationSubscription(responseListener.current);

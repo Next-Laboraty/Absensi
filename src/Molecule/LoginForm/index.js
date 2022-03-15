@@ -10,6 +10,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import AxiosPostDataNoToken from "../../lib/AxiosPostDataNoToken";
 import { ToastAndroid } from "react-native-web";
 import getToken from "../../lib/getToken";
+import AxiosGetDataAction from "../../lib/AxiosGetDataAction"
+import AxiosToken from "../../lib/AxiosToken";
+import AxiosGetEmployee from "../../lib/AxiosGetEmployee";
+import RegisterForPushNotificationsAsync from "../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync";
 
 export default function LoginForm(props) {
     const dispatch = useDispatch()
@@ -61,10 +65,31 @@ export default function LoginForm(props) {
                 server
             }
             AxiosPostDataNoToken(dataApi).then((res) => {
+                setLoading(true)
                 getToken(server).then(snapshot => {
                     const token = snapshot.val().token
+                    const dataHeader = '@AccountToken'
+                    AsyncPenyimpanan(dataHeader, token)
+                    dispatch(employee_token(token))
+                    AsyncPenyimpanan('@AccountServer', base64.encodeString(server))
+                    dispatch(employee_server(base64.encodeString(server)))
+                    AxiosToken(`https://${server}`).then(res => {
+                        const AkunServer = res.data.message
+                        AsyncPenyimpanan('@AccountEmail', base64.encodeString(AkunServer))
+                        dispatch(employee_mail(AkunServer))
+                        const urlX = `https://${server}/api/resource/Employee?fields=["*"]&filters=[["user_id","=","${AkunServer}"]]`
+                        AxiosGetEmployee(urlX,base64.decodeString(token)).then(res=>{
+                            const employee = JSON.stringify(res.data.data[0])
+                            AsyncPenyimpanan('@AccountEmployee', employee)
+                            dispatch(employee_data(JSON.parse(employee)))
+                            RegisterForPushNotificationsAsync().then(res=>{
+                                writeUserData(base64.encodeString(AkunServer),res)
+                                props.nav.replace('BottomTabsNavigator')
+
+                            }).catch(err=>console.log(err))
+                        }).catch(err=>console.log(err))
+                    }).catch(err => console.log(`Error Bro : ${err}`))
                 }).catch(error => console.error(error))
-                setLoading(false)
             }
             ).catch((err) => {
                 let data = {
@@ -77,11 +102,18 @@ export default function LoginForm(props) {
         }
 
     }
-    const AsyncPenyimpanan = async (Text) => {
+    function writeUserData(userMail, notificationToken) {
+        const db = getDatabase();
+        const exit = set(ref(db, 'NotificationUser/' + userMail), notificationToken);
+        return exit
+      }
+    const AsyncPenyimpanan = async (dataHeader, textPayload) => {
         await AsyncStorage.setItem(
-            '@AccountServer',
-            Text
+            dataHeader,
+            textPayload
         );
+        let data = await AsyncStorage.getItem(dataHeader)
+        console.log(data)
     }
     return (
         <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

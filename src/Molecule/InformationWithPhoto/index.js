@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image,TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import { base64 } from "@firebase/util";
 

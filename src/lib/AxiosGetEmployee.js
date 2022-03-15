@@ -1,14 +1,14 @@
 import axios from "axios"
 
-export default function AxiosPostDataNoToken(data){
+export default function AxiosGetEmployee(url,token){
     const response = axios({
-        url: `https://${data.server}/api/method/login`,
-        method: 'post',
+        url: url,
+        method: 'get',
         headers: {
             'Content-Type': 'application/json',
             'Accept-Language': 'application/json',
+            'Authorization': `token ${token}`
         },
-        data: data.payload,
         timeout: 1000
     })
     return response
