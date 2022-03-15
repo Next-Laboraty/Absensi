@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import employeeSlice from '../features/employee/employeeSlice'
-import languageSlice from '../features/language/languageSlice'
+import tanggalSlice from '../features/tanggalDate/tanggalSlice'
 
 const store = configureStore({
   reducer: {
     employee: employeeSlice,
-    language: languageSlice
+    tanggalDate: tanggalSlice
   },
 })
 

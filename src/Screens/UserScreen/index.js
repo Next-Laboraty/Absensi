@@ -33,7 +33,7 @@ export default class UserScreen extends Component {
                         <MyInfoMenu NameMenu="Informasi Kontak Darurat" Imag={require('../../../assets/emergency.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <MyInfoMenu NameMenu="Informasi Keuangan" Imag={require('../../../assets/Payroll.png')} />
+                        <MyInfoMenu NameMenu="Informasi Keahlian" Imag={require('../../../assets/Payroll.png')} />
                     </TouchableOpacity>
 
                 </View>

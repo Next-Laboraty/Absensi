@@ -1,15 +1,7 @@
-import React from 'react';
-import { getDatabase, ref, onValue, set } from 'firebase/database';
-import db from './firebaseinit'
+import { getDatabase, ref, child, get } from "firebase/database";
+import { base64 } from "@firebase/util";
 export default function getToken(server) {
-    get(child(db, `serverName/${server}`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            return snapshot.val()
-        } else {
-            let data = "No data available"
-            return data
-        }
-    }).catch((error) => {
-        return error
-    });
+    const dbRef = ref(getDatabase());
+    const snapshot = get(child(dbRef, `serverName/${base64.encodeString(server)}`))
+    return snapshot
 }

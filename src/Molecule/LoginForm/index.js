@@ -7,6 +7,9 @@ import { getDatabase, ref, onValue, set, get, child } from 'firebase/database';
 import axios from 'axios';
 import { base64 } from "@firebase/util";
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import AxiosPostDataNoToken from "../../lib/AxiosPostDataNoToken";
+import { ToastAndroid } from "react-native-web";
+import getToken from "../../lib/getToken";
 
 export default function LoginForm(props) {
     const dispatch = useDispatch()
@@ -53,115 +56,32 @@ export default function LoginForm(props) {
             setLoading(false)
         }
         else {
-            axios({
-                url: `https://${server}/api/method/login`,
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept-Language': 'application/json'
-                },
-                data: payload,
-                timeout: 1000
-            })
-                .then((response) => {
-                    // handle success
-                    if (response.data.message == "Logged In") {
-                        const data = {
-                            server: server
-                        }
-                        goDatabase(data)
-                    }
-                    else {
-                        setLoading(false)
-                    }
-                })
-                .catch((error) => {
-                    // handle error
-                    setLoading(false)
-                })
-        }
-    }
-    // Datbase Engine
-    const goDatabase = async (data) => {
-        const url = 'https://' + data.server
-        axios({
-            url: url + `/api/method/frappe.auth.get_logged_user`,
-            method: 'get',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept-Language': 'application/json'
-            },
-            timeout: 1000
-        })
-            .then(async (response) => {
+            const dataApi = {
+                payload,
+                server
+            }
+            AxiosPostDataNoToken(dataApi).then((res) => {
+                getToken(server).then(snapshot => {
+                    const token = snapshot.val().token
+                }).catch(error => console.error(error))
                 setLoading(false)
-                const baseServer = base64.encodeString(data.server)
-                try {
-                    const user = response.data.message
-                    await AsyncStorage.setItem(
-                        '@AccountEmail',
-                        base64.encodeString(user)
-                    );
-                    await AsyncStorage.setItem(
-                        '@AccountServer',
-                        baseServer
-                    );
-                    dispatch(employee_server(baseServer))
-                    dispatch(employee_mail(base64.encodeString(user)))
-                    axios({
-                        url: url + `/api/resource/Employee?fields=["*"]&filters=[["user_id","=","${user}"]]`,
-                        method: 'get',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept-Language': 'application/json'
-                        },
-                        timeout: 1000
-                    })
-                        .then(async (res) => {
-                            const dbRef = ref(getDatabase());
-                            const dataKaryawan = res.data.data[0]
-                            const data = { ...dataKaryawan }
-                            console.log(dataKaryawan)
-                            await AsyncStorage.setItem('@AccountEmployee', JSON.stringify(dataKaryawan))
-                            dispatch(employee_data(dataKaryawan))
-                            get(child(dbRef, `Employee/${base64.encodeString(user)}`)).then((snapshot) => {
-                                if (snapshot.exists()) {
-                                    get(child(dbRef, `serverName/${baseServer}`)).then(async (snapshot) => {
-                                        if (snapshot.exists()) {
-                                            await AsyncStorage.setItem('@AccountToken',snapshot.val().token)
-                                            dispatch(employee_token(snapshot.val().token))
-                                            props.nav.replace('BottomTabsNavigator')
-                                        }
-                                    }).catch((error) => {
-                                        console.error(error);
-                                    });
-                                } else {
-                                    const Employee = ref(dbRef, 'Employee/' + base64.encodeString(user));
-                                    set(Employee, data);
-                                    get(child(ç, `serverName/${baseServer}`)).then(async (snapshot) => {
-                                        if (snapshot.exists()) {
-                                            await AsyncStorage.setItem('@AccountToken',snapshot.val().token)
-                                            dispatch(employee_token(snapshot.val().token))
-                                            props.nav.replace('BottomTabsNavigator')
-                                        }
-                                    }).catch((error) => {
-                                        console.error(error);
-                                    });
-                                }
-                            }).catch((error) => {
-                                console.error(error);
-                            });
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                } catch (error) {
-                    // Error saving data
+            }
+            ).catch((err) => {
+                let data = {
+                    title: 'Error Login',
+                    body: `${err}`
                 }
+                alertMsg(data)
+                setLoading(false)
             })
-            .catch((error) => {
-                console.log(error)
-            })
+        }
+
+    }
+    const AsyncPenyimpanan = async (Text) => {
+        await AsyncStorage.setItem(
+            '@AccountServer',
+            Text
+        );
     }
     return (
         <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
