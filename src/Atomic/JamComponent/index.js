@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import 'moment/locale/id'
 import moment from 'moment'
-moment.locale('id')
 
 export default function JamComponent() {
-    const [tanggal, setTanggal] = useState()
+    const [tanggal, setTanggal] = useState(moment().format('LTS'))
+
     useEffect(() => {
         let isMounted = true
         const intervalId = setInterval(() => {
@@ -16,7 +16,7 @@ export default function JamComponent() {
             isMounted = false
         }
 
-    }, [useState])
+    }, [tanggal])
     return (
         <View style={styles.clockContainer}>
             <Text style={styles.textClock}>

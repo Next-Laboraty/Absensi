@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "create",
-    "slug": "create",
+    "name": "ONL HRIS",
+    "slug": "onl-hris",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -23,7 +23,6 @@ export default function HeaderNameAndNotif({ navigation }) {
             console.log(response);
         });
 
-        cekEmployee()
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);
             Notifications.removeNotificationSubscription(responseListener.current);
@@ -32,9 +31,6 @@ export default function HeaderNameAndNotif({ navigation }) {
     const NotifTambah = () => {
         setNotificationCount(notificationCount + 1)
     }
-    const cekEmployee = () => {
-        console.log(employee)
-    } 
     return (
         <View style={styles.header}>
             <View style={{ flex: 1, marginLeft: 20 }}>

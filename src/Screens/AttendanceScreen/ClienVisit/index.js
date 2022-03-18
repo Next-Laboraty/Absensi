@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Dimensions,
   View,
-  Text,
   TouchableOpacity,
   Image,
   ActivityIndicator
@@ -15,6 +14,10 @@ import UploadClientVisit from '../../../lib/UploadClientVisit';
 import * as Location from 'expo-location';
 import { LogBox } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
+import { getDownloadURL } from 'firebase/storage';
+import AxiosPostData from '../../../lib/AxiosPostData';
+import { Layout, Spinner, Text, Icon, Button } from '@ui-kitten/components';
+import { Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -26,7 +29,7 @@ export default function App() {
   const dimensionss = useRef(Dimensions.get("window"));
   const screenWidth = dimensionss.current.width;
   const [ratio, setRatio] = useState('4:3');
-  const {employee,server,token} = useSelector((state) => state.employee)
+  const { employee, server, token } = useSelector((state) => state.employee)
   const [gambar, setGambar] = useState()
   const [latitude, setLatitude] = useState(null)
   const [longitude, setLongitude] = useState(null)
@@ -35,8 +38,13 @@ export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.front);
   const [isPreview, setIsPreview] = useState(false);
+  const [msg, setMsg] = useState(false)
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [loaded, setLoaded] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const showDialog = () => setVisible(true);
 
+  const hideDialog = () => setVisible(false);
   useEffect(async () => {
     let isMounted = true
     onHandlePermission();
@@ -74,6 +82,7 @@ export default function App() {
     );
   };
   const onSnap = async () => {
+    setLoaded(true)
     if (cameraRef.current) {
       const options = { quality: 0.2, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
@@ -83,16 +92,22 @@ export default function App() {
       if (source) {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
-        let dataX = {
-          employee:employee.employee,
-          server,
-          token,
-          longitude,
-          latitude
-        }
-        UploadClientVisit(dataX, blob)
+        UploadClientVisit(blob).then(async (res) => {
+          const servers = `https://${base64.decodeString(server)}/api/resource/Visiting Client`
+          const url = await getDownloadURL(res.ref)
+          let payload = {
+            employee: employee.employee,
+            server,
+            url,
+            longitude,
+            latitude
+          }
+          AxiosPostData(servers, base64.decodeString(token), payload).then(res => {
+            setLoaded(false)
+            setMsg(true)
+          }).catch(err => setVisible(true))
+        }).catch(err => setVisible(true))
       }
-
     }
   };
 
@@ -107,61 +122,63 @@ export default function App() {
   if (hasPermission === false) {
     return <Text style={styles.text}>No access to camera</Text>;
   }
-
+  const StatusCamer = () => {
+    if (!latitude && !latitude) {
+      if (msg) {
+        return (
+          <Text>Data Berhasil di Input</Text>
+        )
+      }
+      return (
+        <Spinner size={'tiny'} />
+      )
+    }
+    if (loaded) {
+      return (
+        <View style={{alignItems:'center'}}>
+          <Spinner size={'tiny'} style={{alignSelf:'center'}}/>
+          <Text style={{textAlign:'center',marginTop:'5%'}}>Mengirim Data ke server {base64.decodeString(server)}</Text>
+        </View>
+      )
+    }
+    return (
+      <Button style={{ borderRadius: 20 }} onPress={() => onSnap()}>
+        <Feather name="camera" size={24} color="black" style={{ alignSelf: 'center' }} />
+      </Button>
+    )
+  }
   return (
-    <View style={styles.container}>
-      <Camera
-        ref={cameraRef}
-        ratio="16:9"
-        height={Math.round((screenWidth * 16) / 9)}
-        width={'100%'}
-        style={{flex:1}}
-        type={cameraType}
-        onCameraReady={onCameraReady}
-        useCamera2Api={true}
-      />
-      <View style={styles.container}>
-        {isPreview && (
-          <>
-            <Text style={{ fontFamily: 'Regular', textAlign: 'center', backgroundColor: 'green', color: 'white', paddingVertical: 5 }}>Data Received, you can go out now</Text>
-            {/* <TouchableOpacity
-              onPress={cancelPreview}
-              style={styles.closeButton}
-              activeOpacity={0.7}
-            >
-              <AntDesign name='close' size={32} color='#fff' />
-            </TouchableOpacity> */}
-          </>
-        )}
-        {!isPreview && (
-          <View style={styles.bottomButtonsContainer}>
-            <TouchableOpacity disabled={!isCameraReady} onPress={(switchCamera)}>
-              <MaterialIcons name='flip-camera-ios' size={28} color='white' />
-            </TouchableOpacity>
-            {longitude ?
-              <TouchableOpacity
-                activeOpacity={0.7}
-                disabled={!isCameraReady}
-                onPress={onSnap}
-                style={styles.capture}
-              >
-                <Feather name="camera" size={24} color="black" style={{ alignSelf: 'center' }} />
-
-              </TouchableOpacity>
-              :
-              <View
-                activeOpacity={0.7}
-                style={styles.capture}
-              >
-                <ActivityIndicator color={'black'} />
-
-              </View>
-            }
-          </View>
-        )}
-      </View>
-    </View>
-  );
+    <Provider>
+      <Layout style={{ flex: 1 }}>
+        <Layout style={{ flex: 1 }}>
+          <Camera
+            ref={cameraRef}
+            ratio="16:9"
+            height={Math.round((screenWidth * 16) / 9)}
+            width={'100%'}
+            style={{ flex: 1, alignSelf: 'center' }}
+            type={cameraType}
+            onCameraReady={onCameraReady}
+            useCamera2Api={true}
+          />
+        </Layout>
+        <Layout style={{ height: '20%', alignSelf: 'center', justifyContent: 'center' }}>
+          {StatusCamer()}
+        </Layout>
+      </Layout>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>Terjadi Kesalahan pada server</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>Coba lagi dalam beberapa menit lagi atau tutup aplikasi dan coba kembali lagi nanti, cek koneksi internet anda. {`\n`}Jika speed internet dibawah 1,5MB/s maka anda akan mendapatan error ini lagi</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Mengerti</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </Provider>
+  )
 }
 
 const styles = StyleSheet.create({

@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+import moment from 'moment'
+moment.locale('id')
 
 const initialState = {
-  TanggalMenu: 0
+  TanggalMenu: 0,
 }
 
 export const tanggalSlice = createSlice({

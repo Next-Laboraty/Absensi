@@ -1,16 +1,16 @@
 import axios from 'axios'
 
 export default function AxiosGetDataAction(data) {
-    const action = axios({
-        url: data.url,
+    console.log(data)
+    var config = {
         method: 'get',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept-Language': 'application/json',
-            'Authorization': `token ${data.token}`
-
+        url: data.url,
+        headers: { 
+          'Authorization': 'token '+data.token, 
+          'Accept': 'application/json', 
         },
-        timeout: 1000
-    })
-    return action
+      };
+      
+     
+    return axios(config)
 }

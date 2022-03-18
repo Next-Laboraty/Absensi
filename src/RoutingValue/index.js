@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -16,19 +16,23 @@ import {
     Asuransi,
     AplikasiLembur,
     ChatManagement,
-    History
+    History,
+    TaskScreen
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
 import SplashScreen from "../Screens/SplashScreen/index.js";
 import * as Notifications from 'expo-notifications';
 import ClientVisit from "../Screens/AttendanceScreen/ClienVisit/index.js";
+// import { getMessaging } from "firebase/messaging";
+
+// const messaging = getMessaging();
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
 });
 
 const Stack = createNativeStackNavigator()
@@ -51,7 +55,7 @@ const RoutingValue = () => {
     useEffect(() => {
         // registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
+            console.log('MASUK DATA',response);
         });
 
         return () => {
@@ -88,7 +92,14 @@ const RoutingValue = () => {
                     title: 'Aplikasi Cuti'
                 }} />
                 <Stack.Screen name="Client" component={ClientVisit} options={{
-                    title: 'Visiting Client'
+                    title: 'Visiting Client',
+                    headerStyle: {
+                        backgroundColor: '#516BEB',
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Regular'
+                    }
                 }} />
                 <Stack.Screen name="ProgramPelatihan" component={ProgramPelatihan} options={{
                     title: 'Program Pelatihan'
@@ -97,7 +108,7 @@ const RoutingValue = () => {
                     title: 'Project'
                 }} />
                 <Stack.Screen name="todo" component={Todo} options={{
-                    title: 'Kritik & Saran'
+                    title: 'ToDo'
                 }} />
                 <Stack.Screen name="DailyReport" component={DailyReport} options={{
                     title: 'Daily Report'
@@ -121,7 +132,24 @@ const RoutingValue = () => {
                     title: 'Chat Management'
                 }} />
                 <Stack.Screen name="History" component={History} options={{
-                    title: 'History'
+                    title: 'History',
+                    headerStyle: {
+                        backgroundColor: '#1A34B8'
+                    },
+                    headerTintColor: '#F7F9FC',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="Task" component={TaskScreen} options={{
+                    title: 'Task',
+                    headerStyle: {
+                        backgroundColor: '#1A34B8'
+                    },
+                    headerTintColor: '#F7F9FC',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
             </Stack.Navigator>
         </NavigationContainer>

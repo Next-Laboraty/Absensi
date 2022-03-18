@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-web'
+import { Text, View,TouchableOpacity} from 'react-native'
 
 export default class Todo extends Component{
     render(){

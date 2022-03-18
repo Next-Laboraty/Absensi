@@ -13,6 +13,7 @@ import Asuransi from "../Screens/DoScreen/Asuransi/index.js";
 import AplikasiLembur from "../Screens/DoScreen/AplikasiLembur/index.js";
 import ChatManagement from "../Screens/DoScreen/ChatManagement/index.js";
 import History from "../Screens/AttendanceScreen/History";
+import TaskScreen from "../Screens/HomeScreen/TaskScreen"
 
 export {
     LoginScreen,
@@ -29,5 +30,6 @@ export {
     Asuransi,
     AplikasiLembur,
     ChatManagement,
+    TaskScreen,
     History
 }

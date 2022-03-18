@@ -13,31 +13,21 @@ export default function IstirahatSectionList() {
     const [dataIstirahat, setDataIstirahat] = useState([])
     const [loadLazy, setLoadLazy] = useState({})
     const [loading, setLoading] = useState(true)
-    const { TanggalMenu } = useSelector((state) => state.tanggalDate)
-    const [tanggal, setTanggal] = useState(moment(moment().add(TanggalMenu)).format("DD-MM-YYYY"))
+    const tanggal = moment().format("DD-MM-YYYY")
+    const data = {
+        url : `https://${base64.decodeString(server)}/api/resource/Lunch?fields=["*"]&filters=[["add","=","${employee.user_id}"],["tgl","=","${tanggal}" ]]&order_by=modified desc`,
+        token: base64.decodeString(token),
+    }
     useEffect(() => {
-            const url = `https://${base64.decodeString(server)}/api/resource/Lunch?fields=["*"]&filters=[["add","=","${employee.user_id}"],["tgl","=","${tanggal}" ]]&order_by=modified desc`
-            const data = {
-                url,
-                token: base64.decodeString(token),
-            }
-            setLoading(true)
-            getDataFromDb(data)
+        getDatafromDatabase()
         return () => {
             setLoadLazy({}); // This worked for me
-        };
-    }, [TanggalMenu])
-    const getDataFromDb = (data) => {
+          };
+    }, [])
+    const getDatafromDatabase = () => {
         AxiosGetDataAction(data).then((res) => {
-            console.log(res.data)
-            setLoading(false)
-            if(res.data.data.tgl !== ''){
-                console.log('ada')
-            }
-            else{
-                console.log('tidak ada')
-            }
             setDataIstirahat(res.data.data)
+            setLoading(false)
         }).catch((err) => console.log(err))
     }
     return (

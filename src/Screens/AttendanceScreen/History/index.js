@@ -14,7 +14,6 @@ moment.locale('id')
 export default function History() {
     return (
         <Layout style={{ flex: 1 }}>
-            {DateTimeNow()}
             <TanggalRow />
             {SaatIni()}
             <ListHistorySection />
@@ -22,28 +21,6 @@ export default function History() {
         </Layout>
     )
 }
-
-function DateTimeNow() {
-    return (
-        <Layout style={{ marginHorizontal: 10, flexDirection: 'row' }}>
-            <Layout style={{ justifyContent: 'center', flex: 1 }}>
-                <Layout style={{ flexDirection: 'row' }}>
-                    <Text style={{ fontFamily: 'Bold', fontSize: 40 }}>24</Text>
-                    <Layout style={{ justifyContent: 'center', marginTop: -10, marginLeft: 10 }}>
-                        <Text style={{ fontFamily: 'Regular', fontSize: 12 }}>Jumat</Text>
-                        <Text style={{ fontFamily: 'Regular', fontSize: 12 }}>Jan 2020</Text>
-                    </Layout>
-                </Layout>
-            </Layout>
-            <Layout style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginTop: -10 }}>
-                <Button status='basic' style={{ backgroundColor: '#D0D7FC' }}>
-                    <Text style={{ color: '#516BEB' }}>Sekarang</Text>
-                </Button>
-            </Layout>
-        </Layout>
-    )
-}
-
 function SaatIni() {
     return (
         <Layout style={{ marginHorizontal: 10, flexDirection: 'row', marginTop: '20%' }}>

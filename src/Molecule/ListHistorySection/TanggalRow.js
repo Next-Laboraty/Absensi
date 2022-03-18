@@ -7,62 +7,22 @@ import moment from 'moment';
 import { tanggalMinusPlus } from '../../features/tanggalDate/tanggalSlice';
 moment.locale('id')
 export default function TanggalRow() {
-    const { TanggalMenu } = useSelector((state) => state.tanggalDate)
-    const dispatch = useDispatch()
-    const changeButton = (number) => {
-        dispatch(tanggalMinusPlus(number))
-    }
-    const ButtonData = (number) => {
-        return (
-            <TouchableOpacity onPress={() => changeButton(number)} style={(TanggalMenu == number ? styles.buttonActive : {})}>
-                <Text style={(TanggalMenu == number ? styles.fontHariAktif : styles.fontHari)}>{moment(moment().add(number, 'd')).format("ddd")}</Text>
-                <Text style={(TanggalMenu == number ? styles.fontTanggalAktif : styles.fontTanggal)}>{moment(moment().add(number, 'd')).format("DD")}</Text>
-            </TouchableOpacity>
-        )
-    }
-    const ButtonDataDisable = (dataTanggal) => {
-        return (
-            <TouchableOpacity disabled={true}>
-                <Text style={styles.fontHari}>{moment(moment().add(dataTanggal, 'd')).format("ddd")}</Text>
-                <Text style={styles.fontTanggal}>{moment(moment().add(dataTanggal, 'd')).format("DD")}</Text>
-            </TouchableOpacity>
-        )
-    }
-    return (
-        <Layout>
-            <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: '10%', justifyContent: 'space-between' }}>
-                {ButtonData(-2)}
-                {ButtonData(-1)}
-                {ButtonData(0)}
-                {ButtonDataDisable(1)}
-                {ButtonDataDisable(2)}
-            </View>
+    return(
+        <Layout style={{ marginHorizontal: 10, flexDirection: 'row' }}>
+            <Layout style={{ justifyContent: 'center', flex: 1 }}>
+                <Layout style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontFamily: 'Bold', fontSize: 40 }}>{moment().format('D')}</Text>
+                    <Layout style={{ justifyContent: 'center', marginTop: -10, marginLeft: 10 }}>
+                        <Text style={{ fontFamily: 'Regular', fontSize: 12 }}>{moment().format('dddd')}</Text>
+                        <Text style={{ fontFamily: 'Regular', fontSize: 12 }}>{moment().format('MMM YYYY')}</Text>
+                    </Layout>
+                </Layout>
+            </Layout>
+            <Layout style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginTop: -10 }}>
+                <Button status='basic' style={{ backgroundColor: '#D0D7FC' }}>
+                    <Text style={{ color: '#516BEB' }}>Sekarang</Text>
+                </Button>
+            </Layout>
         </Layout>
     )
 }
-const styles = StyleSheet.create({
-    container: {
-        maxHeight: 200,
-    },
-    buttonActive: {
-        backgroundColor: '#516BEB', padding: 5, borderRadius: 15, marginTop: -10
-    },
-    fontTanggal: {
-        fontFamily: 'Medium',
-        textAlign: 'center'
-    },
-    fontHari: {
-        fontFamily: 'Regular',
-        textAlign: 'center'
-    },
-    fontTanggalAktif: {
-        fontFamily: 'Medium',
-        textAlign: 'center',
-        fontSize: 20
-    },
-    fontHariAktif: {
-        fontFamily: 'Regular',
-        textAlign: 'center',
-        fontSize: 20
-    }
-});
