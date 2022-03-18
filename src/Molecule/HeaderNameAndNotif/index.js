@@ -1,36 +1,35 @@
-import * as Notifications from 'expo-notifications';
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
 
 
-export default function HeaderNameAndNotif({ navigation }) {
+export default function HeaderNameAndNotif(props) {
     const {employee} = useSelector((state) => state.employee)
-    const [notificationCount, setNotificationCount] = useState(0)
-    const notificationListener = useRef();
-    const responseListener = useRef();
-    const [notification, setNotification] = useState(false);
-    const [notificationd, setNotificationd] = useState([]);
-    useEffect(() => {
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
-            setNotificationCount(notificationCount + 1)
-            notificationd.push(notification)
-            console.log(notification)
-        });
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
-        });
+    // const [notificationCount, setNotificationCount] = useState(0)
+    // const notificationListener = useRef();
+    // const responseListener = useRef();
+    // const [notification, setNotification] = useState(false);
+    // const [notificationd, setNotificationd] = useState([]);
+    // useEffect(() => {
+    //     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+    //         setNotification(notification);
+    //         setNotificationCount(notificationCount + 1)
+    //         notificationd.push(notification)
+    //         console.log(notification)
+    //     });
+    //     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+    //         console.log(response);
+    //     });
 
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
-        };
-    }, [useEffect])
-    const NotifTambah = () => {
-        setNotificationCount(notificationCount + 1)
-    }
+    //     return () => {
+    //         Notifications.removeNotificationSubscription(notificationListener.current);
+    //         Notifications.removeNotificationSubscription(responseListener.current);
+    //     };
+    // }, [useEffect])
+    // const NotifTambah = () => {
+    //     setNotificationCount(notificationCount + 1)
+    // }
     return (
         <View style={styles.header}>
             <View style={{ flex: 1, marginLeft: 20 }}>
@@ -38,17 +37,17 @@ export default function HeaderNameAndNotif({ navigation }) {
                 <Text style={styles.textHeader2}>{employee.employee_name}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 20 }}>
-                <TouchableOpacity onPress={() => console.log(employee)}>
+                <TouchableOpacity onPress={() => props.navigation.navigate('Notification')}>
 
-                    {notificationCount >= 1
+                    {/* {notificationCount >= 1
                         ?
                         <>
                             <Ionicons name="notifications" size={24} color="red" />
                             <Text style={{ fontFamily: 'Regular', position: 'absolute', fontSize: 10, left: -7, color: 'red' }}>{notificationCount}</Text>
                         </>
-                        :
+                        : */}
                         <Ionicons name="notifications-outline" size={24} color="#2C3333" />
-                    }
+                    {/* } */}
                 </TouchableOpacity>
             </View>
         </View>

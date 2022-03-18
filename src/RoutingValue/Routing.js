@@ -14,6 +14,8 @@ import AplikasiLembur from "../Screens/DoScreen/AplikasiLembur/index.js";
 import ChatManagement from "../Screens/DoScreen/ChatManagement/index.js";
 import History from "../Screens/AttendanceScreen/History";
 import TaskScreen from "../Screens/HomeScreen/TaskScreen"
+import NoteScreen from "../Screens/HomeScreen/NoteScreen"
+import NotificationScreen from "../Screens/NotificationScreen";
 
 export {
     LoginScreen,
@@ -31,5 +33,7 @@ export {
     AplikasiLembur,
     ChatManagement,
     TaskScreen,
-    History
+    History,
+    NoteScreen,
+    NotificationScreen
 }

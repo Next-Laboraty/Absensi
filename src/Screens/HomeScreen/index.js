@@ -7,7 +7,7 @@ import HeaderOption from '../../Atomic/HeaderOptions';
 import ButtonFeatures from '../../Molecule/ButtonFeatures';
 import HomeScreenBody from '../../Molecule/HomeScreenBody';
 import { Camera } from 'expo-camera';
-
+import { getDatabase } from "firebase/database";
 export default function HomeScreen({ navigation }) {
     const [hasPermission, setHasPermission] = useState(null);
 
@@ -28,7 +28,7 @@ export default function HomeScreen({ navigation }) {
         <View style={{ flex: 1 }}>
             <StatusBar hidden={true} style="light" />
             {/* Header Name */}
-            <HeaderNameAndNotif />
+            <HeaderNameAndNotif navigation={navigation}/>
             <BannerHeader color="#FFE6AB" nav="Home" textlink="Kehadiran" />
             {/* Banner */}
             <HeaderOption Textrt="Alat Kantor" />
@@ -40,7 +40,7 @@ export default function HomeScreen({ navigation }) {
                 <HeaderOption Textrt="Kehadiran Karyawan" />
                 <View style={{ marginHorizontal: 20 }}>
                     {/* Kehadiran Online */}
-                    <HomeScreenBody navigation={navigation} link={'Client'} title={`Menu Absensi`} icon="calendar-outline" />
+                    <HomeScreenBody navigation={navigation} link={'Attendance'} title={`Menu Absensi`} icon="calendar-outline" />
                     <HomeScreenBody navigation={navigation} link={'Client'} title={`Visiting Klien`} icon="md-camera-outline" />
                     {/* End Kehadiran Online */}
                     {/* Kehadiran Client Visiting */}

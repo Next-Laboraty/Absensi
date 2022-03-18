@@ -10,13 +10,13 @@ export default function ListAllDataTodo(props) {
     return (
         <View style={styles.container}>
             <View style={styles.containerImage}>
-                {props.status == 'Completed' ? <Entypo name="check" size={24} color="teal" /> : props.status == 'Overdue' ? <Entypo name="back-in-time" size={24} color="red" /> : <MaterialIcons name="pending" size={24} color="gray" />}
+            {props.status == 'Closed' ? <AntDesign name="checksquare" size={18} color="teal" />: props.status == 'Cancelled' ? <AntDesign name="closecircle" size={18} color="red" /> : <MaterialIcons name="pending" size={18} color="gray" />}
             </View>
             <Text style={styles.TextInfo}>
-                {props.subject}
+            {props.subject ? props.subject+' | ': null}{moment(props.dibuat).format('DD MMMM YYYY')}
             </Text>
             <View style={styles.ButtonRight}>
-                <AntDesign name="right" size={24} color="blue" />
+                <AntDesign name="right" size={16} color="gray" />
             </View>
         </View>
     )
@@ -28,8 +28,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: '#828282',
         paddingBottom: 15,
         marginTop: 15
     },
@@ -39,8 +37,11 @@ const styles = StyleSheet.create({
     },
     TextInfo: {
         fontFamily: 'Regular',
+        justifyContent:'center',
+        alignSelf:'center',
         flex: 1,
         textAlign: 'left',
+        fontSize:8,
         marginLeft: 20
     },
     containerImage: {

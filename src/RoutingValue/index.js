@@ -17,23 +17,17 @@ import {
     AplikasiLembur,
     ChatManagement,
     History,
-    TaskScreen
+    TaskScreen,
+    NoteScreen,
+    NotificationScreen
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
 import SplashScreen from "../Screens/SplashScreen/index.js";
-import * as Notifications from 'expo-notifications';
 import ClientVisit from "../Screens/AttendanceScreen/ClienVisit/index.js";
 // import { getMessaging } from "firebase/messaging";
 
 // const messaging = getMessaging();
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false,
-    }),
-});
 
 const Stack = createNativeStackNavigator()
 const Auth = () => {
@@ -50,19 +44,6 @@ const Auth = () => {
 
 // export default Tabs
 const RoutingValue = () => {
-    const notificationListener = useRef();
-    const responseListener = useRef();
-    useEffect(() => {
-        // registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log('MASUK DATA',response);
-        });
-
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
-        };
-    }, []);
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="SplashScreen">
@@ -79,17 +60,45 @@ const RoutingValue = () => {
                     headerShown: false
                 }} />
                 <Stack.Screen name="SalarySlip" component={SalarySlipScreen} options={{
-                    title: 'Salary Slip'
+                    title: 'Salary Slip',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="AttendanceRequest" component={PermintaanKehadiran} options={{
-                    title: 'Attendance Request'
+                    title: 'Attendance Request',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="Notifikasi" component={Notification} options={{
-                    title: 'Notification'
+                    title: 'Notification',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }}
                 />
                 <Stack.Screen name="AplikasiCuti" component={AplikasiCuti} options={{
-                    title: 'Aplikasi Cuti'
+                    title: 'Aplikasi Cuti',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="Client" component={ClientVisit} options={{
                     title: 'Visiting Client',
@@ -102,41 +111,111 @@ const RoutingValue = () => {
                     }
                 }} />
                 <Stack.Screen name="ProgramPelatihan" component={ProgramPelatihan} options={{
-                    title: 'Program Pelatihan'
+                    title: 'Program Pelatihan',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="Project" component={Project} options={{
-                    title: 'Project'
+                    title: 'Project',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="todo" component={Todo} options={{
-                    title: 'ToDo'
+                    title: 'To Do',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="DailyReport" component={DailyReport} options={{
-                    title: 'Daily Report'
+                    title: 'Daily Report',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="PenilaianKPI" component={PenilaianKPI} options={{
-                    title: 'Penilaian KPI'
+                    title: 'Penilaian KPI',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="PermohonanPinjaman" component={PermohonanPinjaman} options={{
-                    title: 'Permohonan Pinjaman'
+                    title: 'Permohonan Pinjaman',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="Reimusement" component={Reimbursement} options={{
-                    title: 'Reimbursement'
+                    title: 'Reimbursement',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="Asuransi" component={Asuransi} options={{
-                    title: 'Asuransi'
+                    title: 'Asuransi',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="AplikasiLembur" component={AplikasiLembur} options={{
-                    title: 'Aplikasi Lembur'
+                    title: 'Aplikasi Lembur',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="Chat" component={ChatManagement} options={{
-                    title: 'Chat Management'
+                    title: 'Chat Management',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
                 }} />
                 <Stack.Screen name="History" component={History} options={{
                     title: 'History',
                     headerStyle: {
-                        backgroundColor: '#1A34B8'
+                        backgroundColor: '#000'
                     },
-                    headerTintColor: '#F7F9FC',
+                    headerTintColor: '#fff',
                     headerTitleStyle: {
                         fontFamily: 'Medium'
                     }
@@ -144,9 +223,29 @@ const RoutingValue = () => {
                 <Stack.Screen name="Task" component={TaskScreen} options={{
                     title: 'Task',
                     headerStyle: {
-                        backgroundColor: '#1A34B8'
+                        backgroundColor: '#000'
                     },
-                    headerTintColor: '#F7F9FC',
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="Bulletin" component={NoteScreen} options={{
+                    title: 'Bulletin',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="Notification" component={NotificationScreen} options={{
+                    title: 'Notification',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
                     headerTitleStyle: {
                         fontFamily: 'Medium'
                     }

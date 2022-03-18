@@ -41,7 +41,7 @@ export default function ButtonFeatures(props) {
                             <Text style={{ fontFamily: 'Regular', fontSize: 10, color: '#7A7979' }}>{todoCount} Pekerjaan</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.rowKantor2_2}>
+                    <TouchableOpacity style={styles.rowKantor2_2} onPress={()=>props.navigation.navigate('Bulletin')}>
                         <View style={{ width: 40, height: 40, backgroundColor: '#caf0f8', borderRadius: 120 / 2, }}>
                             <MaterialIcons name="event-note" size={28} color="#6B8E7B" style={{ textAlign: 'center', marginTop: 7 }} />
                         </View>

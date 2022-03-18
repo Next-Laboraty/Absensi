@@ -7,6 +7,7 @@ import { MaterialIcons, Entypo, } from '@expo/vector-icons';
 import moment from 'moment';
 import 'moment/locale/id'
 import ListAllDataTask from '../../../Molecule/ListAllDataTask';
+import ReloadButton from '../../../Atomic/ButtonReload';
 
 export default function TaskScreen() {
     const { employee, server, token } = useSelector(state => state.employee)
@@ -16,9 +17,6 @@ export default function TaskScreen() {
     const [work, setWork] = useState(0)
     const [over, setOver] = useState(0)
     const url = base64.decodeString(server)
-    const reload = () => {
-        console.log('reaload')
-    }
     useEffect(() => {
         const Compl = GET_TASK.filter(x => x.status == 'Completed')
         const Worki = GET_TASK.filter(x => x.status == 'Open')
@@ -30,12 +28,12 @@ export default function TaskScreen() {
     })
     return (
         <Layout style={{ flex: 1 }}>
-            <Layout style={{ backgroundColor: 'rgba(51, 102, 255, 0.48)', height: '20%', borderRadius: 20, marginHorizontal: 20, marginVertical: '2%' }}>
+            <Layout level={'4'} style={{ height: '20%', borderRadius: 20, marginHorizontal: 20, marginVertical: '2%' }}>
                 <View>
-                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Avatar size='large' source={{ uri: 'https://' + url + employee.image }} style={{ margin: 8, alignSelf: 'center' }} />
-                        <Button size={'tiny'} status='success' style={{height:40,flex:1,marginHorizontal:20}} appearance='outline'>Baru</Button>
-                        <Button size={'tiny'} status='warning' style={{height:40,flex:1}} appearance='ghost'>Refresh</Button>
+                        <Button size={'tiny'} status='success' style={{ height: 40, flex: 1, marginHorizontal: 20 }} appearance='outline'>Baru</Button>
+                        <ReloadButton />
                     </View>
                     <Divider />
                     <View style={{ flexDirection: 'row' }}>
@@ -65,7 +63,11 @@ export default function TaskScreen() {
             </Layout>
             <ScrollView style={{ flex: 1 }}>
                 {taskList.map((dataReturn) =>
-                    <ListAllDataTask key={dataReturn.name} Freedom={dataReturn.name} status={dataReturn.status} modified={dataReturn.modified} subject={dataReturn.subject} />
+                    <TouchableOpacity key={dataReturn.name}>
+                        <Layout level={'2'} style={{marginVertical:5}}>
+                            <ListAllDataTask key={dataReturn.name} Freedom={dataReturn.name} status={dataReturn.status} modified={dataReturn.modified} subject={dataReturn.subject} />
+                        </Layout>
+                    </TouchableOpacity>
                 )}
             </ScrollView>
         </Layout>
