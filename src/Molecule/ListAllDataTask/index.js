@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignSelf:'center',
         textAlign: 'left',
-        fontSize:8,
+        fontSize:10,
         marginLeft: 20
     },
     containerImage: {

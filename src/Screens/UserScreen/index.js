@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity,ScrollView } from "react-native";
 import InformationWithPhoto from "../../Molecule/InformationWithPhoto";
 import UserHeader from "../../Molecule/UserHeader";
 import HeaderOptions from '../../Atomic/HeaderOptions'
@@ -21,29 +21,31 @@ export default class UserScreen extends Component {
             <View>
                 <UserHeader />
                 <InformationWithPhoto />
+                <ScrollView>
+
                 <HeaderOptions Textrt="Informasi Saya" />
                 <View style={{ marginBottom: 30 }}>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('UserInfo')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('UserInfo')}>
                         <MyInfoMenu NameMenu="Informasi Pribadi" Imag={require('../../../assets/User.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('EmployeeInformation')}>
                         <MyInfoMenu NameMenu="Informasi Karyawan" Imag={require('../../../assets/Employee.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <MyInfoMenu NameMenu="Informasi Kontak Darurat" Imag={require('../../../assets/emergency.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('EmployeeSkill')}>
                         <MyInfoMenu NameMenu="Informasi Keahlian" Imag={require('../../../assets/Payroll.png')} />
                     </TouchableOpacity>
 
                 </View>
+                <View style={{ height: '45%' }}>
                 <HeaderOptions Textrt="Pengaturan" />
-                <TouchableOpacity>
-                    <MyInfoMenu NameMenu="Ganti Kata Sandi" Imag={require('../../../assets/password.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.dataRemove()}>
-                    <MyInfoMenu NameMenu="Keluar" Imag={require('../../../assets/power.png')} navigation={this.props.navigation} />
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword')}>
+                        <MyInfoMenu NameMenu="Ganti Kata Sandi" Imag={require('../../../assets/password.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.dataRemove()}>
+                        <MyInfoMenu NameMenu="Keluar" Imag={require('../../../assets/power.png')} navigation={this.props.navigation} />
+                    </TouchableOpacity>
+                </View>
+                </ScrollView>
             </View>
         )
     }

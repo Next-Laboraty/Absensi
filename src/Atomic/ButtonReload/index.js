@@ -4,6 +4,7 @@ import { Alert } from 'react-native'
 import AxiosGetEmployee from "../../lib/AxiosGetEmployee";
 import { useDispatch, useSelector } from "react-redux";
 import { base64 } from "@firebase/util";
+import { AntDesign } from '@expo/vector-icons';
 import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
 
 
@@ -36,9 +37,9 @@ export default function ReloadButton() {
         }, 3000)
     }
     if (loading) {
-        return <Button size={'tiny'} status='warning' style={{ height: 40, flex: 1 }} appearance='ghost' onPress={() => reloadOpen()}><Spinner status='warning' size={'medium'} /></Button>
+        return <Button size={'tiny'} status='warning' style={{ height: 40}} appearance='ghost' onPress={() => reloadOpen()}><Spinner status='warning' size={'medium'} /></Button>
     }
     return (
-        <Button size={'tiny'} status='warning' style={{ height: 40, flex: 1 }} appearance='ghost' onPress={() => reloadOpen()}>Refresh</Button>
+        <Button size={'tiny'} status='warning' style={{ height: 40,marginRight:30}} appearance='ghost' onPress={() => reloadOpen()}><AntDesign name="reload1" size={24} color="black" /></Button>
     )
 }

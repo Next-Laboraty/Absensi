@@ -5,69 +5,69 @@ import { StyleSheet, View, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 
 
-export default function InformationUser() {
+export default function EmployeeInformation() {
     const { employee } = useSelector(state => state.employee)
     console.log(employee)
     return (
         <Layout style={{ flex: 1 }}>
             <ScrollView>
-                <Text style={{ fontFamily: 'Medium', fontSize: 18, marginTop: '10%', marginHorizontal: 20 }}>Informasi Pribadi</Text>
+                <Text style={{ fontFamily: 'Medium', fontSize: 18, marginTop: '10%', marginHorizontal: 20 }}>Data Karyawan</Text>
                 <Layout level={'4'} style={{ marginTop: 20, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 20, borderRadius: 20 }}>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Nama Lengkap</Text>
+                        <Text style={styles.subFont}>ID Karayawan</Text>
+                        <Text style={styles.myFont}>
+                            {employee.employee}
+                        </Text>
+                    </View>
+                    <View style={styles.ContainerInner}>
+                        <Text style={styles.subFont}>Nama Karyawan Terdaftar</Text>
                         <Text style={styles.myFont}>
                             {employee.employee_name}
                         </Text>
                     </View>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Tanggal Lahir</Text>
+                        <Text style={styles.subFont}>Perusahaan</Text>
                         <Text style={styles.myFont}>
-                            {employee.date_of_birth}
+                            {employee.company}
                         </Text>
                     </View>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Tempat Tinggal</Text>
+                        <Text style={styles.subFont}>Email Perusahaan</Text>
                         <Text style={styles.myFont}>
-                            {employee.current_address}
+                            {employee.company_email}
                         </Text>
                     </View>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Domisili</Text>
+                        <Text style={styles.subFont}>Departemen</Text>
                         <Text style={styles.myFont}>
-                            {employee.permanent_address}
+                            {employee.department}
                         </Text>
                     </View>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Golongan Darah</Text>
+                        <Text style={styles.subFont}>Jabatan</Text>
                         <Text style={styles.myFont}>
-                            {employee.blood_group}
-                        </Text>
-                    </View>
-                    <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Status Perkawinan</Text>
-                        <Text style={styles.myFont}>
-                            {employee.marital_status}
+                            {employee.designation}
                         </Text>
                     </View>
                 </Layout>
                 <Text style={{ fontFamily: 'Medium', fontSize: 18, marginTop: '5%', marginHorizontal: 20 }}>Kontak Darurat</Text>
                 <Layout level={'4'} style={{ marginTop: 20, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 20, borderRadius: 20 }}>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Kontak Darurat</Text>
+                        <Text style={styles.subFont}>Tanggal Bergabung</Text>
                         <Text style={styles.myFont}>
-                            {employee.emergency_phone_number}
+                            {employee.date_of_joining}
                         </Text>
                     </View>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Telp. Darurat</Text>
+                        <Text style={styles.subFont}>Shift</Text>
                         <Text style={styles.myFont}>
-                            {employee.relation}
+                            {employee.default_shift}
                         </Text>
                     </View>
                     <View style={styles.ContainerInner}>
-                        <Text style={styles.subFont}>Nama Kontak Darurat</Text>
+                        <Text style={styles.subFont}>Tipe Pekerjaan</Text>
                         <Text style={styles.myFont}>
-                            {employee.person_to_be_contacted}
+                            {employee.employment_type}
                         </Text>
                     </View>
                 </Layout>

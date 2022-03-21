@@ -20,7 +20,10 @@ import {
     TaskScreen,
     NoteScreen,
     NotificationScreen,
-    InformationUser
+    InformationUser,
+    EmployeeInformation,
+    EmployeeSkill,
+    ChangePassword
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -252,7 +255,37 @@ const RoutingValue = () => {
                     }
                 }} />
                 <Stack.Screen name="UserInfo" component={InformationUser} options={{
+                    title: 'User Information',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="EmployeeInformation" component={EmployeeInformation} options={{
                     title: 'Employee Information',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="EmployeeSkill" component={EmployeeSkill} options={{
+                    title: 'Employee Skill Map',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="ChangePassword" component={ChangePassword} options={{
+                    title: 'Ubah Password',
                     headerStyle: {
                         backgroundColor: '#000'
                     },

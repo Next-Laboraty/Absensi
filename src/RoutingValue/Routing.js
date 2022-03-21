@@ -17,6 +17,9 @@ import TaskScreen from "../Screens/HomeScreen/TaskScreen"
 import NoteScreen from "../Screens/HomeScreen/NoteScreen"
 import NotificationScreen from "../Screens/NotificationScreen";
 import InformationUser from "../Screens/UserScreen/InformationUser"
+import EmployeeInformation from "../Screens/UserScreen/EmployeeInformation"
+import EmployeeSkill from "../Screens/UserScreen/EmployeeSkill"
+import ChangePassword from "../Screens/UserScreen/ChangePassword";
 
 export {
     LoginScreen,
@@ -37,5 +40,8 @@ export {
     History,
     NoteScreen,
     NotificationScreen,
-    InformationUser
+    InformationUser,
+    EmployeeInformation,
+    EmployeeSkill,
+    ChangePassword
 }
