@@ -23,7 +23,7 @@ export default class UserScreen extends Component {
                 <InformationWithPhoto />
                 <HeaderOptions Textrt="Informasi Saya" />
                 <View style={{ marginBottom: 30 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('UserInfo')}>
                         <MyInfoMenu NameMenu="Informasi Pribadi" Imag={require('../../../assets/User.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -32,7 +32,7 @@ export default class UserScreen extends Component {
                     <TouchableOpacity>
                         <MyInfoMenu NameMenu="Informasi Kontak Darurat" Imag={require('../../../assets/emergency.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity >
                         <MyInfoMenu NameMenu="Informasi Keahlian" Imag={require('../../../assets/Payroll.png')} />
                     </TouchableOpacity>
 

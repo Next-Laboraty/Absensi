@@ -19,7 +19,8 @@ import {
     History,
     TaskScreen,
     NoteScreen,
-    NotificationScreen
+    NotificationScreen,
+    InformationUser
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -242,6 +243,16 @@ const RoutingValue = () => {
                 }} />
                 <Stack.Screen name="Notification" component={NotificationScreen} options={{
                     title: 'Notification',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="UserInfo" component={InformationUser} options={{
+                    title: 'Employee Information',
                     headerStyle: {
                         backgroundColor: '#000'
                     },

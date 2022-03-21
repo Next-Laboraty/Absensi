@@ -16,6 +16,7 @@ import History from "../Screens/AttendanceScreen/History";
 import TaskScreen from "../Screens/HomeScreen/TaskScreen"
 import NoteScreen from "../Screens/HomeScreen/NoteScreen"
 import NotificationScreen from "../Screens/NotificationScreen";
+import InformationUser from "../Screens/UserScreen/InformationUser"
 
 export {
     LoginScreen,
@@ -35,5 +36,6 @@ export {
     TaskScreen,
     History,
     NoteScreen,
-    NotificationScreen
+    NotificationScreen,
+    InformationUser
 }
