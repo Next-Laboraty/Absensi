@@ -31,9 +31,9 @@ export default function EmployeeSkill() {
                 </Layout>
                 :
                 <Layout level={'4'} style={{ marginHorizontal: 20, paddingVertical: 20, paddingHorizontal: 20, marginVertical: 20, borderRadius: 20, alignContent: 'center' }}>
-                    <Text status={'primary'} style={{ fontFamily: 'Medium' }}>Kemampuan</Text>
+                    <Text status={'primary'} style={{ fontFamily: 'Medium',marginBottom:10 }}>Kemampuan</Text>
+                    <ScrollView>
                     {skills.map((ix) => (
-                        <ScrollView>
                             <View key={ix.name}>
                                 <Layout level={'4'} style={{ flexDirection: 'row' }}>
                                     <View style={{ marginRight: 10 }}>
@@ -43,9 +43,9 @@ export default function EmployeeSkill() {
                                     <Text style={{ flex: 1 }}>{ix.skill}</Text>
                                 </Layout>
                                 <Divider></Divider>
-                            </View>
-                        </ScrollView>
+                                </View>
                     ))}
+                    </ScrollView>
                 </Layout>
             }
         </Layout>

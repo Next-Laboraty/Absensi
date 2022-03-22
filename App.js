@@ -55,7 +55,7 @@ export default function HeaderTitle() {
     return <AppLoading />;
   }
   return (
-    <ApplicationProvider {...eva} theme={eva.dark}>
+    <ApplicationProvider {...eva} theme={eva.light}>
       <Provider store={store}>
         <RoutingValue />
       </Provider>

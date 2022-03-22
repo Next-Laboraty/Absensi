@@ -18,6 +18,7 @@ import { getDownloadURL } from 'firebase/storage';
 import AxiosPostData from '../../../lib/AxiosPostData';
 import { Layout, Spinner, Text, Icon, Button } from '@ui-kitten/components';
 import { Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
+import WebhookUrl from '../../../lib/WebhookUrl';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -93,7 +94,7 @@ export default function App() {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
         UploadClientVisit(blob).then(async (res) => {
-          const servers = `https://${base64.decodeString(server)}/api/resource/Visiting Client`
+          const servers = `	https://eo4475g9a2hfb6.m.pipedream.net`
           const url = await getDownloadURL(res.ref)
           let payload = {
             employee: employee.employee,
@@ -102,11 +103,17 @@ export default function App() {
             longitude,
             latitude
           }
-          AxiosPostData(servers, base64.decodeString(token), payload).then(res => {
+          const DataX = {
+            type: 'ClientVisit',
+            payload,
+            server: base64.decodeString(server),
+            token: base64.decodeString(token)
+          }
+          WebhookUrl(DataX).then(() => {
             setLoaded(false)
             setMsg(true)
-          }).catch(err => setVisible(true))
-        }).catch(err => setVisible(true))
+          }).catch((err) => setVisible(true))
+        }).catch(err => console.log(err))
       }
     }
   };
@@ -135,9 +142,9 @@ export default function App() {
     }
     if (loaded) {
       return (
-        <View style={{alignItems:'center'}}>
-          <Spinner size={'tiny'} style={{alignSelf:'center'}}/>
-          <Text style={{textAlign:'center',marginTop:'5%'}}>Mengirim Data ke server {base64.decodeString(server)}</Text>
+        <View style={{ alignItems: 'center' }}>
+          <Spinner size={'tiny'} style={{ alignSelf: 'center' }} />
+          <Text style={{ textAlign: 'center', marginTop: '5%' }}>Mengirim Data ke server {base64.decodeString(server)}</Text>
         </View>
       )
     }

@@ -9,7 +9,7 @@ export default function AxiosGetEmployee(url,token){
             'Accept-Language': 'application/json',
             'Authorization': `token ${token}`
         },
-        timeout: 1000
+        timeout: 30000
     })
     return response
 }
