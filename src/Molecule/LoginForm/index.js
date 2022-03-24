@@ -80,6 +80,7 @@ export default function LoginForm(props) {
                         const urlX = `https://${server}/api/resource/Employee?fields=["*"]&filters=[["user_id","=","${AkunServer}"]]`
                         AxiosGetEmployee(urlX,base64.decodeString(token)).then(res=>{
                             const employee = JSON.stringify(res.data.data[0])
+                            writeEmployeeData(base64.encodeString(AkunServer),res.data.data[0])
                             AsyncPenyimpanan('@AccountEmployee', employee)
                             dispatch(employee_data(JSON.parse(employee)))
                             RegisterForPushNotificationsAsync().then(res=>{
@@ -102,6 +103,11 @@ export default function LoginForm(props) {
         }
 
     }
+    function writeEmployeeData(email, data) {
+        const db = getDatabase();
+        const exit = set(ref(db, 'Employee/' + email + '/dataKaryawan'), data);
+        return exit
+      }
     function writeUserData(userMail, notificationToken) {
         const db = getDatabase();
         const exit = set(ref(db, 'NotificationUser/' + userMail), notificationToken);
@@ -112,8 +118,6 @@ export default function LoginForm(props) {
             dataHeader,
             textPayload
         );
-        let data = await AsyncStorage.getItem(dataHeader)
-        console.log(data)
     }
     return (
         <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

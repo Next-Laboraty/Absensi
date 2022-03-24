@@ -130,12 +130,12 @@ export default function App() {
     return <Text style={styles.text}>No access to camera</Text>;
   }
   const StatusCamer = () => {
+    if (msg) {
+      return (
+        <Text style={{fontFamily:'Regular'}}>Data Berhasil di Input</Text>
+      )
+    }
     if (!latitude && !latitude) {
-      if (msg) {
-        return (
-          <Text>Data Berhasil di Input</Text>
-        )
-      }
       return (
         <Spinner size={'tiny'} />
       )

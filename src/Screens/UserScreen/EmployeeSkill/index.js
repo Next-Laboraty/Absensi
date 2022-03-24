@@ -5,18 +5,23 @@ import { View, ScrollView } from 'react-native'
 import { useSelector } from "react-redux";
 import AxiosGetEmployee from "../../../lib/AxiosGetEmployee";
 import { AntDesign } from '@expo/vector-icons';
-
+import { getDatabase, ref, child, get } from "firebase/database";
 export default function EmployeeSkill() {
+    const dbRef = ref(getDatabase());
     const { employee, server, token } = useSelector(state => state.employee)
     const [loading, setLoading] = useState(true)
     const [skills, setSkills] = useState([])
-    const url = 'https://' + base64.decodeString(server) + '/api/resource/Employee%20Skill%20Map/' + employee.employee
-    const tokens = base64.decodeString(token)
     useEffect(() => {
-        AxiosGetEmployee(url, tokens).then(res => {
-            setLoading(false)
-            setSkills(res.data.data.employee_skills)
-        }).catch(err => console.log(err))
+        get(child(dbRef, `Employee/` + base64.encodeString(employee.user_id) + '/Skill')).then((snapshot) => {
+            if (snapshot.exists()) {
+              setSkills(snapshot.val());
+              setLoading(false)
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
     }, [])
 
     return (
@@ -31,9 +36,9 @@ export default function EmployeeSkill() {
                 </Layout>
                 :
                 <Layout level={'4'} style={{ marginHorizontal: 20, paddingVertical: 20, paddingHorizontal: 20, marginVertical: 20, borderRadius: 20, alignContent: 'center' }}>
-                    <Text status={'primary'} style={{ fontFamily: 'Medium',marginBottom:10 }}>Kemampuan</Text>
+                    <Text status={'primary'} style={{ fontFamily: 'Medium', marginBottom: 10 }}>Kemampuan</Text>
                     <ScrollView>
-                    {skills.map((ix) => (
+                        {skills.map((ix) => (
                             <View key={ix.name}>
                                 <Layout level={'4'} style={{ flexDirection: 'row' }}>
                                     <View style={{ marginRight: 10 }}>
@@ -43,8 +48,8 @@ export default function EmployeeSkill() {
                                     <Text style={{ flex: 1 }}>{ix.skill}</Text>
                                 </Layout>
                                 <Divider></Divider>
-                                </View>
-                    ))}
+                            </View>
+                        ))}
                     </ScrollView>
                 </Layout>
             }

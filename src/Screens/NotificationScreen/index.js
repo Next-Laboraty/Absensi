@@ -1,72 +1,23 @@
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform } from 'react-native';
-
+import { Layout, Text } from "@ui-kitten/components";
+import React from "react";
+import { useSelector } from "react-redux";
 
 export default function NotificationScreen() {
+  const { notif } = useSelector(state => state.Notifikasi)
+  const notX = Object.values(notif)
+  console.log(notif)
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-      }}
-    >
-      {/* <Text>Your expo push token:</Text>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-      </View> */}
-      <Button
-        title="Press to schedule a notification"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
-      />
-    </View>
-  );
-}
-
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 2 },
-  });
-}
-
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Constants.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
-
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  return token;
+    <Layout style={{ flex: 1 }}>
+      <Layout style={{margin:20}}>
+        {/* {notX.map((ix) => 
+        <Layout level={'3'} style={{padding:10,borderRadius:10,marginVertical:5}} key={ix.trigger.remoteMessage.messageId}>
+          <Text style={{fontFamily:'Medium'}}>{ix.content.title}</Text>
+          <Text style={{fontFamily:'Regular'}}>{ix.content.body}</Text>
+        </Layout>
+        )
+        } */}
+        <Text style={{fontFamily:'Medium'}}>Under Maintenance</Text>
+      </Layout>
+    </Layout>
+  )
 }

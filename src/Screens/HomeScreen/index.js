@@ -7,17 +7,48 @@ import HeaderOption from '../../Atomic/HeaderOptions';
 import ButtonFeatures from '../../Molecule/ButtonFeatures';
 import HomeScreenBody from '../../Molecule/HomeScreenBody';
 import { Camera } from 'expo-camera';
-import { getDatabase } from "firebase/database";
-export default function HomeScreen({ navigation }) {
-    const [hasPermission, setHasPermission] = useState(null);
+import { getDatabase, ref, onValue, set,get,child} from "firebase/database";
+import { useDispatch, useSelector } from "react-redux";
+import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
+import RegisterForPushNotificationsAsync from '../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync';
+import * as Notifications from 'expo-notifications';
+import {base64} from '@firebase/util'
 
+export default function HomeScreen({ navigation }) {
+    const dispatch = useDispatch()
+    const [hasPermission, setHasPermission] = useState(null);
+    const {employee} = useSelector(state => state.employee)
+    const db = getDatabase();
+    const dbRef = ref(getDatabase());
+
+    const getTodo = () => {
+        get(child(dbRef, `ToDo/${base64.encodeString(employee.user_id)}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                dispatch(MASUKAN_TODO(Object.values(snapshot.val())))
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+    
     useEffect(() => {
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
         })();
-    }, []);
+        getTodo()
+        RegisterForPushNotificationsAsync().then(res => set(ref(db, 'NotificationUser/' + base64.encodeString(employee.user_id)), res)).catch(err => console.log(err))
+        // const starCountRef = ref(db, `ToDo/${base64.encodeString(employee.user_id)}`);
+        // onValue(starCountRef, (snapshot) => {
+        //     schedulePushNotification()
+        //     console.log(snapshot.val)
+        //     console.log('data')
+        // });
 
+
+    }, []);
     if (hasPermission === null) {
         return <View />;
     }
@@ -28,7 +59,7 @@ export default function HomeScreen({ navigation }) {
         <View style={{ flex: 1 }}>
             <StatusBar hidden={true} style="light" />
             {/* Header Name */}
-            <HeaderNameAndNotif navigation={navigation}/>
+            <HeaderNameAndNotif navigation={navigation} />
             <BannerHeader color="#FFE6AB" nav="Home" textlink="Kehadiran" />
             {/* Banner */}
             <HeaderOption Textrt="Alat Kantor" />

@@ -11,8 +11,18 @@ import { base64 } from "@firebase/util";
 import { MASUKAN_TASK } from '../../features/desk/deskSlice'
 import LoadData from "./LoadData";
 // import loginFirebase from '../../lib/loginFirebase';
+import * as TaskManager from 'expo-task-manager';
+import * as Notifications from 'expo-notifications';
+
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+
+TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, ({ data, error, executionInfo }) => {
+  console.log('Received a notification in the background!');
+  // Do something with the notification data
+});
 
 export default function SplashScreen({ navigation, data }) {
+    Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
     useEffect(() => {
         FirstCome()
     }, [])

@@ -3,6 +3,7 @@ import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'rea
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 
+
 export default function ButtonFeatures(props) {
     const { GET_TASK, GET_TODO,GET_BULETIN } = useSelector((state) => state.DESK_MANAGER)
     const [taskCompleted, setTaskCompleted] = useState()

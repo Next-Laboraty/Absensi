@@ -3,33 +3,56 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import * as Notifications from 'expo-notifications';
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
+import { getDatabase, ref, onValue } from "firebase/database";
+import { base64 } from "@firebase/util";
+import { tambahNotifikasi } from '../../features/Notifikasi/NotifikasiSlice';
 
 
 export default function HeaderNameAndNotif(props) {
-    const {employee} = useSelector((state) => state.employee)
+    const db = getDatabase();
+    const dispatch = useDispatch()
+    const { employee } = useSelector((state) => state.employee)
+    const { notif } = useSelector(state => state.Notifikasi)
     const [notificationCount, setNotificationCount] = useState(0)
     const notificationListener = useRef();
     const responseListener = useRef();
     const [notification, setNotification] = useState(false);
     const [notificationd, setNotificationd] = useState([]);
+    const starCountRef = ref(db, `ToDo/${base64.encodeString(employee.user_id)}`);
     useEffect(() => {
+        console.log(notif)
+        // onValue(starCountRef, (snapshot) => {
+        //     schedulePushNotification()
+        // });
+        Notifications.getBadgeCountAsync().then(res=>setNotificationCount(res))
+
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             setNotification(notification);
             setNotificationCount(notificationCount + 1)
             notificationd.push(notification)
-            console.log(notification)
+            // console.log('LAH' + notification)
         });
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
+            dispatch(tambahNotifikasi(response))
         });
 
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);
             Notifications.removeNotificationSubscription(responseListener.current);
         };
-    }, [useEffect])
+    }, [])
     const NotifTambah = () => {
         setNotificationCount(notificationCount + 1)
+    }
+    async function schedulePushNotification() {
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: "You've got mail! 📬",
+                body: 'Here is the notification body',
+                data: { data: 'goes here' },
+            },
+            trigger: { seconds: 2 },
+        });
     }
     return (
         <View style={styles.header}>
@@ -44,11 +67,11 @@ export default function HeaderNameAndNotif(props) {
                         ?
                         <>
                             <Ionicons name="notifications" size={24} color="red" />
-                            <Text style={{ fontFamily: 'Regular', position: 'absolute', fontSize: 10, left: -7, color: 'red' }}>{notificationCount}</Text>
+                            <View style={{ width: 5, height: 5, backgroundColor: 'red', position: 'absolute', borderRadius: 120 / 2 }}></View>
                         </>
                         :
                         <Ionicons name="notifications-outline" size={24} color="#2C3333" />
-                    } 
+                    }
                 </TouchableOpacity>
             </View>
         </View>
