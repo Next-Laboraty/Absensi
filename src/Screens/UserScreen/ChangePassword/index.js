@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { base64 } from "@firebase/util";
 import WebhookUrl from "../../../lib/WebhookUrl";
 import { Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
+import WebSocketLocal from "../../../lib/WebSocketLocal";
 
 export default function ChangePassword() {
     const { employee, server, token } = useSelector(state => state.employee)
@@ -47,9 +48,10 @@ export default function ChangePassword() {
                 payload,
                 server: base64.decodeString(server),
                 token: base64.decodeString(token),
-                employee: employee.employee
+                employee: employee.user_id
             }
-            WebhookUrl(DataX).then(() => {
+            WebSocketLocal('user', DataX).then((res) => {
+                console.log(res)
                 setMsg(`Berhasil mengubah Password`)
                 setVisible(true)
             }).catch((err) =>{

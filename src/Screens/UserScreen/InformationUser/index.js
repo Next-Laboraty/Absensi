@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 
 export default function InformationUser() {
     const { employee } = useSelector(state => state.employee)
-    console.log(employee)
     return (
         <Layout style={{ flex: 1 }}>
             <ScrollView>

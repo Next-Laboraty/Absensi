@@ -23,7 +23,11 @@ import {
     InformationUser,
     EmployeeInformation,
     EmployeeSkill,
-    ChangePassword
+    ChangePassword,
+    LihatTodo,
+    NewTodo,
+    SeeTask,
+    TugasBaru
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -286,6 +290,46 @@ const RoutingValue = () => {
                 }} />
                 <Stack.Screen name="ChangePassword" component={ChangePassword} options={{
                     title: 'Ubah Password',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                 <Stack.Screen name="SeeTodo" component={LihatTodo} options={{
+                    title: 'To Do Reader',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="NewTodo" component={NewTodo} options={{
+                    title: 'New To Do',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="SeeTask" component={SeeTask} options={{
+                    title: 'Task Reader',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="TugasBaru" component={TugasBaru} options={{
+                    title: 'New Task',
                     headerStyle: {
                         backgroundColor: '#000'
                     },

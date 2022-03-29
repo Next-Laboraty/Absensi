@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import * as Notifications from 'expo-notifications';
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, get, child,query,orderByValue,onValue,orderByKey,orderByChild } from "firebase/database";
 import { base64 } from "@firebase/util";
 import { tambahNotifikasi } from '../../features/Notifikasi/NotifikasiSlice';
-
+import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
+const dbRef = ref(getDatabase());
 
 export default function HeaderNameAndNotif(props) {
     const db = getDatabase();
@@ -20,29 +21,56 @@ export default function HeaderNameAndNotif(props) {
     const [notificationd, setNotificationd] = useState([]);
     const starCountRef = ref(db, `ToDo/${base64.encodeString(employee.user_id)}`);
     useEffect(() => {
-        console.log(notif)
         // onValue(starCountRef, (snapshot) => {
         //     schedulePushNotification()
         // });
-        Notifications.getBadgeCountAsync().then(res=>setNotificationCount(res))
-
+        Notifications.getBadgeCountAsync().then(res => setNotificationCount(res))
+        getTodo()
+        getTask()
+        getBuletin()
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             setNotification(notification);
             setNotificationCount(notificationCount + 1)
             notificationd.push(notification)
-            // console.log('LAH' + notification)
         });
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             dispatch(tambahNotifikasi(response))
         });
-
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);
             Notifications.removeNotificationSubscription(responseListener.current);
         };
-    }, [])
-    const NotifTambah = () => {
-        setNotificationCount(notificationCount + 1)
+    })
+    const getTask = () => {
+        get(child(dbRef, `Task/${base64.encodeString(employee.user_id)}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                dispatch(MASUKAN_TASK(Object.values(snapshot.val())))
+
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+    const getBuletin = () => {
+        get(child(dbRef, `Buletin`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                dispatch(MASUKAN_CATATAN(Object.values(snapshot.val())))
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+    const getTodo = () => {
+        const emp = base64.encodeString(employee.user_id)
+        const TodoRef = query(ref(db, 'ToDo/' + emp), orderByKey())
+        onValue(TodoRef, (snapshot) => {
+            const data = Object.values(snapshot.val());
+            dispatch(MASUKAN_TODO(data))
+        })
     }
     async function schedulePushNotification() {
         await Notifications.scheduleNotificationAsync({

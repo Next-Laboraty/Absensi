@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { base64 } from "@firebase/util";
-import { MaterialIcons, Entypo,AntDesign } from '@expo/vector-icons';
+import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 import 'moment/locale/id'
 import ListAllDataTodo from '../../../Molecule/ListAllDataTodo';
 import ReloadButton from '../../../Atomic/ButtonReload';
 
-export default function TaskScreen() {
+export default function TaskScreen({ route, navigation }) {
     const { employee, server, token } = useSelector(state => state.employee)
     const { GET_TODO } = useSelector(state => state.DESK_MANAGER)
     const [taskList, setTaskList] = useState(GET_TODO)
@@ -28,10 +28,10 @@ export default function TaskScreen() {
     })
     return (
         <Layout style={{ flex: 1 }}>
-            <Layout level={'4'} style={{height: '20%', borderRadius: 20, marginHorizontal: 20, marginVertical: '2%' }}>
+            <Layout level={'4'} style={{ height: '20%', borderRadius: 20, marginHorizontal: 20, marginVertical: '2%' }}>
                 <View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ margin: 8, alignSelf: 'center',flex:1,marginLeft:30 }}>
+                        <View style={{ margin: 8, alignSelf: 'center', flex: 1, marginLeft: 30 }}>
                             <Avatar size='large' source={{ uri: 'https://' + url + employee.image }} />
                         </View>
                         <ReloadButton />
@@ -64,14 +64,21 @@ export default function TaskScreen() {
             </Layout>
             <ScrollView style={{ flex: 1 }}>
                 {taskList.map((dataReturn) =>
-                    <TouchableOpacity key={dataReturn.name} style={{marginVertical:5}}>
+                    <TouchableOpacity key={dataReturn.name} style={{ marginVertical: 5 }} onPress={() => {
+                        navigation.navigate('SeeTodo', {
+                            todoID: dataReturn.name
+                        })
+                        console.log(dataReturn.name)
+                    }}>
                         <Layout level={'2'}>
                             <ListAllDataTodo key={dataReturn.name} Freedom={dataReturn.name} status={dataReturn.status} modified={dataReturn.modified} dibuat={dataReturn.creation} subject={dataReturn.assigned_by_full_name} />
                         </Layout>
                     </TouchableOpacity>
                 )}
             </ScrollView>
-            <Button size={'tiny'} status='success' style={{ height: 40, flex: 1, marginHorizontal: 20,position:'absolute',top:'90%',left:'80%',borderRadius:120/2,width:40 }} appearance='outline'><AntDesign name="pluscircleo" size={24} color="black" /></Button>
+            <Button onPress={()=>navigation.navigate('NewTodo',{
+                server
+            })} size={'tiny'} status='success' style={{ height: 40, flex: 1, marginHorizontal: 20, position: 'absolute', top: '90%', left: '80%', borderRadius: 120 / 2, width: 40 }} appearance='outline'><AntDesign name="pluscircleo" size={24} color="black" /></Button>
         </Layout>
     )
 }

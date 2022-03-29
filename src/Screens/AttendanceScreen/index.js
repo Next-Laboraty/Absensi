@@ -6,6 +6,7 @@ import ListLog from '../../Molecule/ListLog';
 import AttendanceHeader from '../../Molecule/AttendanceHeader';
 import ButtonBottom from '../../Atomic/ButtonBottom';
 import JamComponent from '../../Atomic/JamComponent';
+import AttendanceButton from '../../Molecule/AttendanceButton';
 
 export default class AttendanceScreen extends Component {
     render() {
@@ -19,18 +20,7 @@ export default class AttendanceScreen extends Component {
                         <View style={{ height: 1, width: 164, backgroundColor: '#2C3333', alignSelf: 'center' }}>
 
                         </View>
-                        <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20, marginBottom: 80 }}>
-                            <TouchableOpacity style={styles.buttonAttendance1}>
-                                <Text style={styles.textAttendances}>
-                                    Bekerja
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonAttendance2} disabled={true}>
-                                <Text style={styles.textAttendances}>
-                                    Pulang
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        <AttendanceButton />
                     </View>
 
                 </View>

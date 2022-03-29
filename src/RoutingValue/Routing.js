@@ -20,6 +20,10 @@ import InformationUser from "../Screens/UserScreen/InformationUser"
 import EmployeeInformation from "../Screens/UserScreen/EmployeeInformation"
 import EmployeeSkill from "../Screens/UserScreen/EmployeeSkill"
 import ChangePassword from "../Screens/UserScreen/ChangePassword";
+import LihatTodo from "../Screens/DoScreen/Todo/LihatTodo";
+import NewTodo from "../Screens/DoScreen/Todo/NewTodo";
+import SeeTask from "../Screens/HomeScreen/TaskScreen/SeeTask";
+import TugasBaru from "../Screens/HomeScreen/TaskScreen/TugasBaru";
 
 export {
     LoginScreen,
@@ -43,5 +47,9 @@ export {
     InformationUser,
     EmployeeInformation,
     EmployeeSkill,
-    ChangePassword
+    ChangePassword,
+    LihatTodo,
+    NewTodo,
+    SeeTask,
+    TugasBaru
 }

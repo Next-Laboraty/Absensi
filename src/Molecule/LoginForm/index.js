@@ -84,7 +84,7 @@ export default function LoginForm(props) {
                             AsyncPenyimpanan('@AccountEmployee', employee)
                             dispatch(employee_data(JSON.parse(employee)))
                             RegisterForPushNotificationsAsync().then(res=>{
-                                writeUserData(base64.encodeString(AkunServer),res)
+                                writeUserData(base64.encodeString(AkunServer),res,base64.encodeString(server))
                                 props.nav.replace('BottomTabsNavigator')
 
                             }).catch(err=>console.log(err))
@@ -108,9 +108,9 @@ export default function LoginForm(props) {
         const exit = set(ref(db, 'Employee/' + email + '/dataKaryawan'), data);
         return exit
       }
-    function writeUserData(userMail, notificationToken) {
+    function writeUserData(userMail, notificationToken,servers) {
         const db = getDatabase();
-        const exit = set(ref(db, 'NotificationUser/' + userMail), notificationToken);
+        const exit = set(ref(db, 'NotificationUser/' +servers+'/'+ userMail), notificationToken);
         return exit
       }
     const AsyncPenyimpanan = async (dataHeader, textPayload) => {

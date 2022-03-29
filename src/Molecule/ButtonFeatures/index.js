@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 
 export default function ButtonFeatures(props) {
-    const { GET_TASK, GET_TODO,GET_BULETIN } = useSelector((state) => state.DESK_MANAGER)
+    const { GET_TASK, GET_TODO, GET_BULETIN } = useSelector((state) => state.DESK_MANAGER)
     const [taskCompleted, setTaskCompleted] = useState()
     const [taskWorking, setTaskWorking] = useState()
     const [todoCount, setTodoCount] = useState()
@@ -24,7 +24,7 @@ export default function ButtonFeatures(props) {
     return (
         <View style={styles.bannerKantor}>
             <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.rowKantor1} onPress={()=>props.navigation.navigate('Task')}>
+                <TouchableOpacity style={styles.rowKantor1} onPress={() => props.navigation.navigate('Task')}>
                     <View style={{ width: 55, height: 55, backgroundColor: '#D1EFFF', alignSelf: 'center', borderRadius: 120 / 2 }}>
                         <MaterialIcons name="add-task" size={28} color="#648CA0" style={{ textAlign: 'center', marginTop: 12 }} />
                     </View>
@@ -33,7 +33,10 @@ export default function ButtonFeatures(props) {
                     <Text style={{ fontFamily: 'Regular', fontSize: 10, marginHorizontal: 20, color: '#7A7979' }}>{taskWorking} Sedang dikerjakan</Text>
                 </TouchableOpacity>
                 <View style={styles.rowKantor2} >
-                    <TouchableOpacity style={styles.rowKantor2_1} onPress={()=>props.navigation.navigate('todo')}>
+                    <TouchableOpacity style={styles.rowKantor2_1} onPress={() => props.navigation.navigate('todo', {
+                        itemId: 86,
+                        otherParam: 'anything you want here',
+                    })}>
                         <View style={{ width: 40, height: 40, backgroundColor: '#E4E2FB', borderRadius: 120 / 2, }}>
                             <Ionicons name="checkmark-done" size={28} color="#817E9F" style={{ textAlign: 'center', marginTop: 7 }} />
                         </View>
@@ -42,7 +45,7 @@ export default function ButtonFeatures(props) {
                             <Text style={{ fontFamily: 'Regular', fontSize: 10, color: '#7A7979' }}>{todoCount} Pekerjaan</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.rowKantor2_2} onPress={()=>props.navigation.navigate('Bulletin')}>
+                    <TouchableOpacity style={styles.rowKantor2_2} onPress={() => props.navigation.navigate('Bulletin')}>
                         <View style={{ width: 40, height: 40, backgroundColor: '#caf0f8', borderRadius: 120 / 2, }}>
                             <MaterialIcons name="event-note" size={28} color="#6B8E7B" style={{ textAlign: 'center', marginTop: 7 }} />
                         </View>

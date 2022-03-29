@@ -9,7 +9,7 @@ import 'moment/locale/id'
 import ListAllDataTask from '../../../Molecule/ListAllDataTask';
 import ReloadButton from '../../../Atomic/ButtonReload';
 
-export default function TaskScreen() {
+export default function TaskScreen({navigation}) {
     const { employee, server, token } = useSelector(state => state.employee)
     const { GET_TASK } = useSelector(state => state.DESK_MANAGER)
     const [taskList, setTaskList] = useState(GET_TASK)
@@ -64,14 +64,16 @@ export default function TaskScreen() {
             </Layout>
             <ScrollView style={{ flex: 1 }}>
                 {taskList.map((dataReturn) =>
-                    <TouchableOpacity key={dataReturn.name}>
+                    <TouchableOpacity key={dataReturn.name} onPress={()=>navigation.navigate('SeeTask',{
+                        TaskID:dataReturn.name
+                    })}>
                         <Layout level={'2'} style={{ marginVertical: 2 }}>
                             <ListAllDataTask key={dataReturn.name} Freedom={dataReturn.name} status={dataReturn.status} modified={dataReturn.modified} subject={dataReturn.subject} />
                         </Layout>
                     </TouchableOpacity>
                 )}
             </ScrollView>
-            <Button size={'tiny'} status='success' style={{ height: 40, flex: 1, marginHorizontal: 20, position: 'absolute', top: '90%', left: '80%', borderRadius: 120 / 2, width: 40 }} appearance='outline'><AntDesign name="pluscircleo" size={24} color="black" /></Button>
+            <Button onPress={()=>navigation.navigate('TugasBaru')} size={'tiny'} status='success' style={{ height: 40, flex: 1, marginHorizontal: 20, position: 'absolute', top: '90%', left: '80%', borderRadius: 120 / 2, width: 40 }} appearance='outline'><AntDesign name="pluscircleo" size={24} color="black" /></Button>
         </Layout>
     )
 }

@@ -14,7 +14,6 @@ export default async function RegisterForPushNotificationsAsync() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -26,7 +25,6 @@ export default async function RegisterForPushNotificationsAsync() {
         vibrationPattern: [0, 250, 250, 250],
         lightColor: '#FF231F7C',
       });
-      console.log(token);
     }
   
     return token;
