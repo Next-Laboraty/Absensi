@@ -27,7 +27,8 @@ import {
     LihatTodo,
     NewTodo,
     SeeTask,
-    TugasBaru
+    TugasBaru,
+    SeeNote
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -330,6 +331,16 @@ const RoutingValue = () => {
                 }} />
                 <Stack.Screen name="TugasBaru" component={TugasBaru} options={{
                     title: 'New Task',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="NoteSee" component={SeeNote} options={{
+                    title: 'Note Reader',
                     headerStyle: {
                         backgroundColor: '#000'
                     },

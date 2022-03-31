@@ -51,7 +51,7 @@ export default function HomeScreen({ navigation }) {
             <StatusBar hidden={true} style="light" />
             {/* Header Name */}
             <HeaderNameAndNotif navigation={navigation} />
-            <BannerHeader color="#FFE6AB" nav="Home" textlink="Kehadiran" />
+            <BannerHeader color="#FFE6AB" nav="Attendance" textlink="Kehadiran" navigation={navigation} />
             {/* Banner */}
             <HeaderOption Textrt="Alat Kantor" />
             {/* Alat Kantor */}

@@ -14,7 +14,7 @@ export default class DoScreen extends Component {
                 <View style={{ flex: 1 }}>
 
                     <HeaderNameAndNotif />
-                    <BannerHeader color="#9DF3C4" nav="Do" textlink="HRIS" navigation={this.props.navigation} />
+                    <BannerHeader color="#9DF3C4" nav="Chat" textlink="Chat Management" navigation={this.props.navigation} />
                     {/* End Banner */}
                     <HeaderOption Textrt="Sistem Informasi" />
                     <View style={styles.newRow}>
@@ -22,28 +22,24 @@ export default class DoScreen extends Component {
                             <ButtonRows text={`Permintaan\nKehadiran`} nav={`AttendanceRequest`} navigation={this.props.navigation} image={require('../../../assets/time.png')} />
                             <ButtonRows text={`Aplikasi\nCuti`} nav={`AplikasiCuti`} navigation={this.props.navigation} image={require('../../../assets/manual.png')}/>
                             <ButtonRows text={`Aplikasi\nLembur`} nav={`AplikasiLembur`} navigation={this.props.navigation} image={require('../../../assets/clock-out.png')}/>
-                            <ButtonRows text={`Program\nPelatihan`} nav={`ProgramPelatihan`} navigation={this.props.navigation}/>
+                            <ButtonRows text={`Program\nPelatihan`} nav={`ProgramPelatihan`} navigation={this.props.navigation} image={require('../../../assets/training.png')}/>
                         </View>
                         <View style={styles.rows}>
-                            <ButtonRows text={`Penilaian\nKPI`} nav={`PenilaianKPI`} navigation={this.props.navigation} />
-                            <ButtonRows text={`TO DO`} nav={`todo`} navigation={this.props.navigation} />
-                            <ButtonRows text={`Project`} nav={`Project`} navigation={this.props.navigation} />
-                            <ButtonRows text={`Daily Report`} nav={`DailyReport`} navigation={this.props.navigation} />
+                            <ButtonRows text={`Penilaian\nKPI`} nav={`PenilaianKPI`} navigation={this.props.navigation} image={require('../../../assets/kpi.png')} />
+                            <ButtonRows text={`TO DO`} nav={`todo`} navigation={this.props.navigation} image={require('../../../assets/checklist.png')}  />
+                            <ButtonRows text={`Project`} nav={`Project`} navigation={this.props.navigation} image={require('../../../assets/idea.png')}  />
+                            <ButtonRows text={`Daily Report`} nav={`DailyReport`} navigation={this.props.navigation} image={require('../../../assets/clipboard.png')}  />
                         </View>
                     </View>
                     <HeaderOption Textrt="Keuangan" />
                     <View style={styles.newRow}>
                         <View style={styles.rows}>
-                            <ButtonRows text={`Slip Gaji`} nav={`SalarySlip`} navigation={this.props.navigation} />
-                            <ButtonRows text={`Permohonan\nPinjaman`} nav={`SalarySlip`} navigation={this.props.navigation} />
-                            <ButtonRows text={`Reimbursement`} nav={`Reimusement`} navigation={this.props.navigation}/>
-                            <ButtonRows text={`Asuransi`} nav={`Asuransi`} navigation={this.props.navigation}/>
+                            <ButtonRows text={`Slip Gaji`} nav={`SalarySlip`} navigation={this.props.navigation} image={require('../../../assets/calendar.png')}/>
+                            <ButtonRows text={`Permohonan\nPinjaman`} nav={`SalarySlip`} navigation={this.props.navigation} image={require('../../../assets/loan1.png')}/>
+                            <ButtonRows text={`Reimbursement`} nav={`Reimusement`} navigation={this.props.navigation} image={require('../../../assets/loan2.png')}/>
+                            <ButtonRows text={`Asuransi`} nav={`Asuransi`} navigation={this.props.navigation} image={require('../../../assets/insurance.png')}/>
                         </View>
                     </View>
-                </View>
-                <View style={{ height: '13%' }}>
-                    <ButtonBottom text="Chat Management" icon="hipchat" nav={`Chat`} navigation={this.props.navigation}/>
-
                 </View>
             </View>
         )

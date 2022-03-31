@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native'
 import * as Notifications from 'expo-notifications';
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
-import { getDatabase, ref, get, child,query,orderByValue,onValue,orderByKey,orderByChild } from "firebase/database";
+import { getDatabase, ref, get, child, query, orderByValue, onValue, orderByKey, orderByChild } from "firebase/database";
 import { base64 } from "@firebase/util";
 import { tambahNotifikasi } from '../../features/Notifikasi/NotifikasiSlice';
 import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
+import axios from 'axios';
 const dbRef = ref(getDatabase());
 
 export default function HeaderNameAndNotif(props) {
-    const db = getDatabase();
     const dispatch = useDispatch()
-    const { employee } = useSelector((state) => state.employee)
+    const { employee, server, token } = useSelector((state) => state.employee)
     const { notif } = useSelector(state => state.Notifikasi)
     const [notificationCount, setNotificationCount] = useState(0)
     const notificationListener = useRef();
     const responseListener = useRef();
     const [notification, setNotification] = useState(false);
     const [notificationd, setNotificationd] = useState([]);
-    const starCountRef = ref(db, `ToDo/${base64.encodeString(employee.user_id)}`);
+    // const starCountRef = ref(db, `ToDo/${base64.encodeString(employee.user_id)}`);
     useEffect(() => {
         // onValue(starCountRef, (snapshot) => {
         //     schedulePushNotification()
@@ -42,35 +42,56 @@ export default function HeaderNameAndNotif(props) {
         };
     })
     const getTask = () => {
-        get(child(dbRef, `Task/${base64.encodeString(employee.user_id)}`)).then((snapshot) => {
-            if (snapshot.exists()) {
-                dispatch(MASUKAN_TASK(Object.values(snapshot.val())))
-
-            } else {
-                console.log("No data available");
+        axios.get(`https://${base64.decodeString(server)}/api/resource/Task?fields=["*"]&filters=[["completed_by","=","${employee.user_id}"]]`, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json',
             }
-        }).catch((error) => {
-            console.error(error);
-        });
+        })
+            .then((res) => {
+                dispatch(MASUKAN_TASK(res.data.data))
+            })
+            .catch((err) => {
+                Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ]);
+            })
     }
     const getBuletin = () => {
-        get(child(dbRef, `Buletin`)).then((snapshot) => {
-            if (snapshot.exists()) {
-                dispatch(MASUKAN_CATATAN(Object.values(snapshot.val())))
-            } else {
-                console.log("No data available");
+        axios.get(`https://${base64.decodeString(server)}/api/resource/Note?fields=["*"]`, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json',
             }
-        }).catch((error) => {
-            console.error(error);
-        });
+        })
+            .then((res) => {
+                console.log(res.data)
+                dispatch(MASUKAN_CATATAN(res.data.data))
+            })
+            .catch((err) => {
+                Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ]);
+            })
     }
     const getTodo = () => {
-        const emp = base64.encodeString(employee.user_id)
-        const TodoRef = query(ref(db, 'ToDo/' + emp), orderByKey())
-        onValue(TodoRef, (snapshot) => {
-            const data = Object.values(snapshot.val());
-            dispatch(MASUKAN_TODO(data))
+        axios.get(`https://${base64.decodeString(server)}/api/resource/ToDo?fields=["*"]&filters=[["owner","=","${employee.user_id}"]]`, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json',
+            }
         })
+            .then((res) => {
+                dispatch(MASUKAN_TODO(res.data.data))
+            })
+            .catch((err) => {
+                Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ]);
+            })
     }
     async function schedulePushNotification() {
         await Notifications.scheduleNotificationAsync({

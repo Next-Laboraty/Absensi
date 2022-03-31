@@ -19,6 +19,7 @@ import AxiosPostData from '../../../lib/AxiosPostData';
 import { Layout, Spinner, Text, Icon, Button } from '@ui-kitten/components';
 import { Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
 import WebhookUrl from '../../../lib/WebhookUrl';
+import axios from 'axios';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -109,14 +110,24 @@ export default function App() {
             server: base64.decodeString(server),
             token: base64.decodeString(token)
           }
-          WebhookUrl(DataX).then(() => {
-            setLoaded(false)
-            setMsg(true)
-          }).catch((err) => setVisible(true))
-        }).catch(err => console.log(err))
+          SendToERP(DataX)
+        }).catch(err => setVisible(true))
       }
     }
   };
+
+  const SendToERP = async (payload) => {
+    await axios.post(`https://${base64.decodeString(server)}/api/resource/Visiting%20Client`, payload, {
+      headers: {
+        'Authorization': `token ${base64.decodeString(token)}`,
+        'Content-Type': 'application/json',
+        'Accept-Language': 'application/json',
+      },
+    }).then(() => {
+      setLoaded(false)
+      setMsg(true)
+    }).catch((err) => setVisible(true))
+  }
 
   const cancelPreview = async () => {
     await cameraRef.current.resumePreview();
@@ -132,7 +143,7 @@ export default function App() {
   const StatusCamer = () => {
     if (msg) {
       return (
-        <Text style={{fontFamily:'Regular'}}>Data Berhasil di Input</Text>
+        <Text style={{ fontFamily: 'Regular' }}>Data Berhasil di Input</Text>
       )
     }
     if (!latitude && !latitude) {
@@ -177,7 +188,7 @@ export default function App() {
         <Dialog visible={visible} onDismiss={hideDialog}>
           <Dialog.Title>Terjadi Kesalahan pada server</Dialog.Title>
           <Dialog.Content>
-            <Paragraph>Coba lagi dalam beberapa menit lagi atau tutup aplikasi dan coba kembali lagi nanti, cek koneksi internet anda. {`\n`}Jika speed internet dibawah 1,5MB/s maka anda akan mendapatan error ini lagi</Paragraph>
+            <Paragraph>Koneksi Internet Anda tidak Stabil{`\n`}Coba lagi dalam beberapa menit lagi atau tutup aplikasi dan coba kembali lagi nanti, cek koneksi internet anda.</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Mengerti</Button>

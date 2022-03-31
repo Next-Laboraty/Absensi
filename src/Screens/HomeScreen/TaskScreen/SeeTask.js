@@ -1,6 +1,6 @@
 import { Button, Layout, Spinner, Text } from "@ui-kitten/components";
-import React, { useState } from "react";
-import { ActivityIndicator, Dimensions, ScrollView, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Dimensions, ScrollView, View, Alert } from "react-native";
 import WaittingImage from "../../../ImagesSource/WaittingImage";
 import moment from "moment";
 import RenderHTML from "react-native-render-html";
@@ -31,26 +31,42 @@ export default function SeeTask({ route }) {
 
 
     // end Slider
-    useState(() => {
-        const starCountRef = query(ref(db, 'Task/' + base64.encodeString(employee.user_id)), orderByChild('name'), equalTo(TaskID));
-        onValue(starCountRef, (snapshot) => {
-            const data = Object.values(snapshot.val())[0];
-            const regex = /\/files\//ig
-            const html = data.description
-            if (html) {
-                const result = html.replace(regex, `https://${base64.decodeString(server)}/files/`);
-                setDataHt({
-                    html: result
-                })
-            }
-            setDataRealTime(data)
-            setLoading(false)
-        })
+    useEffect(() => {
+        panggilData()
+
         if (!Loading) {
         }
 
     }, [Loading])
+    const panggilData = async () => {
+        await axios.get(`https://${base64.decodeString(server)}/api/resource/Task/${TaskID}`, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json',
+            }
+        })
+            .then(res => {
+                const data = res.data.data
+                const regex = /\/files\//ig
+                const html = data.description
+                if (html) {
+                    const result = html.replace(regex, `https://${base64.decodeString(server)}/files/`);
+                    setDataHt({
+                        html: result
+                    })
+                }
+                setDataRealTime(data)
+                setLoading(false)
+            })
+            .catch(err => {
+                Alert.alert('Terjadi Kesalahan', `Koneksi Tidak stabil\n${err}`, [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ]);
+            })
+    }
     const gantiProgress = async () => {
+        setIsLoadingScene(true)
         if (dataRealtime.progress == value) {
             setIsLoadingScene(false)
             setMsg(`Tidak ada perubahan yang terjadi, ubah persentase progress dengan cara menggeser tombol berwarna putih`)
@@ -63,18 +79,33 @@ export default function SeeTask({ route }) {
                 ...dataRealtime,
                 progress: value
             }
-            const data = {
-                type: 'UbahProgressTask',
-                server: base64.decodeString(server),
-                tokens: base64.decodeString(token),
-                payload: {
-                    progress: value
-                },
-                task: TaskID
+            let payload
+            if (value == 100) {
+                payload = {
+                    progress: 100,
+                    status: 'Closed'
+                }
             }
-            await axios.post('https://eo4475g9a2hfb6.m.pipedream.net',data).then(res=>console.log(res)).catch(err =>console.log(err))
-            set(ref(db, `Task/${base64.encodeString(employee.user_id)}/${TaskID}`), dataBaru)
+            if (value < 100) {
+                payload = {
+                    progress: value,
+                }
+            }
+            MasukanKeDatabase(payload, dataBaru)
         }
+        // set(ref(db, `Task/${base64.encodeString(employee.user_id)}/${TaskID}`), dataBaru)
+    }
+    const MasukanKeDatabase = (payload, dataBaru) => {
+        axios.put(`https://${base64.decodeString(server)}/api/resource/Task/${TaskID}`, payload, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json',
+            }
+        }).then(res => {
+            set(ref(db, `Task/${base64.encodeString(employee.user_id)}/${TaskID}`), dataBaru)
+            setIsLoadingScene(false)
+        }).catch(err => console.log(err))
     }
     return (
         <Provider>

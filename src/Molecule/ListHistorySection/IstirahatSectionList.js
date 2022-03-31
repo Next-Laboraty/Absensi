@@ -36,12 +36,12 @@ export default function IstirahatSectionList() {
                 <>
                     {dataIstirahat.map(Data => (
                         <Layout key={Data.name} style={{ marginHorizontal: 10, flexDirection: 'row', marginTop: '2%' }}>
-                            <Layout style={{ marginRight: '10%', marginTop: 15 }}>
+                            <Layout style={{ width: '20%', marginTop: 15 }}>
                                 <Text style={{ fontFamily: 'Medium' }}>{moment(`${Data.modified}`).format("HH:mm")}</Text>
                             </Layout>
                             <Layout style={{ flex: 1, backgroundColor: '#FF7648', paddingHorizontal: 20, borderRadius: 10, paddingVertical: 5 }}>
-                                <Text style={{ fontFamily: 'Medium' }}>{Data.ket}</Text>
-                                <Text style={{ fontFamily: 'Regular', fontSize: 11 }}>{Data.lat == 'ONGLAI NEXT LAB DEVICE' ? 'Menggunakan Mesin Absen' : 'Menggunakan Aplikasi / Lainnya'}</Text>
+                                <Text style={{ fontFamily: 'Medium',color:'#fff' }}>{Data.ket}</Text>
+                                <Text style={{ fontFamily: 'Regular', fontSize: 11,color:'#fff' }}>{Data.lat == 'ONGLAI NEXT LAB DEVICE' ? 'Menggunakan Mesin Absen' : 'Menggunakan Aplikasi Mobile'}</Text>
                             </Layout>
                         </Layout>
                     ))}

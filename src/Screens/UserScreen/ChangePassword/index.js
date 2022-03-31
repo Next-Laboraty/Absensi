@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Input, Layout, Text, Button,Alert } from '@ui-kitten/components';
+import { Input, Layout, Text, Button, Alert } from '@ui-kitten/components';
 import { View } from 'react-native'
 import { useSelector } from "react-redux";
 import { base64 } from "@firebase/util";
 import WebhookUrl from "../../../lib/WebhookUrl";
 import { Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
 import WebSocketLocal from "../../../lib/WebSocketLocal";
-
+import axios from 'axios'
 export default function ChangePassword() {
     const { employee, server, token } = useSelector(state => state.employee)
     const [repeat, setRepeat] = useState('')
@@ -43,21 +43,19 @@ export default function ChangePassword() {
             const payload = {
                 new_password
             }
-            const DataX = {
-                type: 'changePassword',
-                payload,
-                server: base64.decodeString(server),
-                token: base64.decodeString(token),
-                employee: employee.user_id
-            }
-            WebSocketLocal('user', DataX).then((res) => {
+            changed(payload)
+        }
+    }
+    const changed = async () => {
+        await axios.put(`https://${base64.decodeString(server)}/api/resource/User/${employee.user_id}`)
+            .then((res) => {
                 console.log(res)
                 setMsg(`Berhasil mengubah Password`)
                 setVisible(true)
-            }).catch((err) =>{
+            }).catch((err) => {
                 setMsg(`Coba lagi dalam beberapa menit lagi atau tutup aplikasi dan coba kembali lagi nanti, cek koneksi internet anda. \nJika speed internet dibawah 1,5MB/s maka anda akan mendapatan error ini lagi`)
-                setVisible(true)})
-        }
+                setVisible(true)
+            })
     }
     const onPasswordChange = new_password => {
         setNew_password(new_password);

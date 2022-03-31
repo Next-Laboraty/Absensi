@@ -34,12 +34,12 @@ function ListHistorySection() {
         {/* <Text>Test</Text> */}
             {dataAbsen.map(Data => (
                 <Layout key={Data.name} style={{ marginHorizontal: 10, flexDirection: 'row', marginTop: '2%' }}>
-                    <Layout style={{ marginRight: '10%', marginTop: 15 }}>
+                    <Layout style={{ width: '20%', marginTop: 15 }}>
                         <Text style={{ fontFamily: 'Medium' }}>{moment(Data.time).format("HH:mm")}</Text>
                     </Layout>
                     <Layout style={{ flex: 1, backgroundColor: '#7A90FC', paddingHorizontal: 20, borderRadius: 10, paddingVertical: 5 }}>
-                        <Text style={{ fontFamily: 'Medium' }}>Absensi</Text>
-                        <Text style={{ fontFamily: 'Regular', fontSize: 11 }}>{Data.longitude !== '' ? 'Menggunakan Aplikasi' : 'Menggunakan Mesin Absen / Lainnya'}</Text>
+                        <Text style={{ fontFamily: 'Medium', color:'#fff' }}>Absensi</Text>
+                        <Text style={{ fontFamily: 'Regular', fontSize: 11 , color:'#fff'}}>{Data.device_id == 'ONL_APP_MOBILE' ? 'Menggunakan Aplikasi Mobile' : Data.device_id == 'ONL_DEVICE' ? 'Menggunakan Mesin Absen' : 'Absen Lainnya'}</Text>
                     </Layout>
                 </Layout>
             ))}

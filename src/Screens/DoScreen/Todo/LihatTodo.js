@@ -1,6 +1,6 @@
 import { Layout, Spinner, Text, Button } from "@ui-kitten/components";
 import React, { useEffect, useState } from "react";
-import { getDatabase, ref, onValue, equalTo, query, orderByChild,push,set } from "firebase/database";
+import { getDatabase, ref, onValue, equalTo, query, orderByChild, push, set } from "firebase/database";
 import { useSelector } from "react-redux";
 import { base64 } from '@firebase/util'
 import moment from "moment";
@@ -8,40 +8,50 @@ import { ScrollView, View, TouchableOpacity, Dimensions } from "react-native";
 import { Entypo } from '@expo/vector-icons';
 import RenderHTML from "react-native-render-html";
 import WebhookUrl from "../../../lib/WebhookUrl";
+import axios from "axios";
 
 
 export default function LihatTodo({ route, navigation }) {
-    const { employee,server,token } = useSelector(state => state.employee)
+    const { employee, server, token } = useSelector(state => state.employee)
     const [dataX, setDataX] = useState()
     const { todoID } = route.params;
     const [dataNum, setDataNum] = useState()
     const [loading, setLoading] = useState(true)
     const db = getDatabase()
-    const dataHelper = () => {
-        const starCountRef = query(ref(db, 'ToDo/' + base64.encodeString(employee.user_id)), orderByChild('name'), equalTo(todoID));
-        onValue(starCountRef, (snapshot) => {
-            const data = Object.values(snapshot.val())[0];
-            setDataNum(Object.keys(snapshot.val())[0])
+    const dataHelper = async () => {
+        await axios.get(`https://${base64.decodeString(server)}/api/resource/ToDo/${todoID}`, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json',
+            }
+        }).then(res => {
+            const data = res.data.data;
+            setDataNum(data)
             setDataX(data)
             setLoading(false)
         })
+            .catch(err => console.log(err))
     }
     const pressIn = () => {
         const xUpdate = dataX
-        const updates = {...dataX, status: 'Closed'}
+        const updates = { ...dataX, status: 'Closed' }
         console.log(updates)
-        const payload ={
+        const payload = {
             status: 'Closed'
         }
-        const dataXA = {
-            type: 'ChangeStatus',
-            payload,
-            todoID,
-            server: base64.decodeString(server),
-            tokens: base64.decodeString(token)
-        }
-        WebhookUrl(dataXA)
-        set(ref(db, `ToDo/${base64.encodeString(employee.user_id)}/${dataNum}`), updates)
+        axios.put(`https://${base64.decodeString(server)}/api/resource/ToDo/${todoID}`, payload, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json',
+            }
+        }).then(res => {
+            set(ref(db, `ToDo/${base64.encodeString(employee.user_id)}/${dataX.name}`), updates)
+            setDataX(updates)
+        })
+            .catch(err => console.log(err))
+
     }
     useEffect(() => {
         dataHelper()
@@ -78,7 +88,7 @@ export default function LihatTodo({ route, navigation }) {
                 <View style={{ flex: 1, marginHorizontal: 10 }}>
                     {
                         dataX.status == 'Open' ?
-                            <Button onPress={()=>pressIn()}>Selesai</Button>
+                            <Button onPress={() => pressIn()}>Selesai</Button>
                             :
                             null
                     }

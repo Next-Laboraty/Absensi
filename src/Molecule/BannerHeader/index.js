@@ -6,8 +6,9 @@ import TodoScreenImage from '../../ImagesSource/TodoScreenImage'
 export default function BannerHeader(props) {
     const color = props.color
     const screen = props.nav
+    console.log(props)
     return (
-        <TouchableOpacity style={Banners(color)} onPress={() => props.navigation.navigate('Attendance')}>
+        <TouchableOpacity style={Banners(color)} onPress={() => props.navigation.navigate(props.nav)}>
             <View style={styles.row1}>
                 <Text style={styles.bannerText}>{`Jadikan Mudah\nHarimu`}</Text>
                 <TouchableOpacity style={styles.buttonBanner}>
@@ -21,12 +22,12 @@ export default function BannerHeader(props) {
     )
 }
 function ImagesSource(screen){
-    if(screen == 'Home'){
+    if(screen == 'Attendance'){
         return(
             <AttendanceImageHeaderOne />
         )
     }
-    else if(screen == 'Do'){
+    else if(screen == 'Chat'){
         return(
             <TodoScreenImage />
         )
@@ -44,13 +45,14 @@ function Banners(color) {
 const styles = StyleSheet.create({
     textButtonBanner: {
         color: '#fff',
-        fontFamily: 'Medium',
-        textAlign: 'center'
+        fontFamily: 'Regular',
+        textAlign: 'center',
+        fontSize:12
     },
     buttonBanner: {
         marginTop: 30,
         backgroundColor: '#2C3333',
-        width: 90,
+        width: '50%',
         paddingVertical: 3,
         borderRadius: 15
     },
