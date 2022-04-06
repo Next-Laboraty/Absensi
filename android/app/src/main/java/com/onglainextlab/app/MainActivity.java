@@ -1,4 +1,4 @@
-package com.onlhris;
+package com.onglainextlab.app;
 
 import android.os.Build;
 import android.os.Bundle;

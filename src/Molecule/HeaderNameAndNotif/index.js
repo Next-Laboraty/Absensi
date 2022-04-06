@@ -3,12 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-na
 import * as Notifications from 'expo-notifications';
 import { Feather, Octicons, AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux'
-import { getDatabase, ref, get, child, query, orderByValue, onValue, orderByKey, orderByChild } from "firebase/database";
 import { base64 } from "@firebase/util";
 import { tambahNotifikasi } from '../../features/Notifikasi/NotifikasiSlice';
 import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
 import axios from 'axios';
-const dbRef = ref(getDatabase());
 
 export default function HeaderNameAndNotif(props) {
     const dispatch = useDispatch()
@@ -19,7 +17,6 @@ export default function HeaderNameAndNotif(props) {
     const responseListener = useRef();
     const [notification, setNotification] = useState(false);
     const [notificationd, setNotificationd] = useState([]);
-    // const starCountRef = ref(db, `ToDo/${base64.encodeString(employee.user_id)}`);
     useEffect(() => {
         // onValue(starCountRef, (snapshot) => {
         //     schedulePushNotification()
@@ -41,67 +38,46 @@ export default function HeaderNameAndNotif(props) {
             Notifications.removeNotificationSubscription(responseListener.current);
         };
     })
-    const getTask = () => {
-        axios.get(`https://${base64.decodeString(server)}/api/resource/Task?fields=["*"]&filters=[["completed_by","=","${employee.user_id}"]]`, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json',
-                'Accept-Language': 'application/json',
-            }
+    const getTask = async () => {
+        let du8mmyPost = {
+            server: base64.decodeString(server),
+            token: base64.decodeString(token),
+            payload: employee.user_id
+        }
+        axios.post(`http://192.168.100.204:58577/api/localmethod/task`, du8mmyPost).then(res => {
+            dispatch(MASUKAN_TASK(res.data.body))
+        }).catch(err => {
+            Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
         })
-            .then((res) => {
-                dispatch(MASUKAN_TASK(res.data.data))
-            })
-            .catch((err) => {
-                Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ]);
-            })
     }
-    const getBuletin = () => {
-        axios.get(`https://${base64.decodeString(server)}/api/resource/Note?fields=["*"]`, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json',
-                'Accept-Language': 'application/json',
-            }
+    const getBuletin = async () => {
+        let du8mmyPost = {
+            server: base64.decodeString(server),
+            token: base64.decodeString(token)
+        }
+        axios.post(`http://192.168.100.204:58577/api/localmethod/buletin`, du8mmyPost).then(res => {
+            dispatch(MASUKAN_CATATAN(res.data.body))
+        }).catch(err => {
+            Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
         })
-            .then((res) => {
-                console.log(res.data)
-                dispatch(MASUKAN_CATATAN(res.data.data))
-            })
-            .catch((err) => {
-                Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ]);
-            })
     }
-    const getTodo = () => {
-        axios.get(`https://${base64.decodeString(server)}/api/resource/ToDo?fields=["*"]&filters=[["owner","=","${employee.user_id}"]]`, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json',
-                'Accept-Language': 'application/json',
-            }
+    const getTodo = async () => {
+        let du8mmyPost = {
+            server: base64.decodeString(server),
+            token: base64.decodeString(token),
+            payload: employee.user_id
+        }
+        axios.post(`http://192.168.100.204:58577/api/localmethod/ToDo`, du8mmyPost).then(res => {
+            dispatch(MASUKAN_TODO(res.data.body))
+        }).catch(err => {
+            Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
         })
-            .then((res) => {
-                dispatch(MASUKAN_TODO(res.data.data))
-            })
-            .catch((err) => {
-                Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ]);
-            })
-    }
-    async function schedulePushNotification() {
-        await Notifications.scheduleNotificationAsync({
-            content: {
-                title: "You've got mail! 📬",
-                body: 'Here is the notification body',
-                data: { data: 'goes here' },
-            },
-            trigger: { seconds: 2 },
-        });
     }
     return (
         <View style={styles.header}>

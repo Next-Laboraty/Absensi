@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import { ToastAndroid, View, Text, ScrollView, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Image, ActivityIndicator } from 'react-native'
 import LoginImageHeaderOne from '../../ImagesSource/LoginImageHeaderOne'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginImageHeaderTwo from '../../ImagesSource/LoginImageHeaderTwo'
-import axios from 'axios';
-import loginFirebase from '../../lib/loginFirebase';
 import LoginForm from '../../Molecule/LoginForm';
 
 

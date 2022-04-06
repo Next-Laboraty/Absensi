@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { StatusBar } from 'expo-status-bar';
-import AttendanceImageHeaderOne from '../../ImagesSource/AttendanceImageHeaderOne'
-import ListLog from '../../Molecule/ListLog';
 import AttendanceHeader from '../../Molecule/AttendanceHeader';
 import ButtonBottom from '../../Atomic/ButtonBottom';
 import JamComponent from '../../Atomic/JamComponent';
 import AttendanceButton from '../../Molecule/AttendanceButton';
+// import { SWRConfig } from "swr";
 
 export default class AttendanceScreen extends Component {
     render() {

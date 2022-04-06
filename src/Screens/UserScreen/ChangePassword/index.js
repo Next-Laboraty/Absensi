@@ -47,7 +47,16 @@ export default function ChangePassword() {
         }
     }
     const changed = async () => {
-        await axios.put(`https://${base64.decodeString(server)}/api/resource/User/${employee.user_id}`)
+        const NewPas = {
+            new_password
+        }
+        await axios.put(`https://${base64.decodeString(server)}/api/resource/User/${employee.user_id}`, NewPas, {
+            headers: {
+                'Authorization': `token ${base64.decodeString(token)}`,
+                'Content-Type': 'application/json',
+                'Accept-Language': 'application/json'
+            }
+        })
             .then((res) => {
                 console.log(res)
                 setMsg(`Berhasil mengubah Password`)

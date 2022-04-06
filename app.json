@@ -4,20 +4,12 @@
     "slug": "onl-hris",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/HRIS.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashNew.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": [
-      [
-        "expo-notifications",
-        {
-          "color": "red"
-        }
-      ]
-    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -30,17 +22,14 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.onglainextlab.app",
-      "permissions": [
-        "NOTIFICATIONS"
-      ],
       "useNextNotificationsApi": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/AIcon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/HRIS.png"
     }
   }
 }

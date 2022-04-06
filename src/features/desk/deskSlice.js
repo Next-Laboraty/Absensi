@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   GET_TASK: [],
   GET_TODO: [],
-  GET_BULETIN:[]
+  GET_BULETIN:[],
 }
 
 export const deskSlice = createSlice({

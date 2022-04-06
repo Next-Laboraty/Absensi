@@ -117,13 +117,13 @@ export default function App() {
   };
 
   const SendToERP = async (payload) => {
-    await axios.post(`https://${base64.decodeString(server)}/api/resource/Visiting%20Client`, payload, {
+    await axios.post(`http://192.168.100.204:58577/api/localmethod/clientvisit`, payload, {
       headers: {
         'Authorization': `token ${base64.decodeString(token)}`,
         'Content-Type': 'application/json',
         'Accept-Language': 'application/json',
       },
-    }).then(() => {
+    }).then((res) => {
       setLoaded(false)
       setMsg(true)
     }).catch((err) => setVisible(true))

@@ -9,17 +9,15 @@ import HomeScreenBody from '../../Molecule/HomeScreenBody';
 import { Camera } from 'expo-camera';
 import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
 import { useDispatch, useSelector } from "react-redux";
-import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
 import RegisterForPushNotificationsAsync from '../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync';
-import * as Notifications from 'expo-notifications';
 import { base64 } from '@firebase/util'
-import axios from 'axios';
-import io from "socket.io-client";
+import * as Notifications from 'expo-notifications';
+import * as Location from 'expo-location';
 
 export default function HomeScreen({ navigation }) {
+    const { employee, server } = useSelector(state => state.employee)
     const dispatch = useDispatch()
     const [hasPermission, setHasPermission] = useState(null);
-    const { employee, server } = useSelector(state => state.employee)
     const db = getDatabase();
     const dbRef = ref(getDatabase());
 
@@ -28,18 +26,15 @@ export default function HomeScreen({ navigation }) {
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
+            await Notifications.getPermissionsAsync();
         })();
-        datax()
-        RegisterForPushNotificationsAsync().then(res => set(ref(db, `NotificationUser/${server}/${base64.encodeString(employee.user_id)}`), res))
+        requestPermissions()
     }, []);
-    
-    const datax = async () => {
-        // const socket = io("http://127.0.0.1:3000");
-        // socket.on("chat message", msg => {
-        //     setChatMessages({ chatMessages: [...chatMessages, msg]   
-        //     })
-        // })
-    }
+    const requestPermissions = async () => {
+        RegisterForPushNotificationsAsync().then(res => set(ref(db, `NotificationUser/${server}/${base64.encodeString(employee.user_id)}`), res))
+        await Location.requestBackgroundPermissionsAsync();
+        await Location.requestForegroundPermissionsAsync ()
+    };
     if (hasPermission === null) {
         return <View />;
     }

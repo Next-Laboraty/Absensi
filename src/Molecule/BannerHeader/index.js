@@ -6,7 +6,6 @@ import TodoScreenImage from '../../ImagesSource/TodoScreenImage'
 export default function BannerHeader(props) {
     const color = props.color
     const screen = props.nav
-    console.log(props)
     return (
         <TouchableOpacity style={Banners(color)} onPress={() => props.navigation.navigate(props.nav)}>
             <View style={styles.row1}>

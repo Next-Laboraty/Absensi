@@ -13,11 +13,11 @@ import * as Notifications from 'expo-notifications';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
     }),
-  });
+});
 
 
 export default function AttendanceButton() {
@@ -32,77 +32,81 @@ export default function AttendanceButton() {
     const [Msg, setMsg] = useState('')
     const [headexr, setHeadexr] = useState()
     const [timeRest, setTimeRest] = useState()
-
+    const [NumberIN, setNumberIn] = useState()
+    const myHeaders = new Headers({
+        'Authorization': `token ${base64.decodeString(token)}`,
+        'accept': 'application/json',
+        'accept-encoding': 'gzip, deflate',
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': "*"
+    });
+    const Hour = moment().format('H')
     useEffect(() => {
         getDbIN()
+        setTimeNow(moment().format())
         getLocations()
         let isMounted = true
-        const intervalId = setInterval(() => {
-            setTimeNow(moment().format())
-            const Hour = moment().format('H')
-            if (Hour <= 13) {
-                setStatusButtonLeft('Masuk')
-            }
-            if (Hour <= 13 && isie.length == 1) {
-                setStatusButtonLeft('Bekerja')
+        Logs()
+        isMounted = false
+    }, [statusButtonLeft])
+    const Logs = () => {
+        setInterval(() => {
+            getDbIN()
+            if (statusButtonLeft == 'Bekerja' || statusButtonLeft == 'Pulang') {
                 logicRest()
             }
-            if (Hour >= 14 && isie.length == 1) {
-                setStatusButtonLeft('Pulang')
-                logicRest()
-            }
-        }, 1000)
-        return () => {
-            clearInterval(intervalId); //This is important
-            isMounted = false
-        }
-    }, [timeNow])
+        }, 5000)
+    }
+
     const logicRest = async () => {
-        let url = `https://${base64.decodeString(server)}/api/resource/Lunch?field=["*"]&filters=[[%22add%22,%22=%22,%22${employee.user_id}%22],["tgl","=","${moment().format('DD-MM-YYYY')}"]]`
-        axios.get(url, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json'
-            },
-            timeout: 3000
-        })
-            .then(res => {
-                let dta = res.data.data
-                if (dta.length == 0) {
-                    setLoadingRest(false)
-                    setStatusButtoRight('Buka')
-                }
-                if (dta.length == 1) {
-                    setHeadexr(dta[0].name)
-                    axios.get(`https://${base64.decodeString(server)}/api/resource/Lunch/${dta[0].name}?field=["*"]`, {
-                        headers: {
-                            'Authorization': `token ${base64.decodeString(token)}`,
-                            'Content-Type': 'application/json'
-                        },
-                        timeout: 3000
-                    }).then(res => {
-                        const jamIstr = (res.data.data)
-                        if (!jamIstr.jam2) {
-                            setTimeRest(jamIstr.jam)
-                            setLoadingRest(false)
-                            setStatusButtoRight('Selesai')
-                        }
-                        else {
-                            setLoadingRest(false)
-                            setStatusButtoRight('Tutup')
-                        }
-                    }).catch(err => {
-                        setLoadingRest(false)
-                        setStatusButtoRight('Tutup')
-                        AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
-                    })
-                }
+        let uri = `https://${base64.decodeString(server)}/api/resource/Lunch?field=["*"]&filters=[[%22add%22,%22=%22,%22${employee.user_id}%22],["tgl","=","${moment().format('DD-MM-YYYY')}"]]`
+
+        try {
+            const response = await fetch(uri, {
+                method: 'GET',
+                headers: myHeaders,
+                mode: 'no-cors',
             })
-            .catch(err => {
+            const dta = await response.json();
+            if (dta.data.length < 1 || !dta) {
+                setLoadingRest(false)
+                setStatusButtoRight('Buka')
+            }
+            else {
+                logicRestTrue(dta.data)
+            }
+        }
+        catch (error) {
+            setLoadingRest(false)
+            setStatusButtoRight('Tutup')
+            AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${error}`)
+        }
+    }
+    const logicRestTrue = async (dataX) => {
+        setHeadexr(dataX[0].name)
+        try {
+            const request = await fetch(`https://${base64.decodeString(server)}/api/resource/Lunch/${dataX[0].name}?field=["*"]`, {
+                method: 'GET',
+                headers: myHeaders,
+                mode: 'no-cors',
+            })
+            const res = await request.json();
+            const jamIstr = (res.data)
+            if (!jamIstr.jam2) {
+                setTimeRest(jamIstr.jam)
+                setLoadingRest(false)
+                setStatusButtoRight('Selesai')
+            }
+            else {
                 setLoadingRest(false)
                 setStatusButtoRight('Tutup')
-                AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
-            })
+            }
+        }
+        catch (error) {
+            setLoadingRest(false)
+            setStatusButtoRight('Tutup')
+            AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${error}`)
+        }
     }
     const AlertFunction = (title, body) => {
         Alert.alert(title, body, [
@@ -115,22 +119,75 @@ export default function AttendanceButton() {
     }
     const getDbIN = async () => {
         const url = `https://${base64.decodeString(server)}/api/resource/Employee%20Checkin/?fields=["*"]&filters=[["employee","=","${employee.employee}"],["time",">","${moment().format("YYYY-MM-DD")} 00:00:01.569260"],["time","<","${moment().format("YYYY-MM-DD")} 23:59:59.569260"]]`
-        axios.get(url, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json'
-            },
-            timeout: 30000
-        }).then(res => {
-            setIsie(res.data.data)
-            setTimeout(() => {
-                setLoadingIN(false)
-            }, 1000)
+        const myHeaders = new Headers({
+            'Authorization': `token ${base64.decodeString(token)}`,
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json',
+            'Access-Control-Allow-Origin': "*"
+        });
+        fetch(url, {
+            method: 'GET',
+            headers: myHeaders,
         })
-            .catch(err => {
-                setLoadingIN(false)
-                alert(err)
+            .then(res => res.json())
+            .then(res => {
+                let JsData = res.data
+                if(JsData !== null || JsData.length > 0) {
+                    if (Hour >= 7 && Hour <= 13) {
+                        setStatusButtonLeft('Bekerja')
+                    }
+                    if (Hour >= 14) {
+                        setStatusButtonLeft('Pulang')
+
+                    }
+                }
+                else {
+                    if (Hour >= 7 && Hour <= 13) {
+                        setStatusButtonLeft('Masuk')
+                    }
+                    if (Hour >= 14) {
+                        setStatusButtonLeft('Tutup')
+
+                    }
+                }
             })
+            .catch((error) =>{
+                if (Hour >= 7 && Hour <= 13) {
+                    setStatusButtonLeft('Masuk')
+                }
+                if (Hour >= 14) {
+                    setStatusButtonLeft('Tutup')
+
+                }
+            })
+            setLoadingIN(false)
+        // const json = datax.json();
+        // alert(JSON.stringify(json.data))
+
+        // const dxdata = json.data
+        // if (dxdata === undefined || json.data.length) {
+        //     if (Hour >= 7 && Hour <= 13) {
+        //         setStatusButtonLeft('Masuk')
+        //     }
+        //     if (Hour >= 14) {
+        //         setStatusButtonLeft('Tutup')
+
+        //     }
+        // }
+        // else {
+        //     if (Hour >= 7 && Hour <= 13) {
+        //         setStatusButtonLeft('Bekerja')
+        //     }
+        //     if (Hour >= 14) {
+        //         setStatusButtonLeft('Pulang')
+
+        //     }
+        // }
+        // setLoadingIN(false)
+
+
+
     }
     const pressOut = async () => {
         setLoadingIN(true)
@@ -143,22 +200,29 @@ export default function AttendanceButton() {
             longitude: location.coords.longitude,
             latitude: location.coords.latitude
         }
-        await axios.post(`https://${base64.decodeString(server)}/api/resource/Employee%20Checkin`, payload, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json'
-            },
-        }).then(res => {
-            AlertFunction('Berhasil Absensi Pulang', `Halo ${employee.employee_name} ! Kamu berhasil Absensi Pulang\n\n${NewQuotes()}`)
-            setTimeout(() => {
+        const myHeaders = new Headers({
+            'Authorization': `token ${base64.decodeString(token)}`,
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json',
+            'Access-Control-Allow-Origin': "*"
+        });
+        fetch(`https://${base64.decodeString(server)}/api/resource/Employee%20Checkin`, {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'no-cors',
+            body: JSON.stringify(payload)
+        })
+            .then(response => response.json())
+            .then(res => {
+                AlertFunction('Berhasil Absensi Pulang', `Halo ${employee.employee_name} ! Kamu berhasil Absensi Pulang\n\n${NewQuotes()}`)
                 setLoadingIN(false)
                 setStatusButtonLeft('Tutup')
-            }, 3000)
-        }
-        ).catch(err => {
-            setLoadingIN(false)
-            AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
-        })
+            }
+            ).catch(err => {
+                setLoadingIN(false)
+                AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
+            })
     }
     const selesaiIstirahat = async () => {
         setLoadingRest(true)
@@ -185,21 +249,33 @@ export default function AttendanceButton() {
             }
 
         }
-        await axios.put(`https://${base64.decodeString(server)}/api/resource/Lunch/${headexr}`, payload, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json'
-            },
-        }).then(res => {
-            setLoadingRest(false)
-            setStatusButtonLeft('Tutup')
-            AlertFunction('Berhasil Menyelesaikan Istirahat', `Halo ${employee.employee_name} ! Sedikit Kata Mutiara hari ini\n\n${NewQuotes()}`)
-            Notifications.cancelAllScheduledNotificationsAsync()
-        }
-        ).catch(err => {
-            setLoadingRest(false)
-            AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
+
+        const myHeaders = new Headers({
+            'Authorization': `token ${base64.decodeString(token)}`,
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json',
+            'Access-Control-Allow-Origin': "*"
+        });
+        fetch(`https://${base64.decodeString(server)}/api/resource/Lunch/${headexr}`, {
+            method: 'PUT',
+            headers: myHeaders,
+            mode: 'no-cors',
+            body: JSON.stringify(payload)
         })
+            .then(response => response.json())
+            .then(res => {
+                AlertFunction('Berhasil Menyelesaikan Istirahat', `Halo ${employee.employee_name} ! Sedikit Kata Mutiara hari ini\n\n${NewQuotes()}`)
+
+                setLoadingRest(false)
+                setStatusButtoRight('Tutup')
+
+                Notifications.cancelAllScheduledNotificationsAsync()
+            }
+            ).catch(err => {
+                setLoadingRest(false)
+                AlertFunction('Gagal Mengambil Data', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
+            })
     }
     const pressRestIN = async () => {
         setLoadingRest(true)
@@ -212,54 +288,62 @@ export default function AttendanceButton() {
             add: employee.user_id,
             ket: 'Sedang Istirahat'
         }
-        console.log(payload, base64.decodeString(server))
-        await axios.post(`https://${base64.decodeString(server)}/api/resource/Lunch`, payload, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json'
-            }
-        })
-            .then((res) => {
-                setLoadingRest(false)
-                AlertFunction('Berhasil Absensi Masuk', `Halo ${employee.employee_name} ! Kamu berhasil Absensi Masuk\n\n${NewQuotes()}`)
-                setStatusButtoRight('Selesai')
-                scheduleTime()
+        const myHeaders = new Headers({
+            'Authorization': `token ${base64.decodeString(token)}`,
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json',
+            'Access-Control-Allow-Origin': "*"
+        });
 
+        try {
+            const request = await fetch(`https://${base64.decodeString(server)}/api/resource/Lunch`, {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
             })
-            .catch(err => {
-                setLoadingRest(false),
-                    AlertFunction('Gagal Absensi Istirahat', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
-            })
+            const response = request.json()
+            setLoadingRest(false)
+            AlertFunction('Berhasil Absensi Masuk', `Halo ${employee.employee_name} ! Kamu berhasil Absensi Masuk\n\n${NewQuotes()}`)
+            scheduleTime()
+            setStatusButtoRight('Selesai')
+
+        }
+        catch (err) {
+            setLoadingRest(false)
+            AlertFunction('Gagal Absensi Istirahat', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
+        }
     }
     const scheduleTime = async () => {
         await Notifications.scheduleNotificationAsync({
-            content:{
+            content: {
                 title: `${employee.employee_name} Waktu istirahat sudah 40 Menit`,
                 body: 'Pengingat Istirahat agar pekerjaanmu lebih mudah',
             },
-            trigger:{
+            trigger: {
                 seconds: 2400
             }
         })
         await Notifications.scheduleNotificationAsync({
-            content:{
+            content: {
                 title: `${employee.employee_name} Waktu istirahat sudah 45 Menit`,
                 body: 'Pengingat Istirahat agar pekerjaanmu lebih mudah',
             },
-            trigger:{
+            trigger: {
                 seconds: 2700
             }
         })
         await Notifications.scheduleNotificationAsync({
-            content:{
+            content: {
                 title: `${employee.employee_name} Waktu istirahat sudah 55 Menit`,
                 body: 'Pengingat Istirahat agar pekerjaanmu lebih mudah',
             },
-            trigger:{
+            trigger: {
                 seconds: 3300
             }
         })
-    } 
+    }
     const pressIN = async () => {
         setLoadingIN(true)
         let payload = {
@@ -271,23 +355,31 @@ export default function AttendanceButton() {
             longitude: location.coords.longitude,
             latitude: location.coords.latitude
         }
-        await axios.post(`https://${base64.decodeString(server)}/api/resource/Employee%20Checkin`, payload, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json'
-            },
-            timeout:30000
-        }).then(res => {
-            AlertFunction('Berhasil Absensi Masuk', `Halo ${employee.employee_name} ! Kamu berhasil Absensi Masuk\n\n${NewQuotes()}`)
-            setTimeout(() => {
-                setStatusButtonLeft('Bekerja')
-            }, 3000)
-            setLoadingIN(false)
-        }
-        ).catch(err => {
-            setLoadingIN(false)
-            AlertFunction('Gagal Absensi Masuk', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
+        const myHeaders = new Headers({
+            'Authorization': `token ${base64.decodeString(token)}`,
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json',
+            'Access-Control-Allow-Origin': "*"
+        });
+        fetch(`https://${base64.decodeString(server)}/api/resource/Employee%20Checkin`, {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'no-cors',
+            body: JSON.stringify(payload)
         })
+            .then(response => response.json())
+            .then(res => {
+                AlertFunction('Berhasil Absensi Masuk', `Halo ${employee.employee_name} ! Kamu berhasil Absensi Masuk\n\n${NewQuotes()}`)
+
+                setStatusButtonLeft('Bekerja')
+
+                setLoadingIN(false)
+            }
+            ).catch(err => {
+                setLoadingIN(false)
+                AlertFunction('Gagal Absensi Masuk', `Periksa Koneksi Internet anda, memerlukan internet yang stabil untuk mengakses layanan ini\n\nDetail Error\n${err}`)
+            })
     }
     const ButtonIN = () => {
         if (LoadingIN || statusButtonLeft == null) {
@@ -343,7 +435,7 @@ export default function AttendanceButton() {
             return (
                 <TouchableOpacity style={styles.buttonAttendance3} disabled={true}>
                     <Text style={styles.textAttendances}>
-                       Tutup
+                        Tutup
                     </Text>
                 </TouchableOpacity>
             )

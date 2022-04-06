@@ -57,7 +57,8 @@ export default function HeaderTitle() {
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
       <Provider store={store}>
-        <RoutingValue />
+        
+          <RoutingValue />
       </Provider>
     </ApplicationProvider>
   );

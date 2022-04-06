@@ -20,19 +20,18 @@ import { getDatabase, ref, set } from "firebase/database";
 const LOCATION_TASK_NAME = 'background-location-task';
 
 export default function SplashScreen({ navigation, data }) {
-    const requestPermissions = async () => {
-        const { status } = await Location.requestBackgroundPermissionsAsync();
-        if (status === 'granted') {
-            await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-                accuracy: Location.Accuracy.Highest,
-                distanceInterval: 1, // minimum change (in meters) betweens updates
-                deferredUpdatesInterval: 1000,
-            });
-        }
-    };
     useEffect(() => {
+        (async () => {
+            const { status } = await Location.requestBackgroundPermissionsAsync();
+            if (status === 'granted') {
+                await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+                    accuracy: Location.Accuracy.Highest,
+                    distanceInterval: 1, // minimum change (in meters) betweens updates
+                    deferredUpdatesInterval: 1000,
+                });
+            }
+        })
         FirstCome()
-        requestPermissions()
     }, [])
     const dispatch = useDispatch()
     const FirstCome = () => {
@@ -48,13 +47,12 @@ export default function SplashScreen({ navigation, data }) {
                 const dataEmployee = await AsyncStorage.getItem('@AccountEmployee')
                 const token = await AsyncStorage.getItem('@AccountToken')
                 const dataEmp = JSON.parse(dataEmployee)
-
                 dispatch(employee_data(dataEmp))
                 dispatch(employee_server(server))
                 dispatch(employee_token(token))
                 setTimeout(() => {
                     navigation.replace('BottomTabsNavigator')
-
+                    
                 }, 4000);
             }
         })
