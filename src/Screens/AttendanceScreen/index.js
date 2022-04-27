@@ -3,10 +3,24 @@ import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'rea
 import AttendanceHeader from '../../Molecule/AttendanceHeader';
 import ButtonBottom from '../../Atomic/ButtonBottom';
 import JamComponent from '../../Atomic/JamComponent';
+import AttendanceButtonFree from '../../Molecule/AttendanceButtonFree';
 import AttendanceButton from '../../Molecule/AttendanceButton';
+import {connect} from 'react-redux'
 // import { SWRConfig } from "swr";
 
-export default class AttendanceScreen extends Component {
+class AttendanceScreen extends Component {
+    componentDidMount(){
+        
+    }
+    getDataIs(){
+        let tipe = this.props.employee.employee.employment_type
+        if(tipe == 'freelance' || tipe=='Flexible-time'){
+            return <AttendanceButtonFree />
+        }
+        else{
+            return <AttendanceButton />
+        }
+    }
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -18,7 +32,7 @@ export default class AttendanceScreen extends Component {
                         <View style={{ height: 1, width: 164, backgroundColor: '#2C3333', alignSelf: 'center' }}>
 
                         </View>
-                        <AttendanceButton />
+                        {this.getDataIs()}
                     </View>
 
                 </View>
@@ -29,7 +43,12 @@ export default class AttendanceScreen extends Component {
         )
     }
 }
-
+const mapStateToProps = state => {
+    return{
+        employee: state.employee
+    }
+}
+export default connect(mapStateToProps)(AttendanceScreen)
 const styles = StyleSheet.create({
     textAttendances: {
         textAlign: 'center',
@@ -39,8 +58,8 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     buttonAttendance1: {
-        backgroundColor: '#516BEB',
         flex: 1,
+        backgroundColor: '#516BEB',
         height: 100,
         marginRight: 10,
         borderRadius: 15

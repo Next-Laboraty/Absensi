@@ -95,7 +95,7 @@ export default function App() {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
         UploadClientVisit(blob).then(async (res) => {
-          const servers = `	https://eo4475g9a2hfb6.m.pipedream.net`
+          // const servers = `	https://eo4475g9a2hfb6.m.pipedream.net`
           const url = await getDownloadURL(res.ref)
           let payload = {
             employee: employee.employee,
@@ -107,8 +107,8 @@ export default function App() {
           const DataX = {
             type: 'ClientVisit',
             payload,
-            server: base64.decodeString(server),
-            token: base64.decodeString(token)
+            server,
+            token
           }
           SendToERP(DataX)
         }).catch(err => setVisible(true))
@@ -117,7 +117,8 @@ export default function App() {
   };
 
   const SendToERP = async (payload) => {
-    await axios.post(`http://192.168.100.204:58577/api/localmethod/clientvisit`, payload, {
+    console.log(payload)
+    await axios.post(`http://103.179.57.18:21039/Client`, payload, {
       headers: {
         'Authorization': `token ${base64.decodeString(token)}`,
         'Content-Type': 'application/json',

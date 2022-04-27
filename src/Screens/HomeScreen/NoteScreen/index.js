@@ -17,9 +17,6 @@ export default function NoteScreen() {
     const [work, setWork] = useState(0)
     const [over, setOver] = useState(0)
     const url = base64.decodeString(server)
-    const reload = () => {
-        console.log('reaload')
-    }
     useEffect(() => {
         setComp(GET_BULETIN.length)
 

@@ -18,43 +18,39 @@ export default function LihatTodo({ route, navigation }) {
     const [dataNum, setDataNum] = useState()
     const [loading, setLoading] = useState(true)
     const db = getDatabase()
-    const dataHelper = async () => {
-        await axios.get(`https://${base64.decodeString(server)}/api/resource/ToDo/${todoID}`, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json',
-                'Accept-Language': 'application/json',
-            }
-        }).then(res => {
-            const data = res.data.data;
-            setDataNum(data)
-            setDataX(data)
-            setLoading(false)
-        })
-            .catch(err => console.log(err))
-    }
-    const pressIn = () => {
-        const xUpdate = dataX
-        const updates = { ...dataX, status: 'Closed' }
-        console.log(updates)
-        const payload = {
-            status: 'Closed'
-        }
-        axios.put(`https://${base64.decodeString(server)}/api/resource/ToDo/${todoID}`, payload, {
-            headers: {
-                'Authorization': `token ${base64.decodeString(token)}`,
-                'Content-Type': 'application/json',
-                'Accept-Language': 'application/json',
-            }
-        }).then(res => {
-            set(ref(db, `ToDo/${base64.encodeString(employee.user_id)}/${dataX.name}`), updates)
-            setDataX(updates)
-        })
-            .catch(err => console.log(err))
+    const ws = new WebSocket('ws://103.179.57.18:21039/todo/'+todoID)
+    // const pressIn = () => {
+    //     const xUpdate = dataX
+    //     const updates = { ...dataX, status: 'Closed' }
+    //     console.log(updates)
+    //     const payload = {
+    //         status: 'Closed'
+    //     }
+    //     axios.put(`https://${base64.decodeString(server)}/api/resource/ToDo/${todoID}`, payload, {
+    //         headers: {
+    //             'Authorization': `token ${base64.decodeString(token)}`,
+    //             'Content-Type': 'application/json',
+    //             'Accept-Language': 'application/json',
+    //         }
+    //     }).then(res => {
+    //         set(ref(db, `ToDo/${base64.encodeString(employee.user_id)}/${dataX.name}`), updates)
+    //         setDataX(updates)
+    //     })
+    //         .catch(err => console.log(err))
 
-    }
+    // }
     useEffect(() => {
-        dataHelper()
+        // dataHelper()
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                token,
+                server
+            }))
+        }
+        ws.onmessage = (result) => {
+            setDataX(JSON.parse(result.data))
+            setLoading(false)
+        }
     }, [])
     if (loading) {
         return <Spinner style={{ flex: 1 }} />

@@ -7,6 +7,9 @@ import { base64 } from "@firebase/util";
 import { tambahNotifikasi } from '../../features/Notifikasi/NotifikasiSlice';
 import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
 import axios from 'axios';
+import GetTodoFromWS from '../GetTodoFromWS';
+import GetTaskFromWS from '../GetTaskFromWS';
+import GetBuletinFromWS from '../GetBuletinFromWS';
 
 export default function HeaderNameAndNotif(props) {
     const dispatch = useDispatch()
@@ -22,9 +25,6 @@ export default function HeaderNameAndNotif(props) {
         //     schedulePushNotification()
         // });
         Notifications.getBadgeCountAsync().then(res => setNotificationCount(res))
-        getTodo()
-        getTask()
-        getBuletin()
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             setNotification(notification);
             setNotificationCount(notificationCount + 1)
@@ -38,49 +38,12 @@ export default function HeaderNameAndNotif(props) {
             Notifications.removeNotificationSubscription(responseListener.current);
         };
     })
-    const getTask = async () => {
-        let du8mmyPost = {
-            server: base64.decodeString(server),
-            token: base64.decodeString(token),
-            payload: employee.user_id
-        }
-        axios.post(`http://192.168.100.204:58577/api/localmethod/task`, du8mmyPost).then(res => {
-            dispatch(MASUKAN_TASK(res.data.body))
-        }).catch(err => {
-            Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-            ]);
-        })
-    }
-    const getBuletin = async () => {
-        let du8mmyPost = {
-            server: base64.decodeString(server),
-            token: base64.decodeString(token)
-        }
-        axios.post(`http://192.168.100.204:58577/api/localmethod/buletin`, du8mmyPost).then(res => {
-            dispatch(MASUKAN_CATATAN(res.data.body))
-        }).catch(err => {
-            Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-            ]);
-        })
-    }
-    const getTodo = async () => {
-        let du8mmyPost = {
-            server: base64.decodeString(server),
-            token: base64.decodeString(token),
-            payload: employee.user_id
-        }
-        axios.post(`http://192.168.100.204:58577/api/localmethod/ToDo`, du8mmyPost).then(res => {
-            dispatch(MASUKAN_TODO(res.data.body))
-        }).catch(err => {
-            Alert.alert('Terjadi Kesalahan', `Cek Koneksi internet anda, koneksi tidak stabil\n\n${err}`, [
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-            ]);
-        })
-    }
+    // 
     return (
         <View style={styles.header}>
+            <GetBuletinFromWS />
+            <GetTodoFromWS />
+            <GetTaskFromWS />
             <View style={{ flex: 1, marginLeft: 20 }}>
                 <Text style={styles.textHeader1}>{employee.employee} </Text>
                 <Text style={styles.textHeader2}>{employee.employee_name}</Text>
