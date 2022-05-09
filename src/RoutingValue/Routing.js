@@ -1,5 +1,6 @@
 import LoginScreen from "../Screens/LoginScreen";
 import SalarySlipScreen from "../Screens/DoScreen/SalarySlipScreen/index.js";
+import SlipGaji from "../Screens/DoScreen/SalarySlipScreen/SlipGaji.js";
 import PermintaanKehadiran from "../Screens/DoScreen/PermintaanKehadiran/index.js";
 import AplikasiCuti from "../Screens/DoScreen/AplikasiCuti/index.js";
 import ProgramPelatihan from "../Screens/DoScreen/ProgramPelatihan/index.js";
@@ -53,5 +54,6 @@ export {
     NewTodo,
     SeeTask,
     TugasBaru,
-    SeeNote
+    SeeNote,
+    SlipGaji
 }

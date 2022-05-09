@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:677403891801:android:69ce5e9c852be874ccf948",
+        "android_client_info": {
+          "package_name": "com.onglaiid.employee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "677403891801-l6pfr4nahkthslrr99q10p53v2c75vko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs1qFCvlHIzwJkVnbIUOwUr5Vf02hsnfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "677403891801-l6pfr4nahkthslrr99q10p53v2c75vko.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:677403891801:android:5e209a91aa988b18ccf948",
         "android_client_info": {
           "package_name": "com.onglainextlab.app"

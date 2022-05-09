@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Modal, Pressable } from 'react-native'
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import * as Location from 'expo-location';
 import NewSocketIN from "../../lib/NewSocketIN";
 import { dataKehadiranEntry } from "../../features/attendance/kehadiranSlice";
+import axios from "axios";
+import NewQuotes from '../../lib/quotes'
 
 export default function AttendanceButtonFree() {
     const dispatch = useDispatch()
+    const [dataTunggu, setDataTunggu] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false);
     const { employee, server, token } = useSelector(state => state.employee)
     const [loading, setLoading] = useState(true)
     const [jumlah, setJumlah] = useState(null)
-    const [location, setLocation] = useState(null)
+    const [location, setLocation] = useState({
+        coords:{
+            longitude:null,
+            latitude:null
+        }
+    })
     const ws = new WebSocket('ws://103.179.57.18:21039/Attendance')
     const dataX = {
+        today: moment().format(),
         owner: employee.employee,
         token,
         server
@@ -32,6 +42,7 @@ export default function AttendanceButtonFree() {
         let isMounted = true
         const intervalId = setInterval(() => {
             ws.send(JSON.stringify(dataX))
+            console.log(JSON.stringify(dataX))
         }, 1000)
         return () => {
             clearInterval(intervalId); //This is important
@@ -58,13 +69,20 @@ export default function AttendanceButtonFree() {
             server,
             payload
         }
-        NewSocketIN(data)
-        ws.send(JSON.stringify(dataX))
-        setLoading(false)
+        if(location.coords.latitude == null){
+            alert('Error lokasi tidak dapat dibaca')
+        }
+        else{
+            setModalVisible(true)
+            console.log(data)
+            axios.post('http://103.179.57.18:21039/Absensi', data).then(res=> setDataTunggu(true)).catch(err=>console.log(err))
+            // ws.send(JSON.stringify(dataX))
+            setLoading(false)
+        }
     }
 
     const ButtonIN = () => {
-        if (loading && location !== null) {
+        if (loading && location.coords !== null) {
             return (
                 <TouchableOpacity style={styles.tombolLoading} disabled>
                     <ActivityIndicator size={'small'} color={'#fff'} />
@@ -103,6 +121,29 @@ export default function AttendanceButtonFree() {
     }
     return (
         <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20, marginBottom: 80, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={{fontFamily:'Medium', marginBottom: '2%'}}>Absensi diproses</Text>
+                        <Text style={styles.modalText}>Absensi anda sedang diproses, tunggu beberapa saat, sedikit kata mutiara untuk menunggu</Text>
+                        <Text>{NewQuotes()}</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={styles.textStyle}>Okey </Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
             {
                 ButtonIN()
             }
@@ -111,6 +152,53 @@ export default function AttendanceButtonFree() {
 }
 
 const styles = StyleSheet.create({
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        fontFamily:'Medium',
+        backgroundColor: "#2196F3",
+    },
+    buttonClose2: {
+        fontFamily:'Medium',
+        backgroundColor: "#000",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        fontFamily: 'Regular',
+        textAlign: "center"
+    },
     textPulang: {
         fontFamily: 'Medium',
         color: '#F7F5F2'

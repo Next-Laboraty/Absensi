@@ -32,7 +32,7 @@ import RoutingValue from './src/RoutingValue';
 export default function HeaderTitle() {
   let [fontsLoaded] = useFonts({
     Poppins_100Thin,
-    Poppins_100Thin_Italic,
+    ThinItalic:Poppins_100Thin_Italic,
     ExtraLight: Poppins_200ExtraLight,
     Poppins_200ExtraLight_Italic,
     Light: Poppins_300Light,

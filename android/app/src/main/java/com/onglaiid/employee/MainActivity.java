@@ -1,4 +1,4 @@
-package com.onglainextlab.app;
+package com.onglaiid.employee;
 import expo.modules.devmenu.react.DevMenuAwareReactActivity;
 import android.content.Intent;
 import expo.modules.devlauncher.DevLauncherController;

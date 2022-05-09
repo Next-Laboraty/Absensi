@@ -28,7 +28,8 @@ import {
     NewTodo,
     SeeTask,
     TugasBaru,
-    SeeNote
+    SeeNote,
+    SlipGaji
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -121,6 +122,16 @@ const RoutingValue = () => {
                 }} />
                 <Stack.Screen name="ProgramPelatihan" component={ProgramPelatihan} options={{
                     title: 'Program Pelatihan',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="CekSlipGaji" component={SlipGaji} options={{
+                    title: 'Cek Slip Gaji',
                     headerStyle: {
                         backgroundColor: '#000'
                     },

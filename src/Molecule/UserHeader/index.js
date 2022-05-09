@@ -14,7 +14,7 @@ export default function UserHeader(props) {
             </View>
             <View style={styles.Request}>
                 <TouchableOpacity >
-                    <Text style={styles.textRequest}>Ajukan Perubahan data</Text>
+                    <Text style={styles.textRequest}></Text>
                 </TouchableOpacity>
             </View>
         </View>
