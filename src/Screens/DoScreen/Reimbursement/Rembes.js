@@ -45,7 +45,7 @@ export default function Rembes() {
                     
                 </View>
             </ScrollView>
-            <Button status={"info"} style={{marginVertical:10}}>Ajukan </Button>
+            <Button status={"info"} style={{marginVertical:10}}>Ajukan</Button>
         </View>
     )
 }
