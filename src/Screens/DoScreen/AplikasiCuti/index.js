@@ -5,9 +5,7 @@ import MaintenanceScreen from '../../../Molecule/MaintenanceScreen'
 export default class AplikasiCuti extends Component{
     render(){
         return(
-            <View>
-                <Text>Test</Text>
-            </View>
+            <MaintenanceScreen />
         )
     }
 }
