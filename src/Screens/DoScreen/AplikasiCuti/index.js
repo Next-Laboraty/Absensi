@@ -6,7 +6,7 @@ export default class AplikasiCuti extends Component{
     render(){
         return(
             <View>
-                <Text>Hello</Text>
+                <Text>Test</Text>
             </View>
         )
     }
