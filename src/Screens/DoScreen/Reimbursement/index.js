@@ -20,7 +20,7 @@ export default class SalarySlipScreen extends Component {
                         <Text style={{ fontFamily: 'Medium', fontSize: 15, color: '#2C3333', paddingLeft: 7, fontWeight: 'bold' }}>AgungPriyatna</Text>
                     </View>
                     <View style={{ marginTop: 5 }}>
-                        <Text style={{ fontFamily: 'Medium', fontSize: 11, color: '#2C3333', paddingLeft: 7 }}>No Rekening</Text>
+                        <Text style={{ fontFamily: 'Medium', fontSize: 11, color: '#2C3333', paddingLeft: 7 }}>No Rekeni__ng</Text>
                         <Text style={{ fontFamily: 'Medium', fontSize: 15, color: '#2C3333', paddingLeft: 7, fontWeight: 'bold' }}>7384962784</Text>
                     </View>
                     <View style={{ marginTop: 5 }}>
