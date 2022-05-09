@@ -29,7 +29,8 @@ import {
     SeeTask,
     TugasBaru,
     SeeNote,
-    SlipGaji
+    SlipGaji,
+    Rembes
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -172,6 +173,16 @@ const RoutingValue = () => {
                 }} />
                 <Stack.Screen name="PenilaianKPI" component={PenilaianKPI} options={{
                     title: 'Penilaian KPI',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="Rembes" component={Rembes} options={{
+                    title: 'Buat Baru',
                     headerStyle: {
                         backgroundColor: '#000'
                     },
