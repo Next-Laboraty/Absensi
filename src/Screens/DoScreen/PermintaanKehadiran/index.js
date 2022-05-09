@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
-import MaintenanceScreen from '../../../Molecule/MaintenanceScreen'
 
 export default class PermintaanKehadiran extends Component{
     render(){
         return(
-            <MaintenanceScreen />
+            <View>
+                <Text>
+                    Hellos
+                </Text>
+            </View>
         )
     }
 }
