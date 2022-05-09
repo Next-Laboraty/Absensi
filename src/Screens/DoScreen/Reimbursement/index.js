@@ -31,7 +31,7 @@ export default class SalarySlipScreen extends Component {
                         <Text style={{ flex: 1, fontFamily: "Medium", fontSize: 15, color: '#FFFFFF', backgroundColor: '#516BEB', marginLeft: 1, marginRight: 210, height: 45, width: 50, paddingVertical: 10, borderTopRightRadius: 15, borderBottomRightRadius: 15, borderTopLeftRadius: 15, borderBottomLeftRadius: 15, paddingLeft: 20 }}>Upload Bukti </Text>
                     </View>
                     <View style={{ flexDirection: 'row', flex: 1, backgroundColor: '#EBEBEB', alignItems: 'center', alignContent: 'center', justifyContent: 'center', marginHorizontal: 20, marginTop: 10, marginBottom: 10 }}>
-                        <Text style={{ fontFamily: 'Medium', fontSize: 15 }}>Preview</Text>
+                        <Text style={{ fontFamily: 'Medium', fontSize: 15 }}>Preview Hello</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{ flexDirection: 'row' }}>
