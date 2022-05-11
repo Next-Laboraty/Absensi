@@ -80,37 +80,6 @@ export default function App() {
           </View>
         </View>
       </View>
-      {/* bagian koding bawah footer */}
-      <View style={{ height: 54, flexDirection: 'row', backgroundColor: '#516BEB', borderTopRightRadius: 40, borderTopLeftRadius: 40 }}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <TouchableOpacity style={{ width: 26, height: 26, backgroundColor: '#516BEB' }}>
-            <FontAwesome name="home" size={24} color="white" />
-            {/* <Image style={{ width: 26, height: 26 }} source={require('./icon/test.png')} /> */}
-          </TouchableOpacity>
-          <Text style={{ fontSize: 10, color: 'white', marginTop: 4, }}>Home</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <TouchableOpacity style={{ width: 26, height: 26, backgroundColor: '#516BEB' }}>
-            <Octicons name="checklist" size={24} color="white" />
-            {/* <Image source={require('./icon/test.png')} /> */}
-          </TouchableOpacity>
-          <Text style={{ fontSize: 10, color: 'white', marginTop: 4 }}>Checklist</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <TouchableOpacity style={{ width: 26, height: 26, backgroundColor: '#516BEB' }}>
-            <Entypo name="help" size={24} color="white" />
-            {/* <Image source={require('./icon/test.png')} /> */}
-          </TouchableOpacity>
-          <Text style={{ fontSize: 10, color: 'white', marginTop: 4 }}>Info</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <TouchableOpacity style={{ width: 26, height: 26, backgroundColor: '#516BEB' }}>
-            {/* <Image source={require('./icon/test.png')} /> */}
-            <MaterialIcons name="account-circle" size={24} color='#FF7648' />
-          </TouchableOpacity>
-          <Text style={{ fontSize: 10, color: '#FF7648', marginTop: 4 }}>Account </Text>
-        </View>
-      </View>
     </View>
   );
 

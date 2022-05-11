@@ -57,7 +57,7 @@ export default class SalarySlipScreen extends Component {
                         <Button status={"primary"} style={{
                             borderWidth: 1, marginHorizontal: 100,
                             borderRadius: 15, fontFamily: 'Regular'
-                        }}>TambahButton</Button>
+                        }}>Tambah</Button>
                     </View>
                 </ScrollView>
             </View>
