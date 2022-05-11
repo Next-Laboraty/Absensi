@@ -8,7 +8,7 @@ export default class SalarySlipScreen extends Component {
     render() {
         return (
             <View style={{ flex: 1, marginBottom: 20 }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row'}}>
                     <Text style={{
                         flex: 1, fontFamily: "Medium", fontSize: 25, fontWeight: 'bold', color: 'white', paddingLeft: 50, backgroundColor: '#516BEB', marginTop: 40, marginLeft: 1, height: 50, marginRight: 250,
                         paddingVertical: 5, borderTopRightRadius: 15, borderBottomRightRadius: 15,
