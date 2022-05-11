@@ -212,7 +212,7 @@ const RoutingValue = () => {
                     }
                 }} />
                 <Stack.Screen name="Asuransi" component={Asuransi} options={{
-                    title: 'Asuransi',
+                    title: 'Isu',
                     headerStyle: {
                         backgroundColor: '#000'
                     },
