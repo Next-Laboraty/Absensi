@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export const tanggalSlice = createSlice({
-  name: 'tanggalDate',
+  name: 'tanggalDate ',
   initialState,
   reducers: {
     tanggalMinusPlus: (state,action) => {
