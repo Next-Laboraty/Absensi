@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Modal, Pressable } from 'react-native'
+import React, { useEffect, useRef, useState } from "react";
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Pressable } from 'react-native'
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import * as Location from 'expo-location';
@@ -7,21 +7,24 @@ import NewSocketIN from "../../lib/NewSocketIN";
 import { dataKehadiranEntry } from "../../features/attendance/kehadiranSlice";
 import axios from "axios";
 import NewQuotes from '../../lib/quotes'
+import GetAttendance from "../../lib/GetAttendance";
+import { Button, Card, Layout, Modal } from '@ui-kitten/components';
 
 export default function AttendanceButtonFree() {
     const dispatch = useDispatch()
     const [dataTunggu, setDataTunggu] = useState(false)
-    const [modalVisible, setModalVisible] = useState(false);
+    const [visible, setVisible] = useState(false);
+    const [berhasil, setBerhasil] = useState(false)
     const { employee, server, token } = useSelector(state => state.employee)
     const [loading, setLoading] = useState(true)
     const [jumlah, setJumlah] = useState(null)
     const [location, setLocation] = useState({
-        coords:{
-            longitude:null,
-            latitude:null
+        coords: {
+            longitude: null,
+            latitude: null
         }
     })
-    const ws = new WebSocket('ws://103.179.57.18:21039/Attendance')
+    const panggilan = useRef(null)
     const dataX = {
         today: moment().format(),
         owner: employee.employee,
@@ -29,19 +32,10 @@ export default function AttendanceButtonFree() {
         server
     }
     useEffect(() => {
+        getData()
         getLocations()
-        ws.onopen = () => {
-            ws.send(JSON.stringify(dataX))
-        }
-        ws.onmessage = (result) => {
-            let res = JSON.parse(result.data)
-            dispatch(dataKehadiranEntry(res))
-            setJumlah(res.length)
-            setLoading(false)
-        }
         let isMounted = true
         const intervalId = setInterval(() => {
-            ws.send(JSON.stringify(dataX))
             console.log(JSON.stringify(dataX))
         }, 1000)
         return () => {
@@ -49,11 +43,22 @@ export default function AttendanceButtonFree() {
             isMounted = false
         }
     }, [])
+    const getData = () => {
+        panggilan.current = setInterval(() => {
+            GetAttendance(dataX).then(res => {
+                let data = res.data
+                dispatch(dataKehadiranEntry(data))
+                setJumlah(data.length)
+                setLoading(false)
+            }).catch(err => console.log(err))
+        }, 3000)
+    }
     const getLocations = async () => {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location);
     }
     const getMasuk = (xdata) => {
+        clearInterval(panggilan.current)
         setLoading(true)
         let payload = {
             employee: employee.employee,
@@ -69,13 +74,26 @@ export default function AttendanceButtonFree() {
             server,
             payload
         }
-        if(location.coords.latitude == null){
+        if (location.coords.latitude == null) {
             alert('Error lokasi tidak dapat dibaca')
         }
-        else{
-            setModalVisible(true)
+        else {
+            setVisible(true)
             console.log(data)
-            axios.post('http://103.179.57.18:21039/Absensi', data).then(res=> setDataTunggu(true)).catch(err=>console.log(err))
+            axios.post('http://103.179.57.18:21039/Absensi', data).then(res => {
+                let data = res.data
+                setBerhasil(true)
+                dispatch(dataKehadiranEntry(data))
+                setJumlah(data.length)
+                panggilan.current = setInterval(() => {
+                    GetAttendance(dataX).then(res => {
+                        let data = res.data
+                        dispatch(dataKehadiranEntry(data))
+                        setJumlah(data.length)
+                        setLoading(false)
+                    }).catch(err => console.log(err))
+                }, 3000)
+            }).catch(err => console.log(err))
             // ws.send(JSON.stringify(dataX))
             setLoading(false)
         }
@@ -120,34 +138,26 @@ export default function AttendanceButtonFree() {
         }
     }
     return (
-        <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20, marginBottom: 80, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={{fontFamily:'Medium', marginBottom: '2%'}}>Absensi diproses</Text>
-                        <Text style={styles.modalText}>Absensi anda sedang diproses, tunggu beberapa saat, sedikit kata mutiara untuk menunggu</Text>
-                        <Text>{NewQuotes()}</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}
-                        >
-                            <Text style={styles.textStyle}>Okey </Text>
-                        </Pressable>
-                    </View>
-                </View>
+        <>
+            <View style={{ alignSelf: 'center' }}>
+                {
+                    ButtonIN()
+                }
+
+            </View>
+            <Modal visible={visible}>
+                <Card disabled={true}>
+                    <Text style={{ fontFamily: 'Bold', textAlign: 'center' }}>Data sedang di Cek</Text>
+                    <Text style={{ fontFamily: 'ThinItalic', textAlign: 'center' }}>{NewQuotes()}</Text>
+                    <Text style={{ fontFamily: 'Regular', textAlign: 'center' }}>Status absensi <Text style={{ fontFamily: 'Medium', color: 'red' }}>{berhasil === false ? 'Check' : 'Berhasil'}</Text></Text>
+                    {berhasil === true ? <Button style={{ marginTop: '50%' }} onPress={() => setVisible(false)}>
+                        Okey
+                    </Button>
+                        :
+                        null}
+                </Card>
             </Modal>
-            {
-                ButtonIN()
-            }
-        </View>
+        </>
     )
 }
 
@@ -182,11 +192,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#F194FF",
     },
     buttonClose: {
-        fontFamily:'Medium',
+        fontFamily: 'Medium',
         backgroundColor: "#2196F3",
     },
     buttonClose2: {
-        fontFamily:'Medium',
+        fontFamily: 'Medium',
         backgroundColor: "#000",
     },
     textStyle: {
