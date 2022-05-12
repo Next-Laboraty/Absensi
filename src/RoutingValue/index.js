@@ -31,7 +31,8 @@ import {
     SeeNote,
     SlipGaji,
     Rembes,
-    KpiCheck
+    KpiCheck,
+    OpenCamera
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -90,6 +91,9 @@ const RoutingValue = () => {
                     headerTitleStyle: {
                         fontFamily: 'Medium'
                     }
+                }} />
+                <Stack.Screen name="OpenCamera" component={OpenCamera} options={{
+                   headerShown: false
                 }} />
                 <Stack.Screen name="kpicheck" component={KpiCheck} options={{
                     title: 'Detail KPI',
