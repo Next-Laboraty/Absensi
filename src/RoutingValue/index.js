@@ -30,7 +30,8 @@ import {
     TugasBaru,
     SeeNote,
     SlipGaji,
-    Rembes
+    Rembes,
+    KpiCheck
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -82,6 +83,16 @@ const RoutingValue = () => {
                 }} />
                 <Stack.Screen name="AttendanceRequest" component={PermintaanKehadiran} options={{
                     title: 'Attendance Request',
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                }} />
+                <Stack.Screen name="kpicheck" component={KpiCheck} options={{
+                    title: 'Detail KPI',
                     headerStyle: {
                         backgroundColor: '#000'
                     },
