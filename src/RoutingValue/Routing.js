@@ -27,9 +27,11 @@ import SeeTask from "../Screens/HomeScreen/TaskScreen/SeeTask";
 import TugasBaru from "../Screens/HomeScreen/TaskScreen/TugasBaru";
 import SeeNote from "../Screens/HomeScreen/NoteScreen/SeeNote";
 import Rembes from "../Screens/DoScreen/Reimbursement/Rembes";
+import KpiCheck from "../Screens/DoScreen/PenilaianKPI/KpiCheck";
 
 export {
     LoginScreen,
+    KpiCheck,
     SalarySlipScreen,
     PermintaanKehadiran,
     AplikasiCuti,
