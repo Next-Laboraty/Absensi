@@ -35,6 +35,7 @@ export default function Asuransi() {
                     >
                         <Picker.Item label="High" value="High"/>
                         <Picker.Item label="Normal" value="Normal"/>
+                        <Picker.Item label="Urgent" value="Urgent"/>
                         <Picker.Item label="Low" value="Low"/>
                     </Picker>
                     </View>
