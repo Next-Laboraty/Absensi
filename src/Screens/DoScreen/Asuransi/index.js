@@ -4,10 +4,11 @@ import { MaterialIcons, MaterialCommunityIcons, Ionicons, FontAwesome, AntDesign
 import MaintenanceScreen from '../../../Molecule/MaintenanceScreen'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-import { Button } from '@ui-kitten/components';
+import { Button, Input } from '@ui-kitten/components';
 import axios from 'axios';
 import AxiosPostData from '../../../lib/AxiosPostData';
 import LoadingComp from '../../../Atomic/LoadingComp';
+import InformationWithPhoto from '../../../Molecule/InformationWithPhoto';
 
 export default function Asuransi() {
     const [priority, setPriority] = useState(null)
@@ -32,11 +33,14 @@ export default function Asuransi() {
             <View style={{ flex: 1 }}>
 
                 <Text style={{ fontFamily: 'Bold', fontSize: 30, textAlign: 'center', color: '#205375' }}>Buat Isu Baru</Text>
+                <View>
+                <InformationWithPhoto />
+                </View>
                 <ScrollView style={{ backgroundColor: '#FFFFFE', marginTop: 5, flex: 1 }}>
 
                     <View style={{ marginTop: 10, marginHorizontal: 10 }}>
                         <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Judul Isu</Text>
-                        <TextInput placeholder='Masukan Judul' style={StyleGw.inputText} />
+                        <Input placeholder='Masukan Judul' />
                     </View>
                     <View style={{ marginTop: 10, marginHorizontal: 10 }}>
                         <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Prioritas</Text>
@@ -58,12 +62,14 @@ export default function Asuransi() {
                         </View>
                     </View>
                     <View style={{ marginTop: 10, marginHorizontal: 10 }}>
-                        <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Issue Type</Text>
-                        <TextInput placeholder='Recruitment' style={StyleGw.inputText} />
+                        <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Tipe Isu</Text>
+                        <Input placeholder='Masukan Tipe Isu' />
                     </View>
                     <View style={{ marginTop: 10, marginHorizontal: 10 }}>
-                        <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Explanation</Text>
-                        <TextInput placeholder='asd' style={StyleGw.inputText} />
+                        <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Deskripsi</Text>
+                        <Input placeholder='Masukan Deskripsi' />
+                        {/* command bawah adalah style manual */}
+                        {/* <TextInput placeholder='Masukan Deskripsi' style={StyleGw.inputText} /> */}
                     </View>
                     <View style={{ marginTop: 40, marginHorizontal: 20 }}>
                     </View>
