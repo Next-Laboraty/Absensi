@@ -28,11 +28,11 @@ import TugasBaru from "../Screens/HomeScreen/TaskScreen/TugasBaru";
 import SeeNote from "../Screens/HomeScreen/NoteScreen/SeeNote";
 import Rembes from "../Screens/DoScreen/Reimbursement/Rembes";
 import KpiCheck from "../Screens/DoScreen/PenilaianKPI/KpiCheck";
-import OpenCamera from "../Screens/DoScreen/Reimbursement/OpenCamera";
+import BuktiRembes from "../Screens/DoScreen/Reimbursement/BuktiRembes";
 
 export {
     LoginScreen,
-    OpenCamera,
+    BuktiRembes,
     KpiCheck,
     SalarySlipScreen,
     PermintaanKehadiran,

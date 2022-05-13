@@ -32,7 +32,7 @@ import {
     SlipGaji,
     Rembes,
     KpiCheck,
-    OpenCamera
+    BuktiRembes
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -92,8 +92,15 @@ const RoutingValue = () => {
                         fontFamily: 'Medium'
                     }
                 }} />
-                <Stack.Screen name="OpenCamera" component={OpenCamera} options={{
-                   headerShown: false
+                <Stack.Screen name="BuktiRembes" component={BuktiRembes} options={{
+                  title: 'Bukti Rembes',
+                  headerStyle: {
+                      backgroundColor: '#000'
+                  },
+                  headerTintColor: '#fff',
+                  headerTitleStyle: {
+                      fontFamily: 'Medium'
+                  }
                 }} />
                 <Stack.Screen name="kpicheck" component={KpiCheck} options={{
                     title: 'Detail KPI',

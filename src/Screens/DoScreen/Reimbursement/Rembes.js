@@ -14,7 +14,7 @@ import LoadingComp from '../../../Atomic/LoadingComp';
 import axios from 'axios';
 import AxiosPostData from '../../../lib/AxiosPostData';
 
-export default function Rembes() {
+export default function Rembes(props) {
     const { employee, server, token } = useSelector(state => state.employee)
     const [visible, setVisible] = useState(false)
     const [tipeData, setTipeData] = useState(null)
@@ -22,12 +22,15 @@ export default function Rembes() {
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [date, setDate] = useState(new Date())
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
-    const [listData, setListData] = useState([ 'Pilih Tipe Klaim'])
+    const [listData, setListData] = useState(['Pilih Tipe Klaim'])
     const displayValue = listData[selectedIndex.row].name;
     const [image, setImage] = useState(null);
     const [total, setTotal] = useState('')
     const [alertText, setAlertText] = useState(false)
+    const [description, setDescription] = useState(null)
     const [loading1, setLoading1] = useState(true)
+    
+    console.log(employee)
     useEffect(() => {
         AxiosPostData('http:///103.179.57.18:21039/Rembes', token, {
             server,
@@ -36,7 +39,6 @@ export default function Rembes() {
             setLoading1(false)
             setTipeData(res.data)
             setListData(res.data)
-            console.log(tipeData)
         }).catch(err => {
             setAlertText(err)
 
@@ -45,7 +47,9 @@ export default function Rembes() {
     }, [])
     const onChangeTotal = total => {
         setTotal(total)
-        console.log(total);
+    };
+    const onCHangeDescription = description => {
+        setDescription(description)
     };
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -66,21 +70,6 @@ export default function Rembes() {
             });
         }
     };
-    const onChangedNumber = (text) => {
-        let newText = '';
-        let numbers = '0123456789';
-    
-        for (var i=0; i < text.length; i++) {
-            if(numbers.indexOf(text[i]) > -1 ) {
-                newText = newText + text[i];
-            }
-            else {
-                // your call back function
-                alert("please enter numbers only");
-            }
-        }
-        setTotal({ total: newText });
-    }
     const renderOption = (title) => (
         <SelectItem key={title.name} title={title.name} />
     );
@@ -109,12 +98,12 @@ export default function Rembes() {
                 </View>
                 <View style={{ marginTop: 10, marginHorizontal: 10 }}>
                     <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Deskripsi</Text>
-                    <Input placeholder='Pilih Tipe' multiline={true} style={{marginVertical:2}}
-        textStyle={{ minHeight: 64 }}/>
+                    <Input placeholder='Masukan keterangan' multiline={true} onChangeText={onCHangeDescription} value={description} style={{ marginVertical: 2 }}
+                        textStyle={{ minHeight: 64 }} />
                 </View>
                 <View style={{ marginTop: 10, marginHorizontal: 10 }}>
                     <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Total</Text>
-                    <Input placeholder='Masukan Jumlah' keyboardType='numeric' onChangeText={onChangeTotal} value={total}/>
+                    <Input placeholder='Masukan Jumlah' keyboardType='numeric' onChangeText={onChangeTotal} value={total} />
                 </View>
                 <View style={{ marginTop: 40, marginHorizontal: 20 }}>
                     <Button status={"danger"} style={{ borderWidth: 1, borderRadius: 15, fontFamily: 'Regular' }} onPress={pickImage} >Upload Bukti </Button>
@@ -123,30 +112,53 @@ export default function Rembes() {
                 {image && <Image source={{ uri: image.uri }} style={{ width: 200, height: 400, alignSelf: 'center', marginVertical: 10 }} />}
             </ScrollView>
             <Button status={"info"} style={{ marginVertical: 10, marginHorizontal: 10 }} onPress={() => {
-                try {
-                    if (!image) {
-
-                    }
+                if (!image || !displayValue || !date || !total || !description) {
+                    setAlertText(`Ooopss... Terdapat kesalahan saat Upload Reimbursement\nPerikasa kembali Upload Bukti`)
+                    setVisible(true)
+                }
+                else {
                     const data = new FormData();
+                    data.append('XvX',JSON.stringify({
+                        server,
+                        token,
+                        company: employee.company,
+                        user_id: employee.user_id,
+                        total,
+                        description,
+                        employee: employee.employee,
+                        posting_date: date,
+                        tipeData: displayValue
+                    }))
                     data.append("image", image);
-                    const request = fetch(`http:///103.179.57.18:21039/Rembes/upload`, {
+                    fetch(`http:///103.179.57.18:21039/Rembes/upload`, {
                         method: "POST",
                         body: data,
                     }).then(response => response.json())
-                        .then(data => { console.log(data); })
-                } catch (error) {
-                    console.log(error);
+                        .then(data => {
+                            setAlertText(data.congrats)
+                            setVisible(true)
+                            // setTimeout(() => {
+                            //     props.navigation.navigate('Reimusement')
+                            // }, 1000)
+                        })
                 }
 
-            }}>Ajukan {total}</Button>
+            }}>Ajukan Rp.{Number(total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}</Button>
             <Modal
                 visible={visible}
                 backdropStyle={styles.backdrop}
-                onBackdropPress={() => setVisible(false)}>
-                <Card disabled={true} style={{ width: 250, height: 500, }}>
+                onBackdropPress={() => {
+                    setVisible(false)
+                    setAlertText('')
+                }}>
+                <Card disabled={true}>
+                    <Text style={{ fontFamily: 'Bold', textAlign: 'center' }}>Pesan</Text>
                     <Text>{alertText}</Text>
-                    <Button onPress={() => setVisible(false)} style={{ marginTop: 20 }}>
-                        CAPTURE
+                    <Button onPress={() => {
+                        setVisible(false)
+                        setAlertText('')
+                    }} style={{ marginTop: 20 }}>
+                        OKEY
                     </Button>
                 </Card>
             </Modal>
