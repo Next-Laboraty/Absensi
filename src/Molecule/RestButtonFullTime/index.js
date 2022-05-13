@@ -6,6 +6,7 @@ import * as Location from 'expo-location';
 import SocketSelesaiIstirahat from "../../lib/SocketSelesaiIstirahat";
 import GetRestDance from '../../lib/GetRestDance'
 import moment from "moment";
+import { AntDesign, Feather } from '@expo/vector-icons';
 import NewQuotes from "../../lib/quotes";
 import { Button, Card, Layout, Modal } from '@ui-kitten/components';
 import axios from "axios";
@@ -25,34 +26,32 @@ export default function RestButtonFullTime() {
     useEffect(() => {
         getLocations()
         getRestDatax()
-        let isMounted = true
         if (dataKehadiran) {
             setLoading(false)
         }
     }, [])
     const getRestDatax = () => {
-        panggilan.current = setInterval(getRest, 3000)
-    }
-    const getRest = () => {
-        let payload = {
-            server,
-            token,
-            employee: employee.user_id
-        }
-        GetRestDance(payload).then(res => {
-            let data = res.data
-            if (data.length == 1) {
-                setRehat(data)
+        panggilan.current = setInterval(() => {
+            let payload = {
+                server,
+                token,
+                employee: employee.user_id
             }
-            setRehatCount(data.length)
-        }).catch(err => console.log(err))
+            GetRestDance(payload).then(res => {
+                let data = res.data
+                if (data.length == 1) {
+                    setRehat(data)
+                }
+                setRehatCount(data.length)
+            }).catch(err => console.log(err))
+        }, 3000)
     }
     const getLocations = async () => {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location);
     }
     const dataReturn = () => {
-        if (loading) {
+        if (loading || !location) {
             return (
                 <TouchableOpacity style={styles.buttonAttendanceRestStart} disabled={true}>
                     <ActivityIndicator size={'large'} color={'#fff'} />
@@ -65,6 +64,7 @@ export default function RestButtonFullTime() {
                     return (
                         <TouchableOpacity style={styles.buttonAttendanceRestStart} onPress={() => {
                             if (location.coords.longitude) {
+                                clearInterval(panggilan.current)
                                 setBerhasil(false)
                                 setVisible(true)
                                 setLoading(true)
@@ -80,10 +80,9 @@ export default function RestButtonFullTime() {
                                 axios.post('http:///103.179.57.18:21039/dateAttendance/CheckIn', dataRehat).then(res => {
                                     setRehat(res.data)
                                     setRehatCount(res.data.length)
-                                    setTimeout(() => {
-                                        setLoading(false)
-                                        setBerhasil(true)
-                                    }, 5000)
+                                    setLoading(false)
+                                    setBerhasil(true)
+                                    getRestDatax()
                                 })
                                     .catch(err => console.log(err))
                             }
@@ -103,6 +102,7 @@ export default function RestButtonFullTime() {
                     return (
                         <TouchableOpacity style={styles.buttonDone} onPress={() => {
                             if (location.coords.longitude) {
+                                clearInterval(panggilan.current)
                                 setVisible(true)
                                 setLoading(true)
                                 setBerhasil(false)
@@ -119,6 +119,7 @@ export default function RestButtonFullTime() {
                                     setRehatCount(res.data.length)
                                     setLoading(false)
                                     setBerhasil(true)
+                                    getRestDatax()
                                 })
                                     .catch(err => {
                                         console.log(err)
@@ -131,7 +132,7 @@ export default function RestButtonFullTime() {
                             }
                         }}>
                             <Text style={styles.textAttendancesRestDone}>
-                                Istirahat{`\n`}{moment().diff(moment(arr[2]+'-'+arr[1]+'-'+arr[0]+' '+rehat[0].jam),'minutes')} Menit
+                                Istirahat{`\n`}{moment().diff(moment(arr[2] + '-' + arr[1] + '-' + arr[0] + ' ' + rehat[0].jam), 'minutes')} Menit
                             </Text>
                         </TouchableOpacity>
                     )
@@ -164,17 +165,22 @@ export default function RestButtonFullTime() {
         <>
             {dataReturn()}
             <Modal visible={visible}>
-                <Card disabled={true}>
-                    <Text style={{ fontFamily: 'Bold', textAlign: 'center',marginHorizontal:20, }}>Data sedang di Cek</Text>
-                    <Text style={{ fontFamily: 'ThinItalic', textAlign: 'center',marginHorizontal:20,height:300 }}>{NewQuotes()}</Text>
-                    <Text style={{ fontFamily: 'Regular', textAlign: 'center' ,marginHorizontal:20,}}>Status absensi <Text style={{ fontFamily: 'Medium', color: 'red' }}>{berhasil === false ? 'Check' : 'Berhasil'}</Text></Text>
-                    {berhasil === true ? <Button style={{ marginTop: '50%' }} onPress={() => setVisible(false)}>
-                        Okey
-                    </Button>
+                <Card disabled={true} style={{ marginHorizontal: 20 }}>
+                    {!berhasil ?
+                        <>
+                            <AntDesign name="warning" size={60} color="#F73D93" style={{ alignSelf: 'center' }} />
+                            <Text style={{ color: "#F73D93", paddingHorizontal: 30, textAlign: 'center', fontFamily: 'Medium' }}>Tunggu Sebentar</Text>
+                            <Button style={{ marginTop: 20 }} ><ActivityIndicator color={'white'} /></Button>
+                        </>
                         :
-                        <Button style={{ marginTop: '30%' }} status='warning'>
-                            Tunggu
-                        </Button>
+                        <>
+                            <AntDesign name="warning" size={60} color="#2F8F9D" style={{ alignSelf: 'center' }} />
+                            <Text style={{ marginTop: 20, fontFamily: 'LightItalic', textAlign: 'center', color: "#187498" }}>{`Waktu Istirahat telah tercatat`}</Text>
+                            <Button onPress={() => setVisible(false)} style={{ marginTop: 20 }} >
+                                <Feather name="check" size={15} color="white" style={{ marginTop: 50 }} />
+                                <Text style={{ fontFamily: 'Medium', marginRight: 20 }}>{' '}Berhasil</Text>
+                            </Button>
+                        </>
                     }
                 </Card>
             </Modal>

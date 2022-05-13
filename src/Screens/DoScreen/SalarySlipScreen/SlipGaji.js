@@ -15,7 +15,7 @@ export default function SalarySlipScreen({ route }) {
     const { employee, server, token } = useSelector(state => state.employee)
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
-    const dats = route.params.res
+    const dats = route.params.item
     useEffect(() => {
         let data = {
             server,

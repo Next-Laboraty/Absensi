@@ -29,9 +29,11 @@ import SeeNote from "../Screens/HomeScreen/NoteScreen/SeeNote";
 import Rembes from "../Screens/DoScreen/Reimbursement/Rembes";
 import KpiCheck from "../Screens/DoScreen/PenilaianKPI/KpiCheck";
 import BuktiRembes from "../Screens/DoScreen/Reimbursement/BuktiRembes";
+import PermissionScreen from "../Screens/PermissionScreen";
 
 export {
     LoginScreen,
+    PermissionScreen,
     BuktiRembes,
     KpiCheck,
     SalarySlipScreen,

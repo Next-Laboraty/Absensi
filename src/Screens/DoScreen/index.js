@@ -35,9 +35,9 @@ export default class DoScreen extends Component {
                     <View style={styles.newRow}>
                         <View style={styles.rows}>
                             <ButtonRows text={`Slip Gaji`} nav={`SalarySlip`} navigation={this.props.navigation} image={require('../../../assets/calendar.png')}/>
-                            <ButtonRows text={`Permohonan\nPinjaman`} nav={`SalarySlip`} navigation={this.props.navigation} image={require('../../../assets/loan1.png')}/>
+                            <ButtonRows text={`Permohonan\nPinjaman`} nav={`PermohonanPinjaman`} navigation={this.props.navigation} image={require('../../../assets/loan1.png')}/>
                             <ButtonRows text={`Reimbursement`} nav={`Reimusement`} navigation={this.props.navigation} image={require('../../../assets/loan2.png')}/>
-                            <ButtonRows text={`Issue`} nav={`Asuransi`} navigation={this.props.navigation} image={require('../../../assets/isu.png')}/>
+                            <ButtonRows text={`Issue`} nav={`Asuransi`} navigation={this.props.navigation} image={require('../../../assets/issue.png')}/>
                         </View>
                     </View>
                 </View>

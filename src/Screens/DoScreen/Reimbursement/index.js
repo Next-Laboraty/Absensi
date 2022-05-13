@@ -11,8 +11,6 @@ const wait = (timeout) => {
 }
 export default function Reimbursement(props) {
     const [refreshing, setRefreshing] = React.useState(false);
-
-
     const { server, token, employee } = useSelector(state => state.employee)
     const [loading, setLoading] = useState(true)
     useEffect(() => {
@@ -28,7 +26,7 @@ export default function Reimbursement(props) {
             setLoading(false)
         })
             .catch(err => {
-                console.log(err)
+                alert(err)
             })
     }
     const [data, setData] = useState(null)

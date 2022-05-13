@@ -32,7 +32,8 @@ import {
     SlipGaji,
     Rembes,
     KpiCheck,
-    BuktiRembes
+    BuktiRembes,
+    PermissionScreen
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -232,6 +233,9 @@ const RoutingValue = () => {
                     headerTitleStyle: {
                         fontFamily: 'Medium'
                     }
+                }} />
+                <Stack.Screen name="PermissionScreen" component={PermissionScreen} options={{
+                    headerShown: false
                 }} />
                 <Stack.Screen name="Asuransi" component={Asuransi} options={{
                     title: 'Isu',

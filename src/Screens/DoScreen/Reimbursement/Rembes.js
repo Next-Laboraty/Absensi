@@ -29,8 +29,6 @@ export default function Rembes(props) {
     const [alertText, setAlertText] = useState(false)
     const [description, setDescription] = useState(null)
     const [loading1, setLoading1] = useState(true)
-    
-    console.log(employee)
     useEffect(() => {
         AxiosPostData('http:///103.179.57.18:21039/Rembes', token, {
             server,

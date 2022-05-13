@@ -36,7 +36,7 @@ export default function HeaderTitle() {
     ExtraLight: Poppins_200ExtraLight,
     Poppins_200ExtraLight_Italic,
     Light: Poppins_300Light,
-    Poppins_300Light_Italic,
+    LightItalic:Poppins_300Light_Italic,
     Regular: Poppins_400Regular,
     Poppins_400Regular_Italic,
     Medium: Poppins_500Medium,

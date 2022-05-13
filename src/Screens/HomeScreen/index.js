@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import HeaderNameAndNotif from '../../Molecule/HeaderNameAndNotif';
@@ -18,28 +18,34 @@ export default function HomeScreen({ navigation }) {
     const { employee, server } = useSelector(state => state.employee)
     const dispatch = useDispatch()
     const [hasPermission, setHasPermission] = useState(null);
+    const panggilan = useRef(null)
     const db = getDatabase();
     const dbRef = ref(getDatabase());
 
 
     useEffect(() => {
-        (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasPermission(status === 'granted');
-            await Notifications.getPermissionsAsync();
-        })();
         requestPermissions()
+        console.log(hasPermission)
+        check()
     }, []);
+    const check = () => {
+        if (hasPermission === false) {
+            ubahScreen()
+        }
+        if(hasPermission === null){
+            requestPermissions()
+        }
+    }
     const requestPermissions = async () => {
         RegisterForPushNotificationsAsync().then(res => set(ref(db, `NotificationUser/${server}/${base64.encodeString(employee.user_id)}`), res))
         await Location.requestBackgroundPermissionsAsync();
-        await Location.requestForegroundPermissionsAsync ()
+        await Location.requestForegroundPermissionsAsync()
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setHasPermission(status === 'granted');
+        await Notifications.getPermissionsAsync();
     };
-    if (hasPermission === null) {
-        return <View />;
-    }
-    if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+    const ubahScreen = () => {
+        navigation.push('PermissionScreen')
     }
     return (
         <View style={{ flex: 1 }}>
