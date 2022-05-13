@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ONL HRIS",
-    "slug": "onl-hris",
+    "slug": "onl-hris-onglai",
     "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/HRIS.png",
@@ -26,12 +26,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.onglaiid.employee"
+      "bundleIdentifier": "com.onglainextlab.app"
     },
     "android": {
       "versionCode": 12,
       "googleServicesFile": "./google-services.json",
-      "package": "com.onglaiid.employee",
+      "package": "com.onglainextlab.app",
       "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/AIcon.png",

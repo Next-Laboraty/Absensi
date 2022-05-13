@@ -320,7 +320,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.onglaiid.employee";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.onglainextlab.app";
 				PRODUCT_NAME = "ONLHRIS";
 				SWIFT_OBJC_BRIDGING_HEADER = "ONLHRIS/ONLHRIS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -349,7 +349,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.onglaiid.employee";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.onglainextlab.app";
 				PRODUCT_NAME = "ONLHRIS";
 				SWIFT_OBJC_BRIDGING_HEADER = "ONLHRIS/ONLHRIS-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

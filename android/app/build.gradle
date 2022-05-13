@@ -132,7 +132,7 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.onglaiid.employee'
+        applicationId 'com.onglainextlab.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 12
