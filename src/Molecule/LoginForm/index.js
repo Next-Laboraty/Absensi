@@ -126,7 +126,7 @@ export default function LoginForm(props) {
                     <View>
                         <TextInput value={server} onChangeText={onServerChange} placeholder='Masukan Server' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
                         <Feather name="server" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
-                        <Text style={{ fontFamily: 'Regular', fontSize: 8, color: 'gray', position: 'absolute', top: 42, left: 40 }}>Contoh <Text style={{ fontFamily: 'Bold', color: 'red' }}>onglai.id</Text> (tanpa http dan www)</Text>
+                        <Text style={{ fontFamily: 'Regular', fontSize: 8, color: 'gray', position: 'absolute', top: 42, left: 40 }}>Contoh <Text style={{ fontFamily: 'Bold', color: 'red' }} onPress={()=>setServer('onglai.id')}>onglai.id</Text> (tanpa http dan www)</Text>
                     </View>
                     <View>
                         <TextInput value={usr} onChangeText={onUserChange} placeholder='Masukan Username' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
