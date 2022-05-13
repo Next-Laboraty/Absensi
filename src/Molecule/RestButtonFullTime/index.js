@@ -22,7 +22,6 @@ export default function RestButtonFullTime() {
     const [location, setLocation] = useState(null)
     const [loading, setLoading] = useState(true)
     const panggilan = useRef(null)
-    const ws = new WebSocket('ws://103.179.57.18:21039/Rest')
     useEffect(() => {
         getLocations()
         getRestDatax()
@@ -99,6 +98,8 @@ export default function RestButtonFullTime() {
                     )
                 }
                 else if (rehatCount == 1 && !rehat[0].jam2) {
+                    let text = rehat[0].tgl
+                    let arr = text.split("-")
                     return (
                         <TouchableOpacity style={styles.buttonDone} onPress={() => {
                             if (location.coords.longitude) {
@@ -130,7 +131,7 @@ export default function RestButtonFullTime() {
                             }
                         }}>
                             <Text style={styles.textAttendancesRestDone}>
-                                Selesai{`\n`}Istirahat
+                                Istirahat{`\n`}{moment().diff(moment(arr[2]+'-'+arr[1]+'-'+arr[0]+' '+rehat[0].jam),'minutes')} Menit
                             </Text>
                         </TouchableOpacity>
                     )

@@ -34,14 +34,6 @@ export default function AttendanceButtonFree() {
     useEffect(() => {
         getData()
         getLocations()
-        let isMounted = true
-        const intervalId = setInterval(() => {
-            console.log(JSON.stringify(dataX))
-        }, 1000)
-        return () => {
-            clearInterval(intervalId); //This is important
-            isMounted = false
-        }
     }, [])
     const getData = () => {
         panggilan.current = setInterval(() => {
