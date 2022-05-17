@@ -85,7 +85,7 @@ export default function LoginForm(props) {
                             dispatch(employee_data(JSON.parse(employee)))
                             RegisterForPushNotificationsAsync().then(res=>{
                                 writeUserData(base64.encodeString(AkunServer),res,base64.encodeString(server))
-                                props.nav.replace('BottomTabsNavigator')
+                                props.nav.replace('SplashScreen')
 
                             }).catch(err=>console.log(err))
                         }).catch(err=>console.log(err))

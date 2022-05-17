@@ -9,7 +9,8 @@ import AxiosGetEmployee from "../../lib/AxiosGetEmployee";
 import { getDatabase, ref, child, get, query, orderByValue, onValue } from "firebase/database";
 import { collection, doc, setDoc } from "firebase/firestore";
 import FireDbs from "../../lib/firestore";
-import GetTodoFromWS from "../../Molecule/GetTodoFromWS";
+import axios from "axios";
+import { setNotif } from "../../features/Notifikasi/NotifikasiSlice";
 
 const citiesRef = collection(FireDbs, "cities");
 

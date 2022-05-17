@@ -97,7 +97,7 @@ export default function Rembes(props) {
                 <View style={{ marginTop: 10, marginHorizontal: 10 }}>
                     <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Deskripsi</Text>
                     <Input placeholder='Masukan keterangan' multiline={true} onChangeText={onCHangeDescription} value={description} style={{ marginVertical: 2 }}
-                        textStyle={{ minHeight: 64 }} />
+                        textStyle={{ minHeight: 64,textAlignVertical:'top' }} />
                 </View>
                 <View style={{ marginTop: 10, marginHorizontal: 10 }}>
                     <Text style={{ marginBottom: 5, fontFamily: 'Regular' }}>Total</Text>

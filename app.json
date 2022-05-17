@@ -11,6 +11,12 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "sounds" : ["./assets/peringatan.wav"]
+        }
       ]
     ],
     "splash": {
@@ -29,10 +35,11 @@
       "bundleIdentifier": "com.onglainextlab.app"
     },
     "android": {
-      "versionCode": 12,
+      "versionCode": 1,
       "googleServicesFile": "./google-services.json",
       "package": "com.onglainextlab.app",
       "useNextNotificationsApi": true,
+      "permissions": ["RECEIVE_BOOT_COMPLETED"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/AIcon.png",
         "backgroundColor": "#FFFFFF"

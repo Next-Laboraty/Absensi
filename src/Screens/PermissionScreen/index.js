@@ -16,7 +16,7 @@ export default function PermissionScreen(props) {
                     dan sebagai pengalaman penggunaan aplikasi lebih baik
                     </Text>
             </Layout>
-            <Button style={{ margin: 10,marginHorizontal:30,marginBottom:20 }} onPress={()=>Linking.openSettings().then(a => props.navigation.push('BottomTabsNavigator')).catch(er => console.log(err))}>Buka Pengaturan</Button>
+            <Button style={{ margin: 10,marginHorizontal:30,marginBottom:20 }} onPress={()=>Linking.openSettings()}>Buka Pengaturan</Button>
         </Layout>
     )
 }

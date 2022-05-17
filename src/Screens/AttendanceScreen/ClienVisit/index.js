@@ -27,7 +27,7 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
 
 
-export default function App() {
+export default function App(props) {
   const dimensionss = useRef(Dimensions.get("window"));
   const screenWidth = dimensionss.current.width;
   const [ratio, setRatio] = useState('4:3');
@@ -139,7 +139,7 @@ export default function App() {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text style={styles.text}>No access to camera</Text>;
+    props.navigation.push('PermissionScreen')
   }
   const StatusCamer = () => {
     if (msg) {
