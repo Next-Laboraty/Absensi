@@ -3,6 +3,8 @@ import { ToastAndroid, View, Text, ScrollView, TextInput, StyleSheet, TouchableO
 import LoginImageHeaderOne from '../../ImagesSource/LoginImageHeaderOne'
 import LoginImageHeaderTwo from '../../ImagesSource/LoginImageHeaderTwo'
 import LoginForm from '../../Molecule/LoginForm';
+import { Button, Card, Layout, Modal } from '@ui-kitten/components';
+import * as Linking from 'expo-linking';
 
 
 class LoginScreen extends Component {
@@ -14,6 +16,7 @@ class LoginScreen extends Component {
             server: '',
             usr: '',
             pwd: '',
+            visible: false,
             isLoading: false,
             header: 'Masuk.',
             subtitle: 'Selamat datang kembali ! Masuk \nuntuk melanjutkan ke HRIS',
@@ -29,12 +32,18 @@ class LoginScreen extends Component {
             <SafeAreaView style={{ flex: 1, marginTop: 30 }}>
                 <LoginImageHeaderOne />
                 <LoginImageHeaderTwo />
-                        {/* <ActivityIndicator animating={true} size="large" style={{ opacity: 1, flex: 1 }} color="rgba(0,0,0,0.5)" /> */}
-                        <ScrollView style={{ marginTop: 50, flex: 1 }} >
-                            <Text style={styles.Header}>{this.state.header}</Text>
-                            <Text style={styles.Sub}>{this.state.subtitle}</Text>
-                            <LoginForm nav={this.props.navigation} />
-                        </ScrollView>
+                {/* <ActivityIndicator animating={true} size="large" style={{ opacity: 1, flex: 1 }} color="rgba(0,0,0,0.5)" /> */}
+                <ScrollView style={{ marginTop: 50, flex: 1 }} >
+                    <Text style={styles.Header}>{this.state.header}</Text>
+                    <Text style={styles.Sub}>{this.state.subtitle}</Text>
+                    <LoginForm nav={this.props.navigation} />
+                    <View>
+
+                    </View>
+                </ScrollView>
+                <Button onPress={() => Linking.openURL('https://onglai.id/privacy-policy')} appearance={'ghost'} status={'warning'}>
+                    Privacy Policy
+                </Button>
 
             </SafeAreaView>
         );

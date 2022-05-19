@@ -31,6 +31,8 @@ export default function ButtonInFullTime() {
     useEffect(() => {
         getLocations()
         getAttendance()
+        Location.useForegroundPermissions()
+        Location.useBackgroundPermissions()
 
     }, [])
 
@@ -125,27 +127,6 @@ export default function ButtonInFullTime() {
     return (
         <>
             {dataReturn()}
-            <Modal visible={visible}
-                backdropStyle={styles.backdrop}>
-                <Card disabled={true} style={{ marginHorizontal: 20 }}>
-                    {!berhasil ?
-                        <>
-                            <AntDesign name="warning" size={60} color="#F73D93" style={{ alignSelf: 'center' }} />
-                            <Text style={{ color: "#F73D93", paddingHorizontal: 30, textAlign: 'center', fontFamily: 'Medium' }}>Tunggu Sebentar</Text>
-                            <Button style={{ marginTop: 20 }} ><ActivityIndicator color={'white'} /></Button>
-                        </>
-                        :
-                        <>
-                            <AntDesign name="warning" size={60} color="#2F8F9D" style={{ alignSelf: 'center' }} />
-                            <Text style={{ marginTop:20,fontFamily: 'LightItalic', textAlign: 'center',color:"#187498" }}>{NewQuotes()}</Text>
-                            <Button onPress={() => setVisible(false)} style={{ marginTop: 20 }} >
-                                <Feather name="check" size={15} color="white" style={{marginTop:50}} />
-                                <Text style={{fontFamily:'Medium',marginRight:20}}>{' '}Berhasil</Text>
-                            </Button>
-                        </>
-                    }
-                </Card>
-            </Modal>
         </>
     )
 }

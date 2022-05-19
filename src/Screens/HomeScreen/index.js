@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import HeaderNameAndNotif from '../../Molecule/HeaderNameAndNotif';
@@ -7,54 +7,39 @@ import HeaderOption from '../../Atomic/HeaderOptions';
 import ButtonFeatures from '../../Molecule/ButtonFeatures';
 import HomeScreenBody from '../../Molecule/HomeScreenBody';
 import { Camera } from 'expo-camera';
+import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
 import { useDispatch, useSelector } from "react-redux";
 import RegisterForPushNotificationsAsync from '../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync';
 import { base64 } from '@firebase/util'
 import * as Notifications from 'expo-notifications';
 import * as Location from 'expo-location';
-import axios from 'axios'
 
 export default function HomeScreen({ navigation }) {
     const { employee, server } = useSelector(state => state.employee)
     const dispatch = useDispatch()
     const [hasPermission, setHasPermission] = useState(null);
-    const panggilan = useRef(null)
+    const db = getDatabase();
+    const dbRef = ref(getDatabase());
 
 
     useEffect(() => {
+        (async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            setHasPermission(status === 'granted');
+            await Notifications.getPermissionsAsync();
+        })();
         requestPermissions()
-        console.log(hasPermission)
-        check()
     }, []);
-    const check = () => {
-        if (hasPermission === false) {
-            ubahScreen()
-        }
-    }
     const requestPermissions = async () => {
-        RegisterForPushNotificationsAsync().then(res => {
-            let data = {
-                name: employee.user_id,
-                token: res.toString(),
-                server
-            }
-            axios.post(`http://103.179.57.18:21039/notif/InsertData`, data)
-            .then(res => null)
-            .catch(err => 
-                axios.post('http:///103.179.57.18:21039/notif/Update', data)
-                .then(res => null)
-                .catch(err => console.log('error Bos', err))
-            )
-        
-        })
+        RegisterForPushNotificationsAsync().then(res => set(ref(db, `NotificationUser/${server}/${base64.encodeString(employee.user_id)}`), res))
         await Location.requestBackgroundPermissionsAsync();
-        await Location.requestForegroundPermissionsAsync()
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        setHasPermission(status === 'granted');
-        await Notifications.getPermissionsAsync();
+        await Location.requestForegroundPermissionsAsync ()
     };
-    const ubahScreen = () => {
-        navigation.push('PermissionScreen')
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
     }
     return (
         <View style={{ flex: 1 }}>

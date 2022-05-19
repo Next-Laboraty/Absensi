@@ -9,17 +9,7 @@ import moment from "moment";
 import { AntDesign, Feather } from '@expo/vector-icons';
 import NewQuotes from "../../lib/quotes";
 import { Button, Card, Layout, Modal } from '@ui-kitten/components';
-import * as Notifications from 'expo-notifications';
 import axios from "axios";
-
-
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: false,
-    }),
-});
 
 export default function RestButtonFullTime() {
     const { dataKehadiran } = useSelector(state => state.kehadiran)
@@ -32,10 +22,6 @@ export default function RestButtonFullTime() {
     const [jumlah, setJumlah] = useState(null)
     const [location, setLocation] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [expoPushToken, setExpoPushToken] = useState('');
-    const [notification, setNotification] = useState(false);
-    const notificationListener = useRef();
-    const responseListener = useRef();
     const panggilan = useRef(null)
     useEffect(() => {
         getLocations()
@@ -43,20 +29,6 @@ export default function RestButtonFullTime() {
         if (dataKehadiran) {
             setLoading(false)
         }
-        // registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
-        });
-
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
-        });
-
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
-        };
     }, [])
     const getRestDatax = () => {
         panggilan.current = setInterval(() => {
@@ -105,28 +77,12 @@ export default function RestButtonFullTime() {
                                     latitude: location.coords.latitude
                                 }
                                 //     // setModalVisible(true)
-                                axios.post('http:///103.179.57.18:21039/dateAttendance/CheckIn', dataRehat).then(async res => {
+                                axios.post('http:///103.179.57.18:21039/dateAttendance/CheckIn', dataRehat).then(res => {
                                     setRehat(res.data)
                                     setRehatCount(res.data.length)
                                     setLoading(false)
                                     setBerhasil(true)
                                     getRestDatax()
-                                    await Notifications.setNotificationChannelAsync('new-emails', {
-                                        name: 'Peringatan Waktu Istirahat',
-                                        importance: Notifications.AndroidImportance.HIGH,
-                                        sound: "peringatan.wav", // <- for Android 8.0+, see channelId property below
-                                      });
-                                    await Notifications.scheduleNotificationAsync({
-                                        content: {
-                                            title: "Peringatan Waktu Istirahat",
-                                            body: 'Istirahat sudah 40 Menit',
-                                            sound: "peringatan.wav",
-                                        },
-                                        trigger: {
-                                            seconds: 15,
-                                            channelId: 'new-emails',
-                                        }
-                                    })
                                 })
                                     .catch(err => console.log(err))
                             }
@@ -164,7 +120,6 @@ export default function RestButtonFullTime() {
                                     setLoading(false)
                                     setBerhasil(true)
                                     getRestDatax()
-
                                 })
                                     .catch(err => {
                                         console.log(err)
