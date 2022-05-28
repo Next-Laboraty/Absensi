@@ -27,7 +27,7 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
 
 
-export default function App(props) {
+export default function App({ navigation }) {
   const dimensionss = useRef(Dimensions.get("window"));
   const screenWidth = dimensionss.current.width;
   const [ratio, setRatio] = useState('4:3');
@@ -49,12 +49,7 @@ export default function App(props) {
   const hideDialog = () => setVisible(false);
   useEffect(async () => {
     let isMounted = true
-    onHandlePermission();
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied');
-      return;
-    }
+    checkPermission()
     let location = await Location.getCurrentPositionAsync({});
     const intervalId = setInterval(() => {
       setLongitude(location.coords.longitude)
@@ -64,11 +59,30 @@ export default function App(props) {
       clearInterval(intervalId); //This is important
     }
   }, [useState]);
-  const onHandlePermission = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    setHasPermission(status === 'granted');
-  };
+  const checkPermission = () => {
+    Camera.getCameraPermissionsAsync().then(res => {
+      let dataBody = {
+        res,
+        name: 'Kamera'
+      }
+      if (res.status =='undetermined' || res.status =='denied') {
+        console.log(res.status)
+        navigation.replace('PermissionScreen', dataBody)
+      }
+      else {
+        Location.getForegroundPermissionsAsync().then(res => {
+          let dataPermLoc = {
+            res,
+            name: 'Geolokasi'
+          }
+          if (res.status == 'denied') {
+            navigation.replace('PermissionScreen', dataPermLoc)
+          }
+        })
+      }
 
+    })
+  }
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
@@ -134,13 +148,6 @@ export default function App(props) {
     await cameraRef.current.resumePreview();
     setIsPreview(false);
   };
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    props.navigation.push('PermissionScreen')
-  }
   const StatusCamer = () => {
     if (msg) {
       return (

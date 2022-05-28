@@ -42,7 +42,7 @@ class LoginScreen extends Component {
                     </View>
                 </ScrollView>
                 <Button onPress={() => Linking.openURL('https://onglai.id/privacy-policy')} appearance={'ghost'} status={'warning'}>
-                    Privacy Policy
+                    Kebijakan Privasi
                 </Button>
 
             </SafeAreaView>

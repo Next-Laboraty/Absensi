@@ -78,78 +78,78 @@ export default function LoginForm(props) {
                         AsyncPenyimpanan('@AccountEmail', base64.encodeString(AkunServer))
                         dispatch(employee_mail(AkunServer))
                         const urlX = `https://${server}/api/resource/Employee?fields=["*"]&filters=[["user_id","=","${AkunServer}"]]`
-                        AxiosGetEmployee(urlX,base64.decodeString(token)).then(res=>{
+                        AxiosGetEmployee(urlX, base64.decodeString(token)).then(res => {
                             const employee = JSON.stringify(res.data.data[0])
-                            writeEmployeeData(base64.encodeString(AkunServer),res.data.data[0])
+                            writeEmployeeData(base64.encodeString(AkunServer), res.data.data[0])
                             AsyncPenyimpanan('@AccountEmployee', employee)
                             dispatch(employee_data(JSON.parse(employee)))
-                            RegisterForPushNotificationsAsync().then(res=>{
-                                writeUserData(base64.encodeString(AkunServer),res,base64.encodeString(server))
-                                props.nav.replace('BottomTabsNavigator')
+                            // RegisterForPushNotificationsAsync().then(res=>{
+                            //     writeUserData(base64.encodeString(AkunServer),res,base64.encodeString(server))
+                            props.nav.replace('SplashScreen')
 
-                            }).catch(err=>console.log(err))
-                        }).catch(err=>console.log(err))
-                    }).catch(err => console.log(`Error Bro : ${err}`))
-                }).catch(error => console.error(error))
-            }
-            ).catch((err) => {
-                let data = {
-                    title: 'Error Login',
-                    body: `${err}`
-                }
-                alertMsg(data)
-                setLoading(false)
-            })
+                        // }).catch(err => console.log(err))
+                    }).catch(err => console.log(err))
+                }).catch(err => console.log(`Error Bro : ${err}`))
+            }).catch(error => console.error(error))
         }
+            ).catch ((err) => {
+        let data = {
+            title: 'Error Login',
+            body: `${err}`
+        }
+        alertMsg(data)
+        setLoading(false)
+    })
+}
 
     }
-    function writeEmployeeData(email, data) {
-        const db = getDatabase();
-        const exit = set(ref(db, 'Employee/' + email + '/dataKaryawan'), data);
-        return exit
-      }
-    function writeUserData(userMail, notificationToken,servers) {
-        const db = getDatabase();
-        const exit = set(ref(db, 'NotificationUser/' +servers+'/'+ userMail), notificationToken);
-        return exit
-      }
-    const AsyncPenyimpanan = async (dataHeader, textPayload) => {
-        await AsyncStorage.setItem(
-            dataHeader,
-            textPayload
-        );
-    }
-    return (
-        <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            {loading ? <ActivityIndicator color={'#516BEB'} /> :
-                <>
-                    <View>
-                        <TextInput value={server} onChangeText={onServerChange} placeholder='Masukan Server' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
-                        <Feather name="server" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
-                        <Text style={{ fontFamily: 'Regular', fontSize: 8, color: 'gray', position: 'absolute', top: 42, left: 40 }}>Contoh <Text style={{ fontFamily: 'Bold', color: 'red' }} onPress={()=>setServer('onglai.id')}>onglai.id</Text> (tanpa http dan www)</Text>
-                    </View>
-                    <View>
-                        <TextInput value={usr} onChangeText={onUserChange} placeholder='Masukan Username' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
-                        <Feather name="user" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
-                    </View>
-                    <View>
-                        <TextInput value={pwd} onChangeText={onPasswordChange} placeholder='Masukan Password' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} secureTextEntry={eyeOpen} />
-                        <Feather name="key" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
-                        <TouchableOpacity style={{ position: 'absolute', right: 37, top: 18 }} onPress={() => eyeOpenButton()}>
-                            {eyeOpen ? <Feather name="eye-off" size={15} color="#D0D7FC" /> : <Feather name="eye" size={15} color="#D0D7FC" />}
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <TouchableOpacity style={styles.buttonLogin} onPress={() => onLogin()}>
-                            <Text style={styles.buttonLoginText}>
-                                Masuk
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </>
-            }
-        </KeyboardAvoidingView>
-    )
+function writeEmployeeData(email, data) {
+    const db = getDatabase();
+    const exit = set(ref(db, 'Employee/' + email + '/dataKaryawan'), data);
+    return exit
+}
+function writeUserData(userMail, notificationToken, servers) {
+    const db = getDatabase();
+    const exit = set(ref(db, 'NotificationUser/' + servers + '/' + userMail), notificationToken);
+    return exit
+}
+const AsyncPenyimpanan = async (dataHeader, textPayload) => {
+    await AsyncStorage.setItem(
+        dataHeader,
+        textPayload
+    );
+}
+return (
+    <KeyboardAvoidingView style={styles.CardInput} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        {loading ? <ActivityIndicator color={'#516BEB'} /> :
+            <>
+                <View>
+                    <TextInput value={server} onChangeText={onServerChange} placeholder='Masukan Server' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
+                    <Feather name="server" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
+                    <Text style={{ fontFamily: 'Regular', fontSize: 8, color: 'gray', position: 'absolute', top: 42, left: 40 }}>Contoh <Text style={{ fontFamily: 'Bold', color: 'red' }} onPress={() => setServer('onglai.id')}>onglai.id</Text> (tanpa http dan www)</Text>
+                </View>
+                <View>
+                    <TextInput value={usr} onChangeText={onUserChange} placeholder='Masukan Username' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} />
+                    <Feather name="user" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
+                </View>
+                <View>
+                    <TextInput value={pwd} onChangeText={onPasswordChange} placeholder='Masukan Password' placeholderTextColor={'#D0D7FC'} style={styles.InputStyle} secureTextEntry={eyeOpen} />
+                    <Feather name="key" size={15} color="#516BEB" style={{ position: 'absolute', left: 37, top: 18 }} />
+                    <TouchableOpacity style={{ position: 'absolute', right: 37, top: 18 }} onPress={() => eyeOpenButton()}>
+                        {eyeOpen ? <Feather name="eye-off" size={15} color="#D0D7FC" /> : <Feather name="eye" size={15} color="#D0D7FC" />}
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity style={styles.buttonLogin} onPress={() => onLogin()}>
+                        <Text style={styles.buttonLoginText}>
+                            Masuk
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </>
+        }
+    </KeyboardAvoidingView>
+)
 }
 const styles = StyleSheet.create({
     textLang: {

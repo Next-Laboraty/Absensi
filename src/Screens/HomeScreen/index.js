@@ -6,41 +6,22 @@ import BannerHeader from '../../Molecule/BannerHeader';
 import HeaderOption from '../../Atomic/HeaderOptions';
 import ButtonFeatures from '../../Molecule/ButtonFeatures';
 import HomeScreenBody from '../../Molecule/HomeScreenBody';
-import { Camera } from 'expo-camera';
-import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
-import { useDispatch, useSelector } from "react-redux";
-import RegisterForPushNotificationsAsync from '../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync';
-import { base64 } from '@firebase/util'
-import * as Notifications from 'expo-notifications';
-import * as Location from 'expo-location';
+import * as Location from 'expo-location'
 
 export default function HomeScreen({ navigation }) {
-    const { employee, server } = useSelector(state => state.employee)
-    const dispatch = useDispatch()
-    const [hasPermission, setHasPermission] = useState(null);
-    const db = getDatabase();
-    const dbRef = ref(getDatabase());
-
-
     useEffect(() => {
-        (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasPermission(status === 'granted');
-            await Notifications.getPermissionsAsync();
-        })();
-        requestPermissions()
-    }, []);
-    const requestPermissions = async () => {
-        RegisterForPushNotificationsAsync().then(res => set(ref(db, `NotificationUser/${server}/${base64.encodeString(employee.user_id)}`), res))
-        await Location.requestBackgroundPermissionsAsync();
-        await Location.requestForegroundPermissionsAsync ()
-    };
-    if (hasPermission === null) {
-        return <View />;
-    }
-    if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
-    }
+        Location.getForegroundPermissionsAsync().then(res => {
+            let dataPermLoc = {
+                res,
+                name: 'Geolokasi'
+            }
+            if(res.status == 'undetermined'){
+                navigation.replace('PermissionScreen', dataPermLoc)
+            }
+        })
+    },[])
+    
+    
     return (
         <View style={{ flex: 1 }}>
             <StatusBar hidden={true} style="light" />

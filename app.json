@@ -20,7 +20,7 @@
       ]
     ],
     "splash": {
-      "image": "./assets/splashNew.png",
+      "image": "./assets/HRISSplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -35,18 +35,32 @@
       "bundleIdentifier": "com.onglainextlab.app"
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 18,
       "googleServicesFile": "./google-services.json",
       "package": "com.onglainextlab.app",
       "useNextNotificationsApi": true,
-      "permissions": ["RECEIVE_BOOT_COMPLETED"],
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_MEDIA_LOCATION",
+        "CAMERA",
+        "FOREGROUND_SERVICE",
+        "INTERNET",
+        "READ_EXTERNAL_STORAGE",
+        "RECORD_AUDIO",
+        "SYSTEM_ALERT_WINDOW",
+        "VIBRATE",
+        "WAKE_LOCK",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/HRIS-02.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/HRIS.png"
+      "favicon": "./assets/HRIS-02.png"
     }
   }
 }
