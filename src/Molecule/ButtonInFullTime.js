@@ -2,18 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View, Pressable } from "react-native";
 import moment from "moment";
 import NewQuotes from "../lib/quotes";
-import { AntDesign,Feather } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useDispatch, useSelector } from "react-redux";
 import { dataKehadiranEntry } from "../features/attendance/kehadiranSlice";
 import NewSocketIN from "../lib/NewSocketIN";
 import GetAttendance from '../lib/GetAttendance'
 import axios from "axios";
-import { Button, Card, Layout, Modal } from '@ui-kitten/components';
+import { Button, Card, Divider, Layout, Modal } from '@ui-kitten/components';
 
 export default function ButtonInFullTime() {
     const dispatch = useDispatch()
-    const [location, setLocation] = useState(null)
+    const [type, setType] = useState(null)
+    const { latitude, longitude } = useSelector(state => state.Loxation)
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(true)
     const [berhasil, setBerhasil] = useState(false)
@@ -26,14 +27,9 @@ export default function ButtonInFullTime() {
         server
     }
     const panggilan = useRef(null)
-    const ws = new WebSocket('ws://103.179.57.18:21039/Attendance')
     const [jam, setJam] = useState(moment().format('H'))
     useEffect(() => {
-        getLocations()
         getAttendance()
-        Location.useForegroundPermissions()
-        Location.useBackgroundPermissions()
-
     }, [])
 
     const getAttendance = () => {
@@ -47,12 +43,12 @@ export default function ButtonInFullTime() {
         }, 3000)
     }
 
-    const getLocations = async () => {
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
-    }
+    // const getLocations = async () => {
+    //     let location = await Location.getCurrentPositionAsync({});
+    //     setLocation(location);
+    // }
     const getPresent = (xdata) => {
-        clearInterval(panggilan.current)
+        // clearInterval(panggilan.current)
         setVisible(true)
         let payload = {
             employee: employee.employee,
@@ -60,8 +56,8 @@ export default function ButtonInFullTime() {
             device_id: 'ONL_APP_MOBILE',
             time: moment().format("YYYY-MM-DD HH:mm:ss"),
             skip_auto_attendance: 0,
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude
+            longitude: longitude,
+            latitude: latitude
         }
         let data = {
             token,
@@ -73,6 +69,7 @@ export default function ButtonInFullTime() {
             setBerhasil(true)
             dispatch(dataKehadiranEntry(data))
             setJumlah(data.length)
+            setVisible(false)
             panggilan.current = setInterval(() => {
                 GetAttendance(dataX).then(res => {
                     let data = res.data
@@ -97,7 +94,10 @@ export default function ButtonInFullTime() {
         else {
             if (jumlah == 1 && jam >= 14) {
                 return (
-                    <TouchableOpacity style={styles.buttonOUT} onPress={() => getPresent('OUT')} disabled={buttonsIN}>
+                    <TouchableOpacity style={styles.buttonOUT} onPress={() => {
+                        setType('OUT')
+                        setVisible(true)
+                    }} disabled={buttonsIN}>
                         <Text style={styles.textIN}>
                             Pulang
                         </Text>
@@ -127,6 +127,21 @@ export default function ButtonInFullTime() {
     return (
         <>
             {dataReturn()}
+            <Modal
+                visible={visible}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible(false)}>
+                <Card disabled={true} style={{marginHorizontal:30}}>
+                    <Divider style={{marginBottom:20}}/>
+                    <Text style={{fontFamily:'LightItalic',fontSize:12}}>{NewQuotes()}</Text>
+                    <Divider style={{marginTop:20,marginBottom:10}}/>
+                    <Text style={{fontFamily:'Regular'}}>Kamu akan melakukan absensi {type =='OUT'? 'Pulang':'Masuk'} yakin akan memprosesnya ?</Text>
+                    <Button onPress={() => getPresent(type)} style={{marginTop:20}}>
+                        Absensi Sekarang
+                    </Button>
+                    <Button appearance={'ghost'} status={'danger'} onPress={() => setVisible(false)}>Tidak, lain kali</Button>
+                </Card>
+            </Modal>
         </>
     )
 }

@@ -1,9 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native'
+import { useDispatch } from "react-redux";
 import ButtonInFullTime from "../ButtonInFullTime";
 import RestButtonFullTime from "../RestButtonFullTime";
-export default function AttendanceButton() {
+import { setLatitude, setLongitude } from "../../features/Loxation/LoxationSlice";
+import * as Location from 'expo-location'
 
+export default function AttendanceButton() {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        let _moun = false
+        const time = setInterval(() => {
+            Location.getCurrentPositionAsync().then(result => {
+                dispatch(setLatitude(result.coords.latitude))
+                dispatch(setLongitude(result.coords.longitude))
+            })
+        }, 1000)
+        return () => {
+            _moun = true
+            clearInterval(time)
+        }
+    }, [])
     return (
         <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20, marginBottom: 80 }}>
             <ButtonInFullTime />

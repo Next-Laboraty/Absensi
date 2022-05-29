@@ -1,30 +1,66 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useRef, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import AttendanceHeader from '../../Molecule/AttendanceHeader';
 import ButtonBottom from '../../Atomic/ButtonBottom';
 import JamComponent from '../../Atomic/JamComponent';
 import AttendanceButtonFree from '../../Molecule/AttendanceButtonFree';
 import AttendanceButton from '../../Molecule/AttendanceButton';
-import {connect} from 'react-redux'
-// import { SWRConfig } from "swr";
+import { connect, useDispatch, useSelector } from 'react-redux'
+import * as Location from 'expo-location'
+import { Button, Card } from '@ui-kitten/components';
+import {setLatitude, setLongitude} from '../../features/Loxation/LoxationSlice'
 
-class AttendanceScreen extends Component {
-    componentDidMount(){
-        
+export default function AttendanceScreen({ navigation }) {
+    const { employee } = useSelector(state => state.employee)
+    const [isGPS, setIsGPS] = useState(true)
+    const loc = useRef()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        Location.getForegroundPermissionsAsync().then(res => {
+            let dataPermLoc = {
+                res,
+                name: 'Geolokasi'
+            }
+            if (res.status !== 'granted') {
+                navigation.replace('PermissionScreen', dataPermLoc)
+            }
+            else{
+                Location.hasServicesEnabledAsync().then(result => {
+                    if(result == true){
+                        getLocation()
+                    }
+                })
+            }
+        })
+    })
+    const getLocation = () => {
+        Location.getCurrentPositionAsync().then(result => {
+            setIsGPS(false)
+        })
     }
-    getDataIs(){
-        let tipe = this.props.employee.employee.employment_type
-        if(tipe == 'freelance' || tipe=='Flexible-time'){
+    const getDataIs = () => {
+        let tipe = employee.employment_type
+        if (tipe == 'freelance' || tipe == 'Flexible-time') {
             return <AttendanceButtonFree />
         }
-        else{
+        else {
             return <AttendanceButton />
         }
     }
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-                <View style={{flex: 1 }}>
+    return (
+        <View style={{ flex: 1, marginHorizontal: 20 }}>
+            {isGPS ?
+            <View style={{justifyContent:'center', flex:1}}>
+                <Image source={require('../../../assets/satellite.png')} style={{alignSelf:'center',marginBottom:50,width:100,height:100}} />
+                <Card>
+                    <Text style={{ fontSize: 18, fontFamily: 'Bold' }}>Uuuupppsss...</Text>
+                    <Text style={{fontFamily:'Regular'}}>GPS kamu mati, nyalakan GPS dengan menekan tombol dibawah ini</Text>
+                </Card>
+                <Button style={{ margin: 20 }} onPress={() => getLocation()}>Nyalakan GPS</Button>
+            </View>
+            :
+            <>
+            <View style={{flex: 1 }}>
                     <AttendanceHeader />
                     <JamComponent />
                     <View style={{ marginTop: '20%' }}>
@@ -32,23 +68,18 @@ class AttendanceScreen extends Component {
                         <View style={{ height: 1, width: 164, backgroundColor: '#2C3333', alignSelf: 'center' }}>
 
                         </View>
-                        {this.getDataIs()}
+                        {getDataIs()}
                     </View>
 
                 </View>
                 <View style={{height: '15%' }}>
-                    <ButtonBottom icon="clock" text="Riwayat" nav={`History`} navigation={this.props.navigation}/>
+                    <ButtonBottom icon="clock" text="Riwayat" nav={`History`} navigation={navigation}/>
                 </View>
-            </View>
-        )
-    }
+            </>
+            }
+        </View>
+    )
 }
-const mapStateToProps = state => {
-    return{
-        employee: state.employee
-    }
-}
-export default connect(mapStateToProps)(AttendanceScreen)
 const styles = StyleSheet.create({
     textAttendances: {
         textAlign: 'center',

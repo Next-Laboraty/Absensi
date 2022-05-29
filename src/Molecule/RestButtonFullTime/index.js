@@ -12,6 +12,8 @@ import { Button, Card, Layout, Modal } from '@ui-kitten/components';
 import axios from "axios";
 
 export default function RestButtonFullTime() {
+    const { latitude, longitude } = useSelector(state => state.Loxation)
+    const panggilan = useRef()
     const { dataKehadiran } = useSelector(state => state.kehadiran)
     const [modalVisible, setModalVisible] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -22,9 +24,7 @@ export default function RestButtonFullTime() {
     const [jumlah, setJumlah] = useState(null)
     const [location, setLocation] = useState(null)
     const [loading, setLoading] = useState(true)
-    const panggilan = useRef(null)
     useEffect(() => {
-        getLocations()
         getRestDatax()
         if (dataKehadiran) {
             setLoading(false)
@@ -46,12 +46,8 @@ export default function RestButtonFullTime() {
             }).catch(err => console.log(err))
         }, 3000)
     }
-    const getLocations = async () => {
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
-    }
     const dataReturn = () => {
-        if (loading || !location) {
+        if (loading) {
             return (
                 <TouchableOpacity style={styles.buttonAttendanceRestStart} disabled={true}>
                     <ActivityIndicator size={'large'} color={'#fff'} />
@@ -63,32 +59,26 @@ export default function RestButtonFullTime() {
                 if (rehatCount == 0) {
                     return (
                         <TouchableOpacity style={styles.buttonAttendanceRestStart} onPress={() => {
-                            if (location.coords.longitude) {
-                                clearInterval(panggilan.current)
-                                setBerhasil(false)
-                                setVisible(true)
-                                setLoading(true)
-                                let dataRehat = {
-                                    email: employee.user_id,
-                                    nama: employee.employee_name,
-                                    server,
-                                    token,
-                                    longitude: location.coords.longitude,
-                                    latitude: location.coords.latitude
-                                }
-                                //     // setModalVisible(true)
-                                axios.post('http:///103.179.57.18:21039/dateAttendance/CheckIn', dataRehat).then(res => {
-                                    setRehat(res.data)
-                                    setRehatCount(res.data.length)
-                                    setLoading(false)
-                                    setBerhasil(true)
-                                    getRestDatax()
-                                })
-                                    .catch(err => console.log(err))
+
+                            setBerhasil(false)
+                            setVisible(true)
+                            setLoading(true)
+                            let dataRehat = {
+                                email: employee.user_id,
+                                nama: employee.employee_name,
+                                server,
+                                token,
+                                longitude: longitude,
+                                latitude: latitude
                             }
-                            else {
-                                alert('Tunggu Sebentar')
-                            }
+                            //     // setModalVisible(true)
+                            axios.post('http:///103.179.57.18:21039/dateAttendance/CheckIn', dataRehat).then(res => {
+                                setRehat(res.data)
+                                setRehatCount(res.data.length)
+                                setLoading(false)
+                                setBerhasil(true)
+                                getRestDatax()
+                            })
                         }}>
                             <Text style={styles.textAttendancesRestDone}>
                                 Istirahat
@@ -101,35 +91,31 @@ export default function RestButtonFullTime() {
                     let arr = text.split("-")
                     return (
                         <TouchableOpacity style={styles.buttonDone} onPress={() => {
-                            if (location.coords.longitude) {
-                                clearInterval(panggilan.current)
-                                setVisible(true)
-                                setLoading(true)
-                                setBerhasil(false)
-                                let dataRehat = {
-                                    idIstirahat: rehat[0].name,
-                                    server,
-                                    token,
-                                    longitude: location.coords.longitude,
-                                    latitude: location.coords.latitude
-                                }
-                                // setModalVisible(true)
-                                axios.post('http:///103.179.57.18:21039/dateAttendance/CheckOut', dataRehat).then(res => {
-                                    setRehat(res.data)
-                                    setRehatCount(res.data.length)
+
+                            setVisible(true)
+                            setLoading(true)
+                            setBerhasil(false)
+                            let dataRehat = {
+                                company: employee.company,
+                                idIstirahat: rehat[0].name,
+                                server,
+                                token,
+                                longitude: longitude,
+                                latitude: latitude
+                            }
+                            // setModalVisible(true)
+                            axios.post('http:///103.179.57.18:21039/dateAttendance/out', dataRehat).then(res => {
+                                setRehat(res.data)
+                                setRehatCount(res.data.length)
+                                setLoading(false)
+                                setBerhasil(true)
+                                getRestDatax()
+                            })
+                                .catch(err => {
+                                    console.log(err)
                                     setLoading(false)
                                     setBerhasil(true)
-                                    getRestDatax()
                                 })
-                                    .catch(err => {
-                                        console.log(err)
-                                        setLoading(false)
-                                        setBerhasil(true)
-                                    })
-                            }
-                            else {
-                                alert('Tunggu Sebentar')
-                            }
                         }}>
                             <Text style={styles.textAttendancesRestDone}>
                                 Istirahat{`\n`}{moment().diff(moment(arr[2] + '-' + arr[1] + '-' + arr[0] + ' ' + rehat[0].jam), 'minutes')} Menit
