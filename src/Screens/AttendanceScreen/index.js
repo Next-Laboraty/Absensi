@@ -11,6 +11,7 @@ import { Button, Card } from '@ui-kitten/components';
 import {setLatitude, setLongitude} from '../../features/Loxation/LoxationSlice'
 
 export default function AttendanceScreen({ navigation }) {
+    const {dataIstirahat, dataKehadiran} = useSelector(state => state.kehadiran)
     const { employee } = useSelector(state => state.employee)
     const [isGPS, setIsGPS] = useState(true)
     const loc = useRef()
@@ -25,14 +26,25 @@ export default function AttendanceScreen({ navigation }) {
                 navigation.replace('PermissionScreen', dataPermLoc)
             }
             else{
-                Location.hasServicesEnabledAsync().then(result => {
-                    if(result == true){
-                        getLocation()
-                    }
-                })
+                let _Mounted = false
+                let _interval = setInterval(() =>{
+                    Location.hasServicesEnabledAsync().then(result => {
+                        if(result == true){
+                            getLocation()
+                            clearInterval(_interval)
+                        }
+                        else{
+                            setIsGPS(true)
+                        }
+                    })
+                },500) 
+                return() => {
+                    _Mounted = true
+                    clearInterval(_interval)
+                }
             }
         })
-    })
+    },[])
     const getLocation = () => {
         Location.getCurrentPositionAsync().then(result => {
             setIsGPS(false)
@@ -73,7 +85,11 @@ export default function AttendanceScreen({ navigation }) {
 
                 </View>
                 <View style={{height: '15%' }}>
+                    {dataKehadiran.length == 0 ?
+                    null
+                    :
                     <ButtonBottom icon="clock" text="Riwayat" nav={`History`} navigation={navigation}/>
+                    }
                 </View>
             </>
             }

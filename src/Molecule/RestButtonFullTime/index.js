@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Alert, ActivityIndicator, Pressable } from 'react-native'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SocketIstirahat from '../../lib/SocketIstirahat'
 import * as Location from 'expo-location';
 import SocketSelesaiIstirahat from "../../lib/SocketSelesaiIstirahat";
@@ -10,8 +10,10 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import NewQuotes from "../../lib/quotes";
 import { Button, Card, Layout, Modal } from '@ui-kitten/components';
 import axios from "axios";
+import { dataIstirahatEntry } from "../../features/attendance/kehadiranSlice";
 
 export default function RestButtonFullTime() {
+    const dispatch = useDispatch()
     const { latitude, longitude } = useSelector(state => state.Loxation)
     const panggilan = useRef()
     const { dataKehadiran } = useSelector(state => state.kehadiran)
@@ -39,6 +41,7 @@ export default function RestButtonFullTime() {
             }
             GetRestDance(payload).then(res => {
                 let data = res.data
+                dispatch(dataIstirahatEntry(data))
                 if (data.length == 1) {
                     setRehat(data)
                 }
@@ -74,6 +77,7 @@ export default function RestButtonFullTime() {
                             //     // setModalVisible(true)
                             axios.post('http:///103.179.57.18:21039/dateAttendance/CheckIn', dataRehat).then(res => {
                                 setRehat(res.data)
+                                dispatch(dataIstirahatEntry(res.data))
                                 setRehatCount(res.data.length)
                                 setLoading(false)
                                 setBerhasil(true)
@@ -106,6 +110,7 @@ export default function RestButtonFullTime() {
                             // setModalVisible(true)
                             axios.post('http:///103.179.57.18:21039/dateAttendance/out', dataRehat).then(res => {
                                 setRehat(res.data)
+                                dispatch(dataIstirahatEntry(res.data))
                                 setRehatCount(res.data.length)
                                 setLoading(false)
                                 setBerhasil(true)

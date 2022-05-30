@@ -12,12 +12,18 @@ import TanggalRow from '../../../Molecule/ListHistorySection/TanggalRow';
 moment.locale('id')
 
 export default function History() {
+    const {employee} = useSelector(state => state.employee)
+    const tipe = employee.employment_type
     return (
         <Layout style={{ flex: 1 }}>
             <TanggalRow />
             {SaatIni()}
             <ListHistorySection />
+            {tipe == 'freelance' || tipe == 'Flexible-time' ?
+            null
+            :
             <IstirahatSectionList />
+        }
         </Layout>
     )
 }

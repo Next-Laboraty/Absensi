@@ -4079,6 +4079,11 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
+fuse.js@^6.6.2:
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-6.6.2.tgz#fe463fed4b98c0226ac3da2856a415576dc9a111"
+  integrity sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==
+
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
@@ -6053,6 +6058,14 @@ react-native-codegen@^0.0.6:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
+
+react-native-dynamic-search-bar@WrathChaos/react-native-dynamic-search-bar#expo:
+  version "2.0.2"
+  resolved "https://codeload.github.com/WrathChaos/react-native-dynamic-search-bar/tar.gz/91f5aeeec42fb4f9cf0a41d5e1dcd17dd0f1968d"
+
+react-native-dynamic-vector-icons@WrathChaos/react-native-dynamic-vector-icons#expo:
+  version "0.1.1"
+  resolved "https://codeload.github.com/WrathChaos/react-native-dynamic-vector-icons/tar.gz/5335e80080125505044e6d60bb7c79cb8afe5971"
 
 react-native-gesture-handler@~2.1.0:
   version "2.1.3"
