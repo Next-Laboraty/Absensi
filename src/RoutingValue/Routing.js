@@ -10,7 +10,7 @@ import DailyReport from "../Screens/DoScreen/DailyReport/index.js";
 import PenilaianKPI from "../Screens/DoScreen/PenilaianKPI/index.js";
 import PermohonanPinjaman from "../Screens/DoScreen/PermohonanPinjaman/index.js";
 import Reimbursement from "../Screens/DoScreen/Reimbursement";
-import Asuransi from "../Screens/DoScreen/Asuransi/index.js";
+import PostIssue from "../Screens/DoScreen/Asuransi/PostIssue.js";
 import AplikasiLembur from "../Screens/DoScreen/AplikasiLembur/index.js";
 import ChatManagement from "../Screens/DoScreen/ChatManagement/index.js";
 import History from "../Screens/AttendanceScreen/History";
@@ -30,12 +30,16 @@ import Rembes from "../Screens/DoScreen/Reimbursement/Rembes";
 import KpiCheck from "../Screens/DoScreen/PenilaianKPI/KpiCheck";
 import BuktiRembes from "../Screens/DoScreen/Reimbursement/BuktiRembes";
 import PermissionScreen from "../Screens/PermissionScreen";
+import ListIssue from "../Screens/DoScreen/Asuransi";
+import LihatIssue from "../Screens/DoScreen/Asuransi/LihatIssue"
 
 export {
     LoginScreen,
     PermissionScreen,
     BuktiRembes,
+    LihatIssue,
     KpiCheck,
+    ListIssue,
     SalarySlipScreen,
     PermintaanKehadiran,
     AplikasiCuti,
@@ -46,7 +50,7 @@ export {
     PenilaianKPI,
     PermohonanPinjaman,
     Reimbursement,
-    Asuransi,
+    PostIssue,
     AplikasiLembur,
     ChatManagement,
     TaskScreen,

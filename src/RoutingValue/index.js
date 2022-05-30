@@ -13,7 +13,7 @@ import {
     PenilaianKPI,
     PermohonanPinjaman,
     Reimbursement,
-    Asuransi,
+    PostIssue,
     AplikasiLembur,
     ChatManagement,
     History,
@@ -33,7 +33,9 @@ import {
     Rembes,
     KpiCheck,
     BuktiRembes,
-    PermissionScreen
+    PermissionScreen,
+    ListIssue,
+    LihatIssue
 } from './Routing.js'
 import Notification from "../lib/Notification";
 import BottomTabsNavigator from "../Molecule/BottomTabsNavigator";
@@ -95,6 +97,16 @@ const RoutingValue = () => {
                 }} />
                 <Stack.Screen name="BuktiRembes" component={BuktiRembes} options={{
                   title: 'Bukti Rembes',
+                  headerStyle: {
+                      backgroundColor: '#000'
+                  },
+                  headerTintColor: '#fff',
+                  headerTitleStyle: {
+                      fontFamily: 'Medium'
+                  }
+                }} />
+                <Stack.Screen name="ListIssue" component={ListIssue} options={{
+                  title: 'Issue',
                   headerStyle: {
                       backgroundColor: '#000'
                   },
@@ -237,8 +249,8 @@ const RoutingValue = () => {
                 <Stack.Screen name="PermissionScreen" component={PermissionScreen} options={{
                     headerShown: false
                 }} />
-                <Stack.Screen name="Asuransi" component={Asuransi} options={{
-                    title: 'Isu',
+                <Stack.Screen name="PostIssue" component={PostIssue} options={{
+                    title: 'Laporan Isu baru',
                     headerStyle: {
                         backgroundColor: '#000'
                     },
@@ -397,6 +409,16 @@ const RoutingValue = () => {
                         fontFamily: 'Medium'
                     }
                 }} />
+                <Stack.Screen name="LihatIssue" component={LihatIssue} options={({ route }) =>({
+                    title: route.params.subject,
+                    headerStyle: {
+                        backgroundColor: '#000'
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Medium'
+                    }
+                })} />
             </Stack.Navigator>
         </NavigationContainer>
     )

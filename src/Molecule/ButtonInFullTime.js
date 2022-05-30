@@ -41,11 +41,6 @@ export default function ButtonInFullTime() {
                 setLoading(false)
             }).catch(err => console.log(err))
     }
-
-    // const getLocations = async () => {
-    //     let location = await Location.getCurrentPositionAsync({});
-    //     setLocation(location);
-    // }
     const getPresent = (xdata) => {
         clearInterval(panggilan.current)
         setBerhasil(false)
@@ -109,7 +104,10 @@ export default function ButtonInFullTime() {
             }
             else if (jumlah == 0 && jam <= 13) {
                 return (
-                    <TouchableOpacity style={styles.buttonIN} onPress={() => getPresent('IN')} disabled={buttonsIN}>
+                    <TouchableOpacity style={styles.buttonIN} onPress={() => {
+                        setType('IN')
+                        setVisible(true)
+                    }} disabled={buttonsIN}>
                         <Text style={styles.textIN}>
                             Masuk
                         </Text>

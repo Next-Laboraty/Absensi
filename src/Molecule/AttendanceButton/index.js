@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ButtonInFullTime from "../ButtonInFullTime";
 import RestButtonFullTime from "../RestButtonFullTime";
 import { setLatitude, setLongitude } from "../../features/Loxation/LoxationSlice";
 import * as Location from 'expo-location'
+import AttendanceButtonFree from "../AttendanceButtonFree";
 
 export default function AttendanceButton() {
+    const {employee} = useSelector(state => state.employee)
     const dispatch = useDispatch()
     useEffect(() => {
         let _moun = false
@@ -21,12 +23,21 @@ export default function AttendanceButton() {
             clearInterval(time)
         }
     }, [])
-    return (
-        <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20, marginBottom: 80 }}>
-            <ButtonInFullTime />
-            <RestButtonFullTime />
-        </View>
-    )
+    const checkTypeEmployee = () => {
+        let tipe = employee.employment_type
+        if (tipe == 'freelance' || tipe == 'Flexible-time') {
+            return <AttendanceButtonFree />
+        }
+        else {
+            return (
+                <View style={{ flexDirection: 'row', marginHorizontal: 20, marginTop: 20, marginBottom: 80 }}>
+                    <ButtonInFullTime />
+                    <RestButtonFullTime />
+                </View>
+            )
+        }
+    }
+    return checkTypeEmployee()
 }
 const styles = StyleSheet.create({
     textAttendances: {
