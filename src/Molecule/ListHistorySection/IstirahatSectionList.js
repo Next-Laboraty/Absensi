@@ -31,7 +31,7 @@ export default function IstirahatSectionList() {
                                 :
                                 Data.lat == ''
                                 ?
-                                '(Pemantauan Serius)' 
+                                '(Pemantauan Serius)'
                                 :
                                 'Menggunakan Aplikasi Mobile'
                                 }
