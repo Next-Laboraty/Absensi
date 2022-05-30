@@ -17,7 +17,7 @@ export default function ButtonInFullTime() {
     const { latitude, longitude } = useSelector(state => state.Loxation)
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(true)
-    const [berhasil, setBerhasil] = useState(true)
+    const [berhasil, setBerhasil] = useState(false)
     const [jumlah, setJumlah] = useState(null)
     const [buttonsIN, setButtonsIN] = useState(false)
     const { employee, server, token } = useSelector(state => state.employee)
@@ -29,17 +29,18 @@ export default function ButtonInFullTime() {
     const panggilan = useRef(null)
     const [jam, setJam] = useState(moment().format('H'))
     useEffect(() => {
-        console.log(employee)
-        panggilan.current = setInterval(getAttendance, 1000)
+        getAttendance()
     }, [])
 
     const getAttendance = () => {
+        panggilan.current = setInterval(() => {
             GetAttendance(dataX).then(res => {
                 let data = res.data
                 dispatch(dataKehadiranEntry(data))
                 setJumlah(data.length)
                 setLoading(false)
             }).catch(err => console.log(err))
+        }, 3000)
     }
 
     // const getLocations = async () => {
@@ -47,15 +48,12 @@ export default function ButtonInFullTime() {
     //     setLocation(location);
     // }
     const getPresent = (xdata) => {
-        clearInterval(panggilan.current)
-        setBerhasil(false)
+        // clearInterval(panggilan.current)
         setVisible(true)
         let payload = {
             employee: employee.employee,
             log_type: xdata,
             device_id: 'ONL_APP_MOBILE',
-            shift: employee.default_shift,
-            company: employee.company,
             time: moment().format("YYYY-MM-DD HH:mm:ss"),
             skip_auto_attendance: 0,
             longitude: longitude,
@@ -66,7 +64,7 @@ export default function ButtonInFullTime() {
             server,
             payload
         }
-        axios.post('http:///103.179.57.18:21039/dateAttendance/present', data).then(res => {
+        axios.post('http:///103.179.57.18:21039/dateAttendance/PostMasuk', data).then(res => {
             let data = (res.data)
             setBerhasil(true)
             dispatch(dataKehadiranEntry(data))
@@ -75,7 +73,6 @@ export default function ButtonInFullTime() {
             panggilan.current = setInterval(() => {
                 GetAttendance(dataX).then(res => {
                     let data = res.data
-                    setVisible(false)
                     dispatch(dataKehadiranEntry(data))
                     setJumlah(data.length)
                     setLoading(false)
@@ -135,18 +132,13 @@ export default function ButtonInFullTime() {
                 backdropStyle={styles.backdrop}
                 onBackdropPress={() => setVisible(false)}>
                 <Card disabled={true} style={{marginHorizontal:30}}>
+                    <Divider style={{marginBottom:20}}/>
+                    <Text style={{fontFamily:'LightItalic',fontSize:12}}>{NewQuotes()}</Text>
+                    <Divider style={{marginTop:20,marginBottom:10}}/>
                     <Text style={{fontFamily:'Regular'}}>Kamu akan melakukan absensi {type =='OUT'? 'Pulang':'Masuk'} yakin akan memprosesnya ?</Text>
-                    {berhasil?
-                    <Button onPress={() => {
-                        clearInterval(panggilan.current)
-                        getPresent(type)
-                        }
-                        } style={{marginTop:20}}>
+                    <Button onPress={() => getPresent(type)} style={{marginTop:20}}>
                         Absensi Sekarang
                     </Button>
-                    :
-                    <Button style={{marginTop:20}}><ActivityIndicator color={'#fff'}/></Button>
-                    }
                     <Button appearance={'ghost'} status={'danger'} onPress={() => setVisible(false)}>Tidak, lain kali</Button>
                 </Card>
             </Modal>
