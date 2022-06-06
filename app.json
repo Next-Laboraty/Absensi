@@ -5,6 +5,10 @@
     "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/HRIS-01.png",
+    "notification": {
+      "androidMode" : "default",
+      "icon" : "./assets/icons.png"
+    },
     "plugins": [
       [
         "expo-image-picker",
