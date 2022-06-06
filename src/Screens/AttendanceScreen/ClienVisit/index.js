@@ -65,7 +65,7 @@ export default function App({ navigation }) {
         res,
         name: 'Kamera'
       }
-      if (res.status =='undetermined' || res.status =='denied') {
+      if (res.status == 'undetermined' || res.status == 'denied') {
         console.log(res.status)
         navigation.replace('PermissionScreen', dataBody)
       }

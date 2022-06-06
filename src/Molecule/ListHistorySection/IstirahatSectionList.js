@@ -15,13 +15,16 @@ export default function IstirahatSectionList() {
     useEffect(() => {
         console.log(dataIstirahat)
     },[])
+    const dateSplit = (string) => {
+        return string.split('-')
+    }
     return (
         <>
             {dataIstirahat.map(Data => (
                 <View key={Data.name}>
                     <Layout style={{ marginHorizontal: 10, flexDirection: 'row', marginTop: '2%' }}>
                         <Layout style={{ width: '20%', marginTop: 15 }}>
-                            <Text style={{ fontFamily: 'Medium' }}>{moment().format("HH:mm")}</Text>
+                            <Text style={{ fontFamily: 'Medium' }}>{moment(`${dateSplit(Data.tgl)[2]}-${dateSplit(Data.tgl)[1]}-${dateSplit(Data.tgl)[0]} ${Data.jam}`).format('HH:mm')}</Text>
                         </Layout>
                         <Layout style={{ flex: 1, backgroundColor: '#FF7648', paddingHorizontal: 20, borderRadius: 10, paddingVertical: 5 }}>
                             <Text style={{ fontFamily: 'Medium', color: '#fff' }}>{`Mulai Istirahat`}</Text>
@@ -41,7 +44,7 @@ export default function IstirahatSectionList() {
                     {Data.lat2 !== null ?
                     <Layout style={{ marginHorizontal: 10, flexDirection: 'row', marginTop: '2%' }}>
                         <Layout style={{ width: '20%', marginTop: 15 }}>
-                            <Text style={{ fontFamily: 'Medium' }}>{moment().format("HH:mm")}</Text>
+                            <Text style={{ fontFamily: 'Medium' }}>{moment(`${dateSplit(Data.tgl)[2]}-${dateSplit(Data.tgl)[1]}-${dateSplit(Data.tgl)[0]} ${Data.jam2}`).format('HH:mm')}</Text>
                         </Layout>
                         <Layout style={{ flex: 1, backgroundColor: '#D61C4E', paddingHorizontal: 20, borderRadius: 10, paddingVertical: 5 }}>
                             <Text style={{ fontFamily: 'Medium', color: '#fff' }}>Istirahat selesai {Data.ket}</Text>

@@ -22,7 +22,10 @@ export default function History() {
             {tipe == 'freelance' || tipe == 'Flexible-time' ?
             null
             :
+            <>
+            <Divider style={{marginVertical:20}}/>
             <IstirahatSectionList />
+            </>
         }
         </Layout>
     )
