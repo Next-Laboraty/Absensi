@@ -7,6 +7,7 @@ import HeaderOption from '../../Atomic/HeaderOptions';
 import ButtonFeatures from '../../Molecule/ButtonFeatures';
 import HomeScreenBody from '../../Molecule/HomeScreenBody';
 import * as Location from 'expo-location'
+import RegisterForPushNotificationsAsync from '../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync';
 
 export default function HomeScreen({ navigation }) {
     useEffect(() => {

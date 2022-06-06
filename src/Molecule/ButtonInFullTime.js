@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View, Pressable } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View, Alert } from "react-native";
 import moment from "moment";
 import NewQuotes from "../lib/quotes";
 import { AntDesign, Feather } from '@expo/vector-icons';
@@ -33,12 +33,12 @@ export default function ButtonInFullTime() {
     }, [])
 
     const getAttendance = () => {
-            GetAttendance(dataX).then(res => {
-                let data = res.data
-                dispatch(dataKehadiranEntry(data))
-                setJumlah(data.length)
-                setLoading(false)
-            }).catch(err => console.log(err))
+        GetAttendance(dataX).then(res => {
+            let data = res.data
+            dispatch(dataKehadiranEntry(data))
+            setJumlah(data.length)
+            setLoading(false)
+        }).catch(err => console.log(err))
     }
     const getPresent = (xdata) => {
         clearInterval(panggilan.current)
@@ -58,22 +58,38 @@ export default function ButtonInFullTime() {
         let data = {
             token,
             server,
-            payload
+            payload,
+            employee: employee.user_id
         }
         axios.post('https://chilly-panda-26.telebit.io/dateAttendance/present', data).then(res => {
             let data = (res.data)
-            setBerhasil(true)
-            setJumlah(data.length)
-            setVisible(false)
-            panggilan.current = setInterval(() => {
-                GetAttendance(dataX).then(res => {
-                    let data = res.data
-                    setVisible(false)
-                    dispatch(dataKehadiranEntry(data))
-                    setJumlah(data.length)
-                    setLoading(false)
-                }).catch(err => console.log(err))
-            }, 3000)
+            if (data.messageErr) {
+                setBerhasil(true)
+                Alert.alert(data.title, data.body, [
+                    { text: 'OK', onPress: () => setVisible(false) },
+                ]);
+            }
+            else {
+                setBerhasil(true)
+                setVisible(false)
+                setJumlah(data.length)
+                panggilan.current = setInterval(() => {
+                    GetAttendance(dataX).then(res => {
+                        let data = res.data
+                        dispatch(dataKehadiranEntry(data))
+                        setJumlah(data.length)
+                    }).catch(err => {
+                        Alert.alert('Koneksi tidak stabil', 'Periksa kembali internet anda sebelum memulai absensi, coba lagi beberapa saat lagi', [
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                        ]);
+                    })
+                }, 3000)
+            }
         })
             .catch(err => console.log(err))
     }
@@ -130,18 +146,18 @@ export default function ButtonInFullTime() {
                 visible={visible}
                 backdropStyle={styles.backdrop}
                 onBackdropPress={() => setVisible(false)}>
-                <Card disabled={true} style={{marginHorizontal:30}}>
-                    <Text style={{fontFamily:'Regular'}}>Kamu akan melakukan absensi {type =='OUT'? 'Pulang':'Masuk'} yakin akan memprosesnya ?</Text>
-                    {berhasil?
-                    <Button onPress={() => {
-                        clearInterval(panggilan.current)
-                        getPresent(type)
+                <Card disabled={true} style={{ marginHorizontal: 30 }}>
+                    <Text style={{ fontFamily: 'Regular' }}>Kamu akan melakukan absensi {type == 'OUT' ? 'Pulang' : 'Masuk'} yakin akan memprosesnya ?</Text>
+                    {berhasil ?
+                        <Button onPress={() => {
+                            clearInterval(panggilan.current)
+                            getPresent(type)
                         }
-                        } style={{marginTop:20}}>
-                        Absensi Sekarang
-                    </Button>
-                    :
-                    <Button style={{marginTop:20}}><ActivityIndicator color={'#fff'}/></Button>
+                        } style={{ marginTop: 20 }}>
+                            Absensi Sekarang
+                        </Button>
+                        :
+                        <Button style={{ marginTop: 20 }}><ActivityIndicator color={'#fff'} /></Button>
                     }
                     <Button appearance={'ghost'} status={'danger'} onPress={() => setVisible(false)}>Tidak, lain kali</Button>
                 </Card>

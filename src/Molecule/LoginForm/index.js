@@ -71,7 +71,7 @@ export default function LoginForm(props) {
                     const dataHeader = '@AccountToken'
                     AsyncPenyimpanan(dataHeader, token)
                     dispatch(employee_token(token))
-                    AsyncPenyimpanan('@AccountServer', base64.encodeString(server))
+                    AsyncPenyimpanan('@AccountServer', base64.encodeString(server.toLowerCase()))
                     dispatch(employee_server(base64.encodeString(server)))
                     AxiosToken(`https://${server}`).then(res => {
                         const AkunServer = res.data.message

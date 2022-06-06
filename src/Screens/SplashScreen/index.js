@@ -3,34 +3,13 @@ import { ActivityIndicator, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import BackgroundSplashScreen from "../../ImagesSource/BackgroundSplashScreen";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoginBase from "../../lib/LoginBase";
 import { useDispatch, useSelector } from "react-redux";
 import { employee_data, employee_mail, employee_server, employee_token } from "../../features/employee/employeeSlice";
-import AxiosGetDataAction from '../../lib/AxiosGetDataAction'
-import { base64 } from "@firebase/util";
-import { MASUKAN_TASK } from '../../features/desk/deskSlice'
 import LoadData from "./LoadData";
-// import loginFirebase from '../../lib/loginFirebase';
-import * as TaskManager from 'expo-task-manager';
-import * as Notifications from 'expo-notifications';
-import * as Location from 'expo-location';
-import { getDatabase, ref, set } from "firebase/database";
-
-
-const LOCATION_TASK_NAME = 'background-location-task';
+import * as Notifications from 'expo-notifications'
 
 export default function SplashScreen({ navigation, data }) {
     useEffect(() => {
-        (async () => {
-            const { status } = await Location.requestBackgroundPermissionsAsync();
-            if (status === 'granted') {
-                await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-                    accuracy: Location.Accuracy.Highest,
-                    distanceInterval: 1, // minimum change (in meters) betweens updates
-                    deferredUpdatesInterval: 1000,
-                });
-            }
-        })
         FirstCome()
     }, [])
     const dispatch = useDispatch()
@@ -83,22 +62,3 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     }
 })
-TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
-    if (error) {
-        // Error occurred - check `error.message` for more details.
-        return;
-    }
-    if (data) {
-        const { locations } = data;
-        const db = getDatabase();
-        AsyncStorage.getItem('@AccountEmail', async (error, result) => {
-            if (result) {
-                set(ref(db, 'LocationEmployee/' + result), locations[0].coords)
-            }
-            else {
-                null
-            }
-        })
-        // do something with the locations captured in the background
-    }
-});

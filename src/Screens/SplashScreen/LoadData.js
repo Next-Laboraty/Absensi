@@ -11,8 +11,9 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import FireDbs from "../../lib/firestore";
 import axios from "axios";
 import { setNotif } from "../../features/Notifikasi/NotifikasiSlice";
+import RegisterForPushNotificationsAsync from "../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync";
+import AxiosPostData from "../../lib/AxiosPostData";
 
-const citiesRef = collection(FireDbs, "cities");
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -28,6 +29,13 @@ export default function LoadData() {
                 const dataEmployee = await AsyncStorage.getItem('@AccountEmployee')
                 const token = await AsyncStorage.getItem('@AccountToken')
                 const dataEmp = JSON.parse(dataEmployee)
+                RegisterForPushNotificationsAsync().then(tokenNotif => {
+                    AxiosPostData(`https://chilly-panda-26.telebit.io/notif/Insert`,token,{
+                        name:dataEmp.user_id,
+                        server:server,
+                        token:tokenNotif
+                    })
+                })
             }
         })
     }
