@@ -22,7 +22,6 @@ export default function TaskScreen({ navigation }) {
         const Compl = GET_TASK.filter(x => x.status == 'Completed')
         const Worki = GET_TASK.filter(x => x.status == 'Open')
         const Overd = GET_TASK.filter(x => x.status == 'Overdue')
-        console.log(taskList)
         setComp(Compl.length)
         setWork(Worki.length)
         setOver(Overd.length)

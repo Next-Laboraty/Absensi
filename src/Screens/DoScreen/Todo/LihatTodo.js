@@ -17,7 +17,7 @@ export default function LihatTodo({ route, navigation }) {
     const { todoID } = route.params;
     const [dataNum, setDataNum] = useState()
     const [loading, setLoading] = useState(true)
-    const db = getDatabase()
+    // const db = getDatabase()
     const ws = new WebSocket('ws://103.179.57.18:21039/todo/'+todoID)
     // const pressIn = () => {
     //     const xUpdate = dataX

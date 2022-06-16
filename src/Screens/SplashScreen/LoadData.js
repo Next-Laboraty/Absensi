@@ -3,20 +3,9 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { MASUKAN_TASK, MASUKAN_TODO, MASUKAN_CATATAN } from '../../features/desk/deskSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { async, base64 } from "@firebase/util";
-import FetchData from '../../lib/FetchData'
-import AxiosGetEmployee from "../../lib/AxiosGetEmployee";
-import { getDatabase, ref, child, get, query, orderByValue, onValue } from "firebase/database";
-import { collection, doc, setDoc } from "firebase/firestore";
-import FireDbs from "../../lib/firestore";
-import axios from "axios";
-import { setNotif } from "../../features/Notifikasi/NotifikasiSlice";
 import RegisterForPushNotificationsAsync from "../../NotoficationsData/NotificationAll/RegisterForPushNotificationsAsync";
 import AxiosPostData from "../../lib/AxiosPostData";
 
-
-const db = getDatabase()
-const dbRef = ref(getDatabase());
 export default function LoadData() {
     const dispatch = useDispatch()
     useEffect(() => {
@@ -35,7 +24,7 @@ export default function LoadData() {
                         server:server,
                         token:tokenNotif
                     })
-                })
+                }).catch(err => console.log(err))
             }
         })
     }

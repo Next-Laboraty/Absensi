@@ -13,7 +13,7 @@ import WebhookUrl from "../../../lib/WebhookUrl";
 import axios from "axios";
 
 export default function SeeTask({ route }) {
-    const db = getDatabase()
+    // const db = getDatabase()
     const { server, employee, token } = useSelector(state => state.employee)
     const [Loading, setLoading] = useState(true)
     const { TaskID } = route.params

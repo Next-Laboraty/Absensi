@@ -57,7 +57,6 @@ export default function AttendanceScreen({ navigation }) {
     }
     const updateState = (datasx) => {
         setIsGPS(datasx)
-        // console.log(datasx)
     }
     if (loading) {
         return (

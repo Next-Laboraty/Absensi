@@ -37,9 +37,6 @@ class LoginScreen extends Component {
                     <Text style={styles.Header}>{this.state.header}</Text>
                     <Text style={styles.Sub}>{this.state.subtitle}</Text>
                     <LoginForm nav={this.props.navigation} />
-                    <View>
-
-                    </View>
                 </ScrollView>
                 <Button onPress={() => Linking.openURL('https://onglai.id/privacy-policy')} appearance={'ghost'} status={'warning'}>
                     Kebijakan Privasi

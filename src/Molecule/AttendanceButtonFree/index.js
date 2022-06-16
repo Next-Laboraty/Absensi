@@ -11,41 +11,43 @@ import GetAttendance from "../../lib/GetAttendance";
 import { Button, Card, Layout, Modal } from '@ui-kitten/components';
 
 export default function AttendanceButtonFree() {
-    const { latitude, longitude } = useSelector(state => state.Loxation)
     const dispatch = useDispatch()
-    const [dataTunggu, setDataTunggu] = useState(false)
-    const [visible, setVisible] = useState(false);
-    const [berhasil, setBerhasil] = useState(false)
-    const { employee, server, token } = useSelector(state => state.employee)
+    const [visible, setVisible] = useState(false)
+    const [type, setType] = useState(null)
+    const [berhasil, setBerhasil] = useState(true)
     const [loading, setLoading] = useState(true)
+    const { latitude, longitude } = useSelector(state => state.Loxation)
     const [jumlah, setJumlah] = useState(null)
     const panggilan = useRef(null)
+    const { employee, server, token } = useSelector(state => state.employee)
     const dataX = {
-        today: moment().format(),
         owner: employee.employee,
         token,
         server
     }
+
     useEffect(() => {
-        getData()
+        panggilan.current = setInterval(getAttendance, 1000)
     }, [])
-    const getData = () => {
-        panggilan.current = setInterval(() => {
-            GetAttendance(dataX).then(res => {
-                let data = res.data
-                dispatch(dataKehadiranEntry(data))
-                setJumlah(data.length)
-                setLoading(false)
-            }).catch(err => console.log(err))
-        }, 3000)
+
+    const getAttendance = () => {
+        GetAttendance(dataX).then(res => {
+            let data = res.data
+            dispatch(dataKehadiranEntry(data))
+            setJumlah(data.length)
+            setLoading(false)
+        }).catch(err => console.log(err))
     }
-    const getMasuk = (xdata) => {
+    const getMasuk = (xxdata) => {
         clearInterval(panggilan.current)
-        setLoading(true)
+        setBerhasil(false)
+        setVisible(true)
         let payload = {
             employee: employee.employee,
-            log_type: xdata,
+            log_type: xxdata,
             device_id: 'ONL_APP_MOBILE',
+            shift: employee.default_shift,
+            company: employee.company,
             time: moment().format("YYYY-MM-DD HH:mm:ss"),
             skip_auto_attendance: 0,
             longitude: longitude,
@@ -54,34 +56,43 @@ export default function AttendanceButtonFree() {
         let data = {
             token,
             server,
-            payload
+            payload,
+            employee: employee.user_id
         }
-        if (latitude == null) {
-            alert('Error lokasi tidak dapat dibaca')
-        }
-        else {
-            setVisible(true)
-            axios.post('http://103.179.57.18:21039/Absensi', data).then(res => {
-                let data = res.data
+        axios.post('https://chilly-panda-26.telebit.io/dateAttendance/present', data).then(res => {
+            let data = (res.data)
+            if (data.messageErr) {
                 setBerhasil(true)
-                dispatch(dataKehadiranEntry(data))
+                Alert.alert(data.title, data.body, [
+                    { text: 'OK', onPress: () => setVisible(false) },
+                ]);
+            }
+            else {
+                setBerhasil(true)
+                setVisible(false)
                 setJumlah(data.length)
                 panggilan.current = setInterval(() => {
                     GetAttendance(dataX).then(res => {
                         let data = res.data
                         dispatch(dataKehadiranEntry(data))
                         setJumlah(data.length)
-                        setLoading(false)
-                    }).catch(err => console.log(err))
+                    }).catch(err => {
+                        Alert.alert('Koneksi tidak stabil', 'Periksa kembali internet anda sebelum memulai absensi, coba lagi beberapa saat lagi', [
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                        ]);
+                    })
                 }, 3000)
-            }).catch(err => console.log(err))
-            // ws.send(JSON.stringify(dataX))
-            setLoading(false)
-        }
+            }
+        })
+            .catch(err => console.log(err))
     }
-
     const ButtonIN = () => {
-        if (loading && location.coords !== null) {
+        if (jumlah == null || loading) {
             return (
                 <TouchableOpacity style={styles.tombolLoading} disabled>
                     <ActivityIndicator size={'small'} color={'#fff'} />
@@ -91,7 +102,10 @@ export default function AttendanceButtonFree() {
         else {
             if (jumlah == 1) {
                 return (
-                    <TouchableOpacity style={styles.tombol} onPress={() => getMasuk('OUT')}>
+                    <TouchableOpacity style={styles.tombol} onPress={() => {
+                        setType('OUT')
+                        setVisible(true)
+                    }}>
                         <Text style={styles.textPulang}>
                             Pulang
                         </Text>
@@ -109,7 +123,9 @@ export default function AttendanceButtonFree() {
             }
             else {
                 return (
-                    <TouchableOpacity style={styles.tombolMasuk} onPress={() => { getMasuk('IN') }}>
+                    <TouchableOpacity style={styles.tombolMasuk} onPress={() => { 
+                        setType('IN')
+                        setVisible(true) }}>
                         <Text style={styles.textPulang}>
                             Masuk
                         </Text>
@@ -120,22 +136,30 @@ export default function AttendanceButtonFree() {
     }
     return (
         <>
-            <View style={{ alignSelf: 'center' }}>
+            <View style={{ alignSelf: 'center', marginTop: 20 }}>
                 {
                     ButtonIN()
                 }
 
             </View>
-            <Modal visible={visible}>
-                <Card disabled={true}>
-                    <Text style={{ fontFamily: 'Bold', textAlign: 'center' }}>Data sedang di Cek</Text>
-                    <Text style={{ fontFamily: 'ThinItalic', textAlign: 'center' }}>{NewQuotes()}</Text>
-                    <Text style={{ fontFamily: 'Regular', textAlign: 'center' }}>Status absensi <Text style={{ fontFamily: 'Medium', color: 'red' }}>{berhasil === false ? 'Check' : 'Berhasil'}</Text></Text>
-                    {berhasil === true ? <Button style={{ marginTop: '50%' }} onPress={() => setVisible(false)}>
-                        Okey
-                    </Button>
+            <Modal
+                visible={visible}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible(false)}>
+                <Card disabled={true} style={{ marginHorizontal: 30 }}>
+                    <Text style={{ fontFamily: 'Regular' }}>Kamu akan melakukan absensi {type == 'OUT' ? 'Pulang' : 'Masuk'} yakin akan memprosesnya ?</Text>
+                    {berhasil ?
+                        <Button onPress={() => {
+                            clearInterval(panggilan.current)
+                            getMasuk(type)
+                        }
+                        } style={{ marginTop: 20 }}>
+                            Absensi Sekarang
+                        </Button>
                         :
-                        null}
+                        <Button style={{ marginTop: 20 }}><ActivityIndicator color={'#fff'} /></Button>
+                    }
+                    <Button appearance={'ghost'} status={'danger'} onPress={() => setVisible(false)}>Tidak, lain kali</Button>
                 </Card>
             </Modal>
         </>
@@ -269,5 +293,8 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
 
         elevation: 5,
-    }
+    },
+    backdrop: {
+        backgroundColor: 'rgba(0, 0, 0, 0.67)',
+    },
 })

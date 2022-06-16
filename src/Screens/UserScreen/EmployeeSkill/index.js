@@ -7,21 +7,11 @@ import AxiosGetEmployee from "../../../lib/AxiosGetEmployee";
 import { AntDesign } from '@expo/vector-icons';
 import { getDatabase, ref, child, get } from "firebase/database";
 export default function EmployeeSkill() {
-    const dbRef = ref(getDatabase());
     const { employee, server, token } = useSelector(state => state.employee)
     const [loading, setLoading] = useState(true)
     const [skills, setSkills] = useState([])
     useEffect(() => {
-        get(child(dbRef, `Employee/` + base64.encodeString(employee.user_id) + '/Skill')).then((snapshot) => {
-            if (snapshot.exists()) {
-              setSkills(snapshot.val());
-              setLoading(false)
-            } else {
-              console.log("No data available");
-            }
-          }).catch((error) => {
-            console.error(error);
-          });
+       
     }, [])
 
     return (

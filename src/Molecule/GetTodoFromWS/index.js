@@ -9,6 +9,7 @@ export default function GetTodoFromWS() {
     const { employee, server, token } = useSelector(state => state.employee)
     useEffect(() => {
         ws.onopen = () => {
+            console.log('open')
             ws.send(JSON.stringify({
                 owner: employee.user_id,
                 server,
